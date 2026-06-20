@@ -28,22 +28,20 @@ ANTHROPIC_API_KEY   = os.getenv("ANTHROPIC_API_KEY", "")
 ELEVENLABS_API_KEY  = os.getenv("ELEVENLABS_API_KEY", "")
 ELEVENLABS_VOICE_ID = os.getenv("ELEVENLABS_VOICE_ID", "")
 
-# Legacy fallback only — fills in any key the local .env didn't have, for as long
-# as the Studio still happens to live inside JarvisLocal next to Voice-Engine.
-# Safe to delete this whole block once the Studio is on its own server.
-if not (ANTHROPIC_API_KEY and ELEVENLABS_API_KEY and ELEVENLABS_VOICE_ID):
-    sys.path.insert(0, str(Path(__file__).parent.parent / "Voice-Engine"))
-    try:
-        from config import (
-            ANTHROPIC_API_KEY as _JARVIS_ANTHROPIC_KEY,
-            ELEVENLABS_API_KEY as _JARVIS_ELEVENLABS_KEY,
-            ELEVENLABS_VOICE_ID as _JARVIS_ELEVENLABS_VOICE_ID,
-        )
-        ANTHROPIC_API_KEY   = ANTHROPIC_API_KEY or _JARVIS_ANTHROPIC_KEY
-        ELEVENLABS_API_KEY  = ELEVENLABS_API_KEY or _JARVIS_ELEVENLABS_KEY
-        ELEVENLABS_VOICE_ID = ELEVENLABS_VOICE_ID or _JARVIS_ELEVENLABS_VOICE_ID
-    except ImportError:
-        pass
+# No fallback to Voice-Engine/Jarvis — this app is fully standalone. If any of
+# these are missing, fail loudly here instead of silently borrowing Jarvis's
+# keys/voice at runtime.
+_missing = [name for name, val in (
+    ("ANTHROPIC_API_KEY", ANTHROPIC_API_KEY),
+    ("ELEVENLABS_API_KEY", ELEVENLABS_API_KEY),
+    ("ELEVENLABS_VOICE_ID", ELEVENLABS_VOICE_ID),
+) if not val]
+if _missing:
+    sys.exit(
+        f"Missing required .env value(s): {', '.join(_missing)}. "
+        f"Copy .env.example to .env in this folder and fill them in — "
+        f"see README.md for what each key is for."
+    )
 
 STUDIO_ROOT   = Path(__file__).parent          # always relative to app.py
 SESSIONS_PATH = STUDIO_ROOT / "sessions"
