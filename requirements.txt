@@ -1,0 +1,8 @@
+fastapi
+uvicorn[standard]
+python-dotenv
+anthropic
+faster-whisper
+elevenlabs
+yt-dlp
+python-multipart

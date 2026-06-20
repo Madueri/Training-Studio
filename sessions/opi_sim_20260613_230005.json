@@ -1,0 +1,44 @@
+{
+  "field": "medical",
+  "language": "English → Arabic",
+  "scenario": "Mother reports child's fever (40.2°C), dry cough, and mild ear tugging; she is asking whether to bring him to the clinic or if home management is sufficient, and whether antibiotics are needed.",
+  "turns": 0,
+  "scores": {
+    "overall_score": 0,
+    "accuracy": 0,
+    "completeness": 0,
+    "terminology": 0,
+    "fluency": 0,
+    "professional_protocol": 0,
+    "grade": "Needs Work",
+    "summary": "No interpreted dialogue was captured for evaluation. Cannot assess accuracy, terminology, or fluency without turn pair data.",
+    "strengths": [],
+    "coaching_tips": [
+      "Always open with full self-introduction: name, role, and impartiality statement.",
+      "Provide complete turn-by-turn renditions for assessment.",
+      "Verify medical terminology (fever, cough, ear tugging, antibiotics) is accurate in Arabic before calls."
+    ],
+    "next_drill": "Record a mock triage call with a peer; interpret mother's symptom report and nurse's triage questions. Submit full transcript with turn pairs.",
+    "protocol_notes": "No turns documented. Missed opening self-introduction. Cannot evaluate impartiality, accuracy, or completeness without dialogue. Resubmit with full call transcript.",
+    "turn_evaluations": [],
+    "turn_log": [],
+    "full_transcript": "[PROVIDER] Hello, this is Dr. Sarah Mitchell from the pediatric clinic. I understand you're calling about your son who's been sick. I'm going to get some information from you, and we have an interpreter on the line to help us communicate. Is that okay?\n[CALLER] # Caller's Opening Statement (Arabic)\n\nالسلام عليكم، أنا أم تاريخ ابني ومريض شوي والحمد لله، لكن أنا قلقانة عليه وحابة أعرف إذا لازم نروح للعيادة ولا ممكن نتركه في البيت.\n\n# Fatima's Response\n\nحسنا حسنا، شكراً يا دكتورة. إيه، تمام، ما في مشكلة. يا إلهي يا رب، ابني محمود\n[PROVIDER] Okay, so when you say he's sick, can you tell me what's actually going on with him right now—like does he have a fever, is he coughing, throwing up, what are you seeing? And how long has he been like this?",
+    "turn_count": 0,
+    "duration_min": 5,
+    "scenario": {
+      "provider_name": "Dr. Sarah Mitchell",
+      "provider_gender": "female",
+      "provider_role": "Pediatric Nurse Practitioner",
+      "caller_name": "Fatima Al-Rashid",
+      "caller_gender": "female",
+      "caller_dialect": "Levantine Arabic (Syrian/Lebanese)",
+      "caller_situation": "Fatima is calling on behalf of her 4-year-old son who has had a high fever and persistent cough for three days, and she wants guidance on whether he needs to be seen in person.",
+      "chief_issue": "Mother reports child's fever (40.2°C), dry cough, and mild ear tugging; she is asking whether to bring him to the clinic or if home management is sufficient, and whether antibiotics are needed.",
+      "setting": "Community Health Center's nurse triage line",
+      "urgency": "routine",
+      "provider_opening": "Hello, this is Dr. Sarah Mitchell from the pediatric clinic. I understand you're calling about your son who's been sick. I'm going to get some information from you, and we have an interpreter on the line to help us communicate. Is that okay?"
+    },
+    "field": "medical",
+    "language": "English → Arabic"
+  }
+}

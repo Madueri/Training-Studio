@@ -1,0 +1,41 @@
+{
+  "field": "medical",
+  "language": "English → Arabic",
+  "scenario": "Patient reports increased frequency of migraines over the past two weeks since starting a new antihypertensive medication, and wants to know if the medication is the cause and whether she should continue taking it.",
+  "turns": 0,
+  "scores": {
+    "overall_score": 0,
+    "accuracy": 0,
+    "completeness": 0,
+    "terminology": 0,
+    "fluency": 0,
+    "professional_protocol": 0,
+    "grade": "Needs Work",
+    "summary": "No interpretation data provided for evaluation. Unable to assess interpreter performance without turn pair transcripts.",
+    "strengths": [],
+    "coaching_tips": [
+      "Submit completed turn pairs with source text and interpreted renditions for assessment",
+      "Include both provider and patient utterances for comprehensive analysis",
+      "Provide exact timestamps or turn numbers for reference"
+    ],
+    "next_drill": "Record and transcribe a full simulated medical interpretation session (English-Arabic) on medication side effects, then submit turn pairs for detailed OPI evaluation.",
+    "protocol_notes": "Assessment requires actual interpreted dialogue. No turns were provided in the session data. Evaluator cannot render judgment without source language utterances and target language interpretations to compare against professional standards. Resubmit with populated TURN PAIRS section.",
+    "turn_evaluations": [],
+    "turn_log": [],
+    "full_transcript": "[PROVIDER] Hi Fatima, this is Dr. Mitchell from the health center. I see you called about your headaches and the new blood pressure medicine we started you on last month. I want to go through what you've been experiencing so we can figure out what's going on.\n[CALLER] السلام عليكم، شكراً لك يا دكتور ميتشيل على الرد السريع. أنا قلقة جداً لأن الصداع النصفي بدأ يزداد بشكل كبير منذ أسبوعين تقريباً، أي بعد ما بدأت أتناول دواء ضغط الدم الجديد. أريد أن أعرف هل الدواء هو السبب في هذا، وإذا كان كذلك، هل يجب أن أست\n[PROVIDER] \"I'm glad you reached out. To better understand what's happening, can you describe the migraine headaches you're experiencing—specifically, are they similar in intensity and location to your migraines before starting the blood pressure medication, or do they feel different in any way?\"",
+    "turn_count": 0,
+    "duration_min": 5,
+    "scenario": {
+      "provider_name": "Dr. Sarah Mitchell",
+      "provider_role": "Primary Care Physician",
+      "caller_name": "Fatima Al-Rashid",
+      "caller_situation": "A 58-year-old female patient is calling to discuss recurring headaches and concerns about her recent blood pressure medication adjustment.",
+      "chief_issue": "Patient reports increased frequency of migraines over the past two weeks since starting a new antihypertensive medication, and wants to know if the medication is the cause and whether she should continue taking it.",
+      "setting": "Community Health Center outpatient clinic",
+      "urgency": "routine",
+      "provider_opening": "Hi Fatima, this is Dr. Mitchell from the health center. I see you called about your headaches and the new blood pressure medicine we started you on last month. I want to go through what you've been experiencing so we can figure out what's going on."
+    },
+    "field": "medical",
+    "language": "English → Arabic"
+  }
+}

@@ -1,0 +1,61 @@
+{
+  "field": "medical",
+  "language": "English → Arabic",
+  "scenario": "Patient reports frequent migraines over the past three weeks and wants to clarify whether her new blood pressure medication could be causing them, and whether she should continue taking it.",
+  "turns": 1,
+  "scores": {
+    "overall_score": 12,
+    "accuracy": 5,
+    "completeness": 8,
+    "terminology": 10,
+    "fluency": 8,
+    "professional_protocol": 15,
+    "grade": "Needs Work",
+    "summary": "This interpretation is largely incomprehensible and fails to convey the provider's clinical questions accurately. The interpreter appears to have attempted the task but produced fragmented, incoherent Arabic with no clear medical message, making it unsuitable for clinical use.",
+    "strengths": [
+      "Attempt made to acknowledge patient by name (Fatima)"
+    ],
+    "coaching_tips": [
+      "Practice medical terminology drills: pain location, timing, symptom onset in Arabic",
+      "Slow down and segment long provider utterances into logical thought units before interpreting",
+      "Use consecutive interpretation technique: pause after 1-2 sentences for accurate rendition",
+      "Verify understanding of clinical concepts (medication side effects, temporal relationships) before interpreting",
+      "Record and review your interpretations to identify breaks in coherence and grammar"
+    ],
+    "next_drill": "Interpret 5 provider statements about medication side effects and symptom timing, recording yourself and transcribing for accuracy check.",
+    "protocol_notes": "Interpreter failed to render source message with fidelity. The Arabic output contains grammatical fragments, incomplete clauses, and no recognizable clinical question structure. Patient would be unable to understand what provider is asking. First-person assessment: the interpreter's output does not match the provider's intent to gather specific pain characteristics and temporal relationship to medication.",
+    "turn_evaluations": [
+      {
+        "turn": 1,
+        "speaker": "provider",
+        "source_text": "I appreciate you sharing that, and I understand your concern about the new blood pressure medication. Can you describe the headaches in more detail—where exactly do you feel the pain, and does it happen at a particular time of day, such as after taking the medication or throughout the day?",
+        "interpreter_said": "مرحباً فاطما أنا أسيه داء أنا تكترم بشكل من الأيادة و لدي أفاحوا صاتكي حين هنا ومن أفكي أطلبي أنا أفهم أن لديكي بحب أنا أنا أعوضاعة السودة عام ماخران طرعني نبن السودة عام أخرون و أعتقدوا بأنه لديكي بحب أمخة وحولا أداء أنت حد سندلك قليلًا ملدي إجريمك",
+        "ideal_rendition": "أشكرك على مشاركة هذه المعلومات معي، وأفهم قلقك بشأن دواء ضغط الدم الجديد. هل تستطيعين وصف الصداع بشكل أكثر تفصيلاً؟ أين بالضبط تشعرين بالألم، وهل يحدث في وقت معين من اليوم، مثلاً بعد تناول الدواء أم طوال اليوم؟",
+        "verdict": "error",
+        "note": "Output incoherent, fragmented; fails to convey provider's clinical inquiry completely."
+      }
+    ],
+    "turn_log": [
+      {
+        "speaker": "provider",
+        "source": "Dr. Mitchell: I appreciate you sharing that, and I understand your concern about the new blood pressure medication. Can you describe the headaches in more detail—where exactly do you feel the pain, and does it happen at a particular time of day, such as after taking the medication or throughout the day?",
+        "rendered": "مرحباً فاطما أنا أسيه داء أنا تكترم بشكل من الأيادة  و لدي أفاحوا صاتكي حين هنا ومن أفكي أطلبي أنا أفهم أن لديكي بحب أنا أنا أعوضاعة السودة عام  ماخران طرعني نبن السودة عام أخرون و أعتقدوا بأنه لديكي بحب أمخة وحولا  أداء أنت حد سندلك قليلًا ملدي إجريمك"
+      }
+    ],
+    "full_transcript": "[PROVIDER] Hi Fatima, this is Dr. Mitchell from the clinic. I have your chart here. I understand you've been having some headaches lately and have some concerns about your blood pressure medicine. Let's talk through what's been going on.\n[CALLER] # Caller's Opening Statement in Arabic\n\nالسلام عليكم يا دكتور ميتشل، شكراً لأنك اتصلت بي. أنا أعاني من صداع متكرر جداً في الأسابيع الثلاثة الماضية، وأنا قلقة أن الدواء الجديد لضغط الدم قد يكون هو السبب. أريد أن أعرف إذا كان هذا الدواء هو الذي يسبب لي هذا الصداع، وما إذ\n[PROVIDER] Dr. Mitchell: I appreciate you sharing that, and I understand your concern about the new blood pressure medication. Can you describe the headaches in more detail—where exactly do you feel the pain, and does it happen at a particular time of day, such as after taking the medication or throughout the day?\n[INTERPRETER] مرحباً فاطما أنا أسيه داء أنا تكترم بشكل من الأيادة  و لدي أفاحوا صاتكي حين هنا ومن أفكي أطلبي أنا أفهم أن لديكي بحب أنا أنا أعوضاعة السودة عام  ماخران طرعني نبن السودة عام أخرون و أعتقدوا بأنه لديكي بحب أمخة وحولا  أداء أنت حد سندلك قليلًا ملدي إجريمك\n[CALLER] The pain is usually on both sides of my head, like a tight band around it, and it seems to happen mostly in the afternoons and evenings. It started about a week after I began taking the new medication, which is why I'm wondering if there's a connection. Should I stop taking it, or is it safe to continue while we figure this out?",
+    "turn_count": 1,
+    "duration_min": 5,
+    "scenario": {
+      "provider_name": "Dr. James Mitchell",
+      "provider_role": "Primary Care Physician",
+      "caller_name": "Fatima Al-Rashid",
+      "caller_situation": "A 54-year-old Arabic-speaking patient is calling to discuss persistent headaches and discuss medication side effects she's been experiencing.",
+      "chief_issue": "Patient reports frequent migraines over the past three weeks and wants to clarify whether her new blood pressure medication could be causing them, and whether she should continue taking it.",
+      "setting": "Community health clinic, follow-up phone consultation",
+      "urgency": "routine",
+      "provider_opening": "Hi Fatima, this is Dr. Mitchell from the clinic. I have your chart here. I understand you've been having some headaches lately and have some concerns about your blood pressure medicine. Let's talk through what's been going on."
+    },
+    "field": "medical",
+    "language": "English → Arabic"
+  }
+}

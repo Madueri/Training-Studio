@@ -1,0 +1,63 @@
+{
+  "field": "medical",
+  "language": "English → Arabic",
+  "scenario": "Whether the prescribed amoxicillin is safe for her daughter, what side effects to watch for, and clarification on dosing instructions that were unclear during the in-person visit.",
+  "turns": 1,
+  "scores": {
+    "overall_score": 0,
+    "accuracy": 0,
+    "completeness": 0,
+    "terminology": 0,
+    "fluency": 0,
+    "professional_protocol": 0,
+    "grade": "Needs Work",
+    "summary": "No interpretation was provided for the provider's opening statement, making assessment impossible. Critical protocol failure: interpreter did not introduce themselves or render the source message.",
+    "strengths": [
+      "Session properly identified as medical/pediatric context with appropriate difficulty level"
+    ],
+    "coaching_tips": [
+      "Always open with self-introduction: 'أنا المترجم الفوري. سأساعدكم في التواصل.'",
+      "Render the entire provider turn into Arabic before awaiting caller response",
+      "Confirm the patient's name and chief complaint accurately in target language",
+      "Do not leave any source utterance uninterpreted"
+    ],
+    "next_drill": "Role-play: Provider greets parent about child's ear infection. Interpreter must open with self-introduction, then deliver complete, accurate Arabic rendition covering doctor's name, clinic affiliation, patient context, and three open questions.",
+    "protocol_notes": "Interpreter's complete absence of output violates OPI protocol. Professional interpreting demands: (1) self-introduction in target language, (2) first-person impartiality, (3) complete accuracy on medical terminology (amoxicillin, dosing, side effects). No rendition = no evaluation possible.",
+    "turn_evaluations": [
+      {
+        "turn": 1,
+        "speaker": "provider",
+        "source_text": "Hello, this is Dr. Sarah Mitchell from the Community Health Clinic. I have the interpreter on the line with us. I see here that your daughter Layla was seen yesterday for an ear infection—how is she doing today, and what questions can I answer for you about her treatment?",
+        "interpreter_said": "[NO RENDITION PROVIDED]",
+        "ideal_rendition": "السلام عليكم، أنا المترجم الفوري. أنا الدكتورة سارة ميتشل من عيادة الصحة المجتمعية. ابنتك ليلى فحصت أمس لعدوى في الأذن. كيف حالها اليوم؟",
+        "verdict": "error",
+        "note": "Complete failure: zero interpretation delivered. Violates all protocol."
+      }
+    ],
+    "turn_log": [
+      {
+        "speaker": "provider",
+        "source": "Hello, this is Dr. Sarah Mitchell from the Community Health Clinic. I have the interpreter on the line with us. I see here that your daughter Layla was seen yesterday for an ear infection—how is she doing today, and what questions can I answer for you about her treatment?",
+        "rendered": ""
+      }
+    ],
+    "full_transcript": "[PROVIDER] Hello, this is Dr. Sarah Mitchell from the Community Health Clinic. I have the interpreter on the line with us. I see here that your daughter Layla was seen yesterday for an ear infection—how is she doing today, and what questions can I answer for you about her treatment?\n[CALLER] السلام عليكم، أنا أتصل لأني عندي أسئلة كتير عن الدواء اللي وصفتوه لابنتي أمس، وما فهمت كويس التعليمات.\n\nيا دكتور، أنا قلقة شوي على الأموكسيسيلين هاي. ابنتي ما أخذت هالدواء من قبل، وبدي أعرف إذا آمن ليها وشو الأعراض اللي لازم أراقبها؟\n[PROVIDER] Of course, I understand your concern. Before we go through everything, can you tell me how old your daughter is and what we're treating her for with the amoxicillin? That'll help me explain things better and address any specific worries you might have.\n[INTERPRETER] ",
+    "turn_count": 1,
+    "duration_min": 5,
+    "scenario": {
+      "provider_name": "Dr. Sarah Mitchell",
+      "provider_gender": "female",
+      "provider_role": "Primary Care Physician",
+      "caller_name": "Fatima Al-Rashid",
+      "caller_gender": "female",
+      "caller_dialect": "Levantine Arabic (Syrian/Lebanese)",
+      "caller_situation": "Fatima is calling to discuss her 6-year-old daughter's persistent ear infection and questions about prescribed antibiotics before starting treatment.",
+      "chief_issue": "Whether the prescribed amoxicillin is safe for her daughter, what side effects to watch for, and clarification on dosing instructions that were unclear during the in-person visit.",
+      "setting": "Community Health Clinic pediatric department",
+      "urgency": "routine",
+      "provider_opening": "Hello, this is Dr. Sarah Mitchell from the Community Health Clinic. I have the interpreter on the line with us. I see here that your daughter Layla was seen yesterday for an ear infection—how is she doing today, and what questions can I answer for you about her treatment?"
+    },
+    "field": "medical",
+    "language": "English → Arabic"
+  }
+}

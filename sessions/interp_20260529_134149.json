@@ -1,0 +1,26 @@
+{
+  "mode": "shadowing",
+  "specialization": "General",
+  "direction": "English → Arabic",
+  "source": "[Shadowing practice — no source text. Evaluate delivery quality only: fluency, naturalness, pacing, and pronunciation accuracy.]",
+  "rendition": "I am honored to be with you today for the commencement of Papay Ness University in the world.",
+  "scores": {
+    "overall_score": 0,
+    "accuracy": 0,
+    "completeness": 0,
+    "terminology": 0,
+    "fluency": 0,
+    "grade": "Needs Work",
+    "omissions": [
+      "Cannot assess—no source speech provided for evaluation"
+    ],
+    "additions": [],
+    "term_errors": [],
+    "strengths": [],
+    "improvements": [
+      "Unable to evaluate shadowing interpretation without source speech material",
+      "Provide original speaker's remarks for accurate assessment of fidelity, lag time, and delivery synchronization"
+    ],
+    "summary": "Assessment cannot be completed: shadowing interpretation evaluation requires the original source speech to measure accuracy, timing, and delivery quality. Please provide the speaker's remarks for proper evaluation."
+  }
+}

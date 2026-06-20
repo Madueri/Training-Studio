@@ -1,0 +1,40 @@
+{
+  "field": "medical",
+  "language": "English → Arabic",
+  "scenario": "Understanding wound care protocols, medication side effects, and when to schedule a follow-up appointment",
+  "turns": 0,
+  "scores": {
+    "overall_score": 0,
+    "accuracy": 0,
+    "completeness": 0,
+    "terminology": 0,
+    "fluency": 0,
+    "professional_protocol": 0,
+    "grade": "Needs Work",
+    "summary": "No interpreted utterances were provided for evaluation. Unable to assess interpreter performance on wound care protocols, medication side effects, or follow-up scheduling in medical Arabic.",
+    "strengths": [],
+    "coaching_tips": [
+      "Submit complete turn pairs with source text and interpreted rendition for evaluation",
+      "Include both provider and patient utterances for comprehensive assessment"
+    ],
+    "next_drill": "Record and transcribe a full medical consultation scenario with 8-10 turn pairs covering wound care instructions, adverse effects, and appointment scheduling in English→Arabic medical interpretation.",
+    "protocol_notes": "Cannot evaluate interpreter accuracy, terminology precision, or professional medical protocol adherence without actual interpreted dialogue. Submission must include source utterances and interpreter's Arabic renditions for proper OPI-level assessment.",
+    "turn_evaluations": [],
+    "turn_log": [],
+    "full_transcript": "[PROVIDER] Hello, this is Dr. Chen from the surgical clinic. I'm calling to follow up on your mother's procedure yesterday and answer any questions you might have about her recovery at home. I see we have an interpreter on the line with us today—is that correct?\n[CALLER] السلام عليكم ورحمة الله وبركاته، شكراً جزيلاً على اتصالك بنا يا دكتور تشين. أنا أتصل لأن والدتي تشعر بقلق شديد بشأن العناية بالجرح في البيت، وعندي أسئلة كثيرة عن الأدوية التي أعطيت لها وآثارها الجانبية. كما أود أن أعرف متى يجب عليها أن تعود للعيادة\n[PROVIDER] \"Thank you for calling, and I'm glad your mother feels comfortable reaching out with her concerns. To help me better address her wound care and medication questions, can you tell me specifically what symptoms or changes she's noticed at the wound site since she came home from our office?\"",
+    "turn_count": 0,
+    "duration_min": 5,
+    "scenario": {
+      "provider_name": "Dr. Patricia Chen",
+      "provider_role": "Primary Care Physician",
+      "caller_name": "Fatima Al-Rashid",
+      "caller_situation": "Fatima is calling to clarify post-operative care instructions after her mother's minor surgery and discuss medication concerns.",
+      "chief_issue": "Understanding wound care protocols, medication side effects, and when to schedule a follow-up appointment",
+      "setting": "Outpatient surgical clinic in a community health center",
+      "urgency": "routine",
+      "provider_opening": "Hello, this is Dr. Chen from the surgical clinic. I'm calling to follow up on your mother's procedure yesterday and answer any questions you might have about her recovery at home. I see we have an interpreter on the line with us today—is that correct?"
+    },
+    "field": "medical",
+    "language": "English → Arabic"
+  }
+}

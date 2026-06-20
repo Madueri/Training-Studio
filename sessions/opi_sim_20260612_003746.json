@@ -1,0 +1,64 @@
+{
+  "field": "medical",
+  "language": "English → Arabic",
+  "scenario": "Confusion about antibiotic dosage, frequency of ear drops, and when to return for follow-up; mother worried about side effects and whether it's normal for the child to still have mild pain after starting treatment.",
+  "turns": 1,
+  "scores": {
+    "overall_score": 28,
+    "accuracy": 25,
+    "completeness": 35,
+    "terminology": 40,
+    "fluency": 30,
+    "professional_protocol": 15,
+    "grade": "Needs Work",
+    "summary": "Opening self-introduction lacks clarity and professionalism; Arabic rendition is incoherent with garbled syntax, missing key information, and incomprehensible phrasing that would confuse the caller.",
+    "strengths": [
+      "Attempted to establish role as interpreter",
+      "Recognized need for turn-taking breaks"
+    ],
+    "coaching_tips": [
+      "Use clear, professional opening: 'I am the interpreter. I will interpret into Arabic. Please speak in short turns.'",
+      "Practice basic Arabic sentence structure—avoid run-on, fragmented phrases",
+      "Verify coherence: Does the Arabic convey 'Dr. Sarah Mitchell called about Jamal's visit today' clearly?",
+      "Slow down and organize: provider name → clinic → child's name → purpose → transition to caller"
+    ],
+    "next_drill": "Record yourself introducing a pediatric call in Arabic three times. Have a native speaker confirm the first sentence is comprehensible before continuing.",
+    "protocol_notes": "Opening self-introduction is disorganized and lacks standard phrasing. No clear confidentiality statement. Arabic output is severely corrupted—multiple false starts, repetition ('كيف دوليوم? كيف حالو؟'), and unclear antecedents. Caller would struggle to understand or trust interpreter.",
+    "turn_evaluations": [
+      {
+        "turn": 1,
+        "speaker": "provider",
+        "source_text": "Hi Fatima, this is Dr. Sarah Mitchell from the pediatric clinic—we saw Jamal this morning. I have your file right here. How is he doing, and what questions can I answer for you about his care?",
+        "interpreter_said": "محبا فاطمة. نقدر وصلني خبر بأن جمال مريب وبيانة لديك مراجعا لديها بحولة خصوص بخصوص جمال. كيف دوليوم? كيف حالو؟",
+        "ideal_rendition": "السلام عليكم فاطمة، أنا د. سارة ميتشل من عيادة الأطفال. فحصنا جمال اليوم. كيف حاله؟ ما أسئلتك؟",
+        "verdict": "error",
+        "note": "Incoherent Arabic; missing provider name, clinic context, visit reference entirely."
+      }
+    ],
+    "turn_log": [
+      {
+        "speaker": "provider",
+        "source": "Hi Fatima, this is Dr. Sarah Mitchell from the pediatric clinic—we saw Jamal this morning. I have your file right here. How is he doing, and what questions can I answer for you about his care?",
+        "rendered": "محبا فاطمة. نقدر وصلني خبر بأن جمال مريب وبيانة لديك مراجعا لديها بحولة خصوص بخصوص جمال.  كيف دوليوم? كيف حالو؟"
+      }
+    ],
+    "full_transcript": "[PROVIDER] Hi Fatima, this is Dr. Sarah Mitchell from the pediatric clinic—we saw Jamal this morning. I have your file right here. How is he doing, and what questions can I answer for you about his care?\n[CALLER] السلام عليكم ورحمة الله وبركاته، أنا أتصل لأن عندي أسئلة كتير عن الأدوية اللي أعطيتوها لولدي جمال اليوم في العيادة.\n\nWa alaikum assalam. Yalla, hamdella, شكراً يا دكتورة على ما شفتي جمال. بس أنا مخبولة شوي من كل هالأدوية—ما فهمت بالضبط كم مرة أحط القطرة\n[PROVIDER] Okay, so you're worried about the eye drops for Jamal. Let me help clear that up for you. Can you tell me which eye or eyes are bothering him, and did we say to use the drops in both eyes or just one?\n[INTERPRETER] محبا فاطمة. نقدر وصلني خبر بأن جمال مريب وبيانة لديك مراجعا لديها بحولة خصوص بخصوص جمال.  كيف دوليوم? كيف حالو؟",
+    "turn_count": 1,
+    "duration_min": 5,
+    "scenario": {
+      "provider_name": "Dr. Sarah Mitchell",
+      "provider_gender": "female",
+      "provider_role": "Pediatric Clinic Nurse",
+      "caller_name": "Fatima Al-Rashid",
+      "caller_gender": "female",
+      "caller_dialect": "Levantine Arabic",
+      "caller_situation": "Mother calling to clarify post-visit instructions for her 4-year-old son's ear infection and confirm medication dosing.",
+      "chief_issue": "Confusion about antibiotic dosage, frequency of ear drops, and when to return for follow-up; mother worried about side effects and whether it's normal for the child to still have mild pain after starting treatment.",
+      "setting": "Community pediatric clinic in a mid-sized US hospital system",
+      "urgency": "routine",
+      "provider_opening": "Hi Fatima, this is Dr. Sarah Mitchell from the pediatric clinic—we saw Jamal this morning. I have your file right here. How is he doing, and what questions can I answer for you about his care?"
+    },
+    "field": "medical",
+    "language": "English → Arabic"
+  }
+}

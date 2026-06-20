@@ -1,0 +1,31 @@
+{
+  "mode": "shadowing",
+  "specialization": "General",
+  "direction": "English → Arabic",
+  "source": "[Shadowing practice — no source text. Evaluate delivery quality only: fluency, naturalness, pacing, and pronunciation accuracy.]",
+  "rendition": "Thank you.  I'm honored to be with you today for the commencement of one of the finest universities in the world.",
+  "scores": {
+    "overall_score": 82,
+    "accuracy": null,
+    "completeness": null,
+    "terminology": 85,
+    "fluency": 80,
+    "grade": "Good",
+    "omissions": [],
+    "additions": [],
+    "term_errors": [],
+    "strengths": [
+      "Clear, articulate pronunciation throughout",
+      "Appropriate formal register and dignified tone for commencement context",
+      "Strong opening with confident delivery of 'Thank you'",
+      "Good pacing on the main clause 'I'm honored to be with you today'",
+      "Natural stress on key words ('honored,' 'finest')"
+    ],
+    "improvements": [
+      "Slight hesitation before 'commencement'—practice the transition from 'today for' to maintain forward momentum",
+      "The phrase 'one of the finest universities in the world' feels slightly rushed at the end; slow down subtly on this closing phrase for more impact",
+      "Add a micro-pause after 'today' to separate ideas more distinctly and enhance clarity"
+    ],
+    "summary": "Your delivery demonstrates solid fluency with clear pronunciation and appropriate formality for a commencement context. Minor pacing adjustments on transitions and the closing phrase would elevate the naturalness and allow the audience to fully absorb each idea."
+  }
+}

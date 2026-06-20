@@ -1,0 +1,77 @@
+{
+  "field": "medical",
+  "language": "English → Arabic",
+  "scenario": "The child has had three ear infections in four months; the mother wants to understand why antibiotics keep being prescribed, whether tubes are needed, and if there are alternative treatments before considering surgery.",
+  "turns": 2,
+  "scores": {
+    "overall_score": 12,
+    "accuracy": 5,
+    "completeness": 8,
+    "terminology": 10,
+    "fluency": 3,
+    "professional_protocol": 0,
+    "grade": "Needs Work",
+    "summary": "Interpreter failed to render the caller's complete message; output is incoherent gibberish with no meaningful English equivalent. Session is unsuitable for clinical use.",
+    "strengths": [
+      "Caller's source Arabic is grammatically sound and contextually appropriate"
+    ],
+    "coaching_tips": [
+      "Complete full message interpretation before responding",
+      "Verify accuracy: read back key medical details to both parties",
+      "Self-introduce and explain consecutive interpreting process at opening",
+      "Never submit garbled or incomplete output to providers"
+    ],
+    "next_drill": "Interpret the full Turn 2 caller utterance aloud three times, checking against the source for accuracy, completeness, and coherence before submission.",
+    "protocol_notes": "Interpreter did not introduce themselves per professional standards. Turn 2 interpretation is unintelligible—appears to be machine-corrupted, keystroke errors, or multiple failed attempts pasted together. No ethical interpreter would permit this output to reach a clinician. Critical protocol failure and patient safety risk.",
+    "turn_evaluations": [
+      {
+        "turn": 1,
+        "speaker": "provider",
+        "source_text": "Hello, this is Dr. Sarah Mitchell from the pediatric clinic. I understand you'd like to discuss your daughter's recent ear infections. I have the interpreter on the line, so we can talk through everything that's been happening and address your concerns about her treatment plan.",
+        "interpreter_said": "[No output recorded]",
+        "ideal_rendition": "السلام عليكم، أنا الدكتورة سارة ميتشل من عيادة الأطفال. أفهم أنك تريدين مناقشة التهابات أذن ابنتك الأخيرة. المترجمة معنا الآن.",
+        "verdict": "needs_improvement",
+        "note": "Missing self-introduction and turn completion; protocol violation."
+      },
+      {
+        "turn": 2,
+        "speaker": "caller",
+        "source_text": "السلام عليكم ورحمة الله وبركاته، أنا أتصل لأن ابنتي عندها التهاب في الأذن للمرة الثالثة في أربعة أشهر، وأنا قلقانة جداً على صحتها. شو الحكاية يا دكتورة؟ كل مرة بتعطيها مضادات حيوية، وكل شوية ترجع الالتهابات تاني. أنا ما بدي نوصل للعملية والأ",
+        "interpreter_said": "الحمي ويجاعدك نعم ينفق فوز لرأسي مواible بلضة لا ينفق فوز عيقون تقدم من المستطيع لا ينفق فوز عيقون لرأسي لفيديوك بلضة قد ينفق بنطبع كيف تنفق wounds ي擊敗ونها تدعبها تجربوا تجربوا",
+        "ideal_rendition": "Good morning, doctor. My daughter has had her third ear infection in four months and I'm very worried. Why are antibiotics given every time? The infections keep coming back. I don't want surgery.",
+        "verdict": "error",
+        "note": "Completely unintelligible; corrupted text. No clinical meaning. Unacceptable."
+      }
+    ],
+    "turn_log": [
+      {
+        "speaker": "provider",
+        "source": "Hello, this is Dr. Sarah Mitchell from the pediatric clinic. I understand you'd like to discuss your daughter's recent ear infections. I have the interpreter on the line, so we can talk through everything that's been happening and address your concerns about her treatment plan.",
+        "rendered": ""
+      },
+      {
+        "speaker": "caller",
+        "source": "السلام عليكم ورحمة الله وبركاته، أنا أتصل لأن ابنتي عندها التهاب في الأذن للمرة الثالثة في أربعة أشهر، وأنا قلقانة جداً على صحتها.\r\n\r\nشو الحكاية يا دكتورة؟ كل مرة بتعطيها مضادات حيوية، وكل شوية ترجع الالتهابات تاني. أنا ما بدي نوصل للعملية والأ",
+        "rendered": "الحمي  ويجاعدك  نعم  ينفق فوز لرأسي  مواible بلضة  لا ينفق فوز عيقون  تقدم من المستطيع  لا ينفق فوز عيقون لرأسي  لفيديوك  بلضة قد ينفق  بنطبع  كيف تنفق wounds  ي擊敗ونها  تدعبها  تجربوا  تجربوا"
+      }
+    ],
+    "full_transcript": "[PROVIDER] Hello, this is Dr. Sarah Mitchell from the pediatric clinic. I understand you'd like to discuss your daughter's recent ear infections. I have the interpreter on the line, so we can talk through everything that's been happening and address your concerns about her treatment plan.\n[CALLER] السلام عليكم ورحمة الله وبركاته، أنا أتصل لأن ابنتي عندها التهاب في الأذن للمرة الثالثة في أربعة أشهر، وأنا قلقانة جداً على صحتها.\n\nشو الحكاية يا دكتورة؟ كل مرة بتعطيها مضادات حيوية، وكل شوية ترجع الالتهابات تاني. أنا ما بدي نوصل للعملية والأ\n[PROVIDER] I completely understand your concern, and I'm glad you brought her back in. Let me ask you this—when she gets these ear infections, does she also have a lot of fluid draining from her ear, or is it more just pain and maybe a fever? And has anyone ever looked at her adenoids or tonsils to see if those might be enlarged and causing problems?\n[INTERPRETER] \n[INTERPRETER] الحمي  ويجاعدك  نعم  ينفق فوز لرأسي  مواible بلضة  لا ينفق فوز عيقون  تقدم من المستطيع  لا ينفق فوز عيقون لرأسي  لفيديوك  بلضة قد ينفق  بنطبع  كيف تنفق wounds  ي擊敗ونها  تدعبها  تجربوا  تجربوا",
+    "turn_count": 2,
+    "duration_min": 5,
+    "scenario": {
+      "provider_name": "Dr. Sarah Mitchell",
+      "provider_gender": "female",
+      "provider_role": "Primary Care Physician",
+      "caller_name": "Fatima Al-Rashid",
+      "caller_gender": "female",
+      "caller_dialect": "Levantine Arabic (Syrian)",
+      "caller_situation": "Fatima is calling to discuss her 7-year-old daughter's recurring ear infections and concerns about the prescribed antibiotic.",
+      "chief_issue": "The child has had three ear infections in four months; the mother wants to understand why antibiotics keep being prescribed, whether tubes are needed, and if there are alternative treatments before considering surgery.",
+      "setting": "Pediatric clinic in a community health center; interpreter called in for non-English-speaking parent consultation",
+      "urgency": "routine",
+      "provider_opening": "Hello, this is Dr. Sarah Mitchell from the pediatric clinic. I understand you'd like to discuss your daughter's recent ear infections. I have the interpreter on the line, so we can talk through everything that's been happening and address your concerns about her treatment plan."
+    },
+    "field": "medical",
+    "language": "English → Arabic"
+  }
+}

@@ -1,0 +1,52 @@
+{
+  "mode": "shadowing",
+  "specialization": "general",
+  "direction": "English (US)",
+  "source": "[No caption data — evaluate delivery quality only]",
+  "rendition": "I wish you a good day and see you in the next video.",
+  "scores": {
+    "overall_score": 15,
+    "accuracy": 5,
+    "completeness": 10,
+    "terminology": 20,
+    "fluency": 40,
+    "grade": "Needs Work",
+    "ideal_interpretation": "Welcome to BBC Ideas. Today we're exploring the quiet power of introverts—how introverted individuals often possess significant strengths that are overlooked in our extroversion-focused society. We'll examine the science behind introversion, real-world examples of successful introverts, and why their reflective, thoughtful approach to problem-solving makes them invaluable in the workplace and beyond. Stay tuned for insights that might change how you view quiet strength.",
+    "omissions": [
+      "Complete source content missing—no substantive interpretation of topic delivered",
+      "BBC Ideas branding/framing",
+      "Key concepts about introversion entirely absent",
+      "Scientific or evidential content",
+      "Examples or case studies",
+      "Main thesis or argument structure"
+    ],
+    "additions": [
+      "Generic farewell phrase unrelated to source material",
+      "Assumed closing that may not match original"
+    ],
+    "term_errors": [
+      {
+        "wrong": "No terminology attempted",
+        "correct": "Should include: introversion, extroversion, quiet strength, reflective, personality traits, workplace dynamics, etc."
+      }
+    ],
+    "tone_analysis": {
+      "register": "informal",
+      "emotion_match": "flat",
+      "pace_assessment": "appropriate",
+      "confidence": "low",
+      "tone_notes": "Delivery sounds like a generic closing rather than substantive content engagement; lacks the informative, educational tone appropriate to BBC Ideas; sounds disengaged from source material."
+    },
+    "strengths": [
+      "Grammatically clear English with no speech errors"
+    ],
+    "coaching_tips": [
+      "CRITICAL: Activate source material in real-time. Pause and actually listen/read the content before interpreting—this rendition suggests the source was not processed.",
+      "Practice note-taking during the source phase to capture key ideas, not just final sentences.",
+      "Record yourself and compare your output to source length and complexity—this should be a substantial mismatch alarm.",
+      "Work on content ownership: interpret the *substance*, not just functional phrases."
+    ],
+    "next_drill": "Relay interpretation drill: Listen to a 90-second BBC Ideas segment, take notes, and deliver a full rendition covering opening, 2-3 main ideas, and conclusion—minimum 80% content coverage target.",
+    "summary": "This rendition captures only a closing phrase and omits the entire substantive content, indicating either source material was not engaged or a fundamental misunderstanding of the shadowing task. Immediate intervention needed on active listening and note-taking to build interpretive competence."
+  }
+}

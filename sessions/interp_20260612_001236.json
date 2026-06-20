@@ -1,0 +1,47 @@
+{
+  "mode": "shadowing",
+  "specialization": "general",
+  "direction": "English (US)",
+  "source": "[No caption data — evaluate delivery quality only]",
+  "rendition": "What is the most astounding facts that you can share about the universe?",
+  "scores": {
+    "overall_score": 72,
+    "accuracy": 75,
+    "completeness": 68,
+    "terminology": 80,
+    "fluency": 72,
+    "grade": "Good",
+    "ideal_interpretation": "What is the most astounding fact you can share about the universe? / What would you say is the most mind-blowing fact about our universe that you could share with us?",
+    "omissions": [
+      "Possible softening of 'fact' to 'facts' may suggest uncertainty about source wording",
+      "No visible emphasis on the personal/rhetorical nature of the question ('you can share')"
+    ],
+    "additions": [],
+    "term_errors": [
+      {
+        "wrong": "facts",
+        "correct": "fact (singular most likely, given Tyson's typical framing of 'the most astounding fact' as singular)"
+      }
+    ],
+    "tone_analysis": {
+      "register": "formal",
+      "emotion_match": "natural",
+      "pace_assessment": "appropriate",
+      "confidence": "medium",
+      "tone_notes": "Delivery is clear and direct but lacks the conversational warmth and genuine curiosity that typically invites Tyson's engaging response. The plural 'facts' introduces slight hesitation where singular 'fact' would land with more authority."
+    },
+    "strengths": [
+      "Clean, grammatically correct English with natural word order",
+      "Appropriate formal register for an educational/interview context",
+      "No awkward calques or unnatural phrasing",
+      "Good articulation and audibility"
+    ],
+    "coaching_tips": [
+      "Confirm source grammar (singular vs. plural 'fact') before rendering to avoid hedging",
+      "Add micro-pauses after 'astounding' and before 'you can share' to mirror question structure and invite engagement",
+      "Inject conversational intimacy: imagine you're genuinely curious, not merely relaying a question—let that show in your tone"
+    ],
+    "next_drill": "Record yourself asking this question three ways: (1) as a journalist, (2) as a friend at dinner, (3) as a moderator. Notice which version sounds most natural and confident. Use that energy for tomorrow's mock interviews.",
+    "summary": "Your rendition is accurate and fluent, but the minor number agreement issue and flat delivery cost you presence. With source confirmation and intentional tone work, you'll move this from 'good relay' to 'compelling setup' that draws out your interviewee's best response."
+  }
+}

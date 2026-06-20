@@ -1,0 +1,43 @@
+{
+  "mode": "shadowing",
+  "specialization": "general",
+  "direction": "English (US)",
+  "source": "[Shadowing practice — no source text. Evaluate delivery quality only: fluency, naturalness, pacing, and pronunciation accuracy.]",
+  "rendition": "I'll give you as one person.  I'll give you as one person.",
+  "scores": {
+    "overall_score": 15,
+    "accuracy": null,
+    "completeness": null,
+    "terminology": 0,
+    "fluency": 10,
+    "grade": "Needs Work",
+    "ideal_interpretation": "I'll give you an overview. I'll present this to you as one unified explanation.",
+    "omissions": [
+      "Complete passage content — only fragmented phrase captured",
+      "Subject matter on bacterial infection and immune response",
+      "Educational terminology and technical language",
+      "Logical progression of ideas"
+    ],
+    "additions": [],
+    "term_errors": [
+      "Incomplete utterance with no medical/scientific terminology present"
+    ],
+    "tone_analysis": {
+      "register": "informal",
+      "emotion_match": "uncertain",
+      "pace_assessment": "too fast",
+      "confidence": "low",
+      "tone_notes": "Repetition suggests hesitation; delivery lacks the clarity and authority expected for educational broadcast content on a medical topic."
+    },
+    "strengths": [
+      "Attempt to engage listener with direct address ('I'll give you')"
+    ],
+    "coaching_tips": [
+      "Slow down and complete full thoughts before speaking — this prevents fragmentation",
+      "Review the full source material and shadow longer phrases to build fluency",
+      "Use a conversational but authoritative tone appropriate for health/science education"
+    ],
+    "next_drill": "Shadow the opening 2–3 sentences of the passage three times at 75% of normal speed, focusing on completing each sentence without repetition.",
+    "summary": "This recording captures only a partial, repeated phrase with no substantive content. You need to engage with the full text and shadow meaningful units to develop fluency and confidence in delivering educational material."
+  }
+}

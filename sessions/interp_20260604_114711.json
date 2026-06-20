@@ -1,0 +1,43 @@
+{
+  "mode": "shadowing",
+  "specialization": "general",
+  "direction": "English (US)",
+  "source": "[Shadowing practice — no source text. Evaluate delivery quality only: fluency, naturalness, pacing, and pronunciation accuracy.]",
+  "rendition": "I'll give you as one person.  I'll give you as one person.",
+  "scores": {
+    "overall_score": 25,
+    "accuracy": null,
+    "completeness": null,
+    "terminology": 0,
+    "fluency": 15,
+    "grade": "Needs Work",
+    "ideal_interpretation": "I'll give you one person. I'll give you one person.",
+    "omissions": [
+      "Complete immune system content on bacteria infection",
+      "Educational terminology and concepts",
+      "Structured explanation with technical accuracy"
+    ],
+    "additions": [],
+    "term_errors": [
+      "No scientific terminology present — incomplete shadowing of source material"
+    ],
+    "tone_analysis": {
+      "register": "informal",
+      "emotion_match": "uncertain",
+      "pace_assessment": "too slow",
+      "confidence": "low",
+      "tone_notes": "Delivery lacks authority and clarity; repetition suggests confusion or incomplete preparation. Hesitation dominates the read."
+    },
+    "strengths": [
+      "Attempted to begin the passage"
+    ],
+    "coaching_tips": [
+      "Review the source material fully before recording — this shadowing is incomplete",
+      "Practice breath control between phrases to eliminate repetition",
+      "Build confidence by reading the complete passage aloud 3–5 times before recording",
+      "Focus on a strong, clear opening statement with full commitment to the first phrase"
+    ],
+    "next_drill": "Full read-through: Record the complete immune system passage 5 times without stopping, prioritizing fluency over perfection. Review for accuracy after.",
+    "summary": "This recording shows incomplete preparation and lacks the educational content required for shadowing a moderate-difficulty science topic. Return to the source material, practice full passages, and rebuild confidence through repetition before your next take."
+  }
+}

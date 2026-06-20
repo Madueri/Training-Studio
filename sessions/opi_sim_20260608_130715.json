@@ -1,0 +1,62 @@
+{
+  "field": "medical",
+  "language": "English → Arabic",
+  "scenario": "Assessment of child's fever symptoms and guidance on whether in-person evaluation is necessary; discussion of when to seek emergency care",
+  "turns": 1,
+  "scores": {
+    "overall_score": 18,
+    "accuracy": 15,
+    "completeness": 10,
+    "terminology": 20,
+    "fluency": 15,
+    "professional_protocol": 25,
+    "grade": "Needs Work",
+    "summary": "This interpretation is severely compromised by unintelligible output that fails to convey the provider's clinical assessment questions. The interpreter's rendering is largely incoherent Arabic with fragmented syntax, making it impossible for the patient to understand the medical inquiry or respond appropriately.",
+    "strengths": [
+      "Attempted to begin with greeting (مرحباً)",
+      "Recognized medical context and attempted fever terminology (حرارة)"
+    ],
+    "coaching_tips": [
+      "Slow down and listen actively to each clause before interpreting; this appears rushed and confused",
+      "Review medical Arabic terminology for symptoms: cough (سعال), sore throat (التهاب الحلق), vomiting (قيء), diarrhea (إسهال), rash (طفح جلدي)",
+      "Practice consecutive interpretation technique—take brief notes, then render complete coherent sentences",
+      "Verify your output makes grammatical sense in Arabic before delivering",
+      "Repeat back or clarify unclear English before interpreting to avoid compounding errors"
+    ],
+    "next_drill": "Record yourself interpreting five common pediatric symptom questions (fever + cough, vomiting + diarrhea, rash + itching) into Arabic, then compare against a native speaker's rendition. Focus on accuracy and completeness.",
+    "protocol_notes": "Interpreter failed to maintain impartiality by not conveying the provider's full clinical assessment framework. Output lacks accuracy—many words are either misspelled, incomplete, or nonsensical (e.g., 'يادة,' 'لقץ مات,' 'مكريك,' 'خرارة,' 'انتخبير'). First-person protocol was not violated, but the interpretation is unintelligible and clinically unsafe.",
+    "turn_evaluations": [
+      {
+        "turn": 1,
+        "speaker": "provider",
+        "source_text": "Hello Mrs. Al-Rashid, thank you for calling. I'm glad you're being proactive about your son's health. To help me better assess his condition, can you tell me—besides the fever, does your son have any other symptoms such as a cough, sore throat, vomiting, diarrhea, or a rash anywhere on his body?",
+        "interpreter_said": "مرحباً على الدكتر وشيء من الى يادة وانا تفقد لقץ مات بأنه ابنكي لديه خرارة مرتكة حالي مكريك وانتخبير منك هم هي درج خرارة وأن",
+        "ideal_rendition": "مرحباً السيدة الراشد، شكراً لك على اتصالك. أنا سعيد بأنك تهتمين بصحة ابنك. لمساعدتك بشكل أفضل، هل يمكنك أن تخبريني—بجانب الحمى، هل لديه أعراض أخرى مثل السعال أو التهاب الحلق أو القيء أو الإسهال أو طفح جلدي في أي مكان على جسده؟",
+        "verdict": "error",
+        "note": "Output is largely incoherent; fails to convey clinical questions clearly. Unintelligible."
+      }
+    ],
+    "turn_log": [
+      {
+        "speaker": "provider",
+        "source": "Dr. Chen: \"Hello Mrs. Al-Rashid, thank you for calling. I'm glad you're being proactive about your son's health. To help me better assess his condition, can you tell me—besides the fever, does your son have any other symptoms such as a cough, sore throat, vomiting, diarrhea, or a rash anywhere on his body?\"",
+        "rendered": "مرحباً على الدكتر وشيء من الى يادة وانا تفقد لقץ مات بأنه ابنكي لديه خرارة مرتكة  حالي مكريك وانتخبير منك هم هي درج خرارة وأن"
+      }
+    ],
+    "full_transcript": "[PROVIDER] Hi, this is Dr. Chen from the pediatric clinic. I understand you're calling about your son's fever. Can you tell me how long he's had the fever and what his temperature has been?\n[CALLER] # Caller's Opening Statement\n\n\"السلام عليكم، شكراً على الرد السريع. أنا فاطمة الراشد، أتصل لأن ابني يعاني من حمى منذ أمس، وأنا قلقة جداً لأن درجة حرارته وصلت إلى 39.5 درجة مئوية هذا الصباح. أردت أن أتأكد ما إذا كنت بحاجة لإحضاره إلى العيادة أم يمكنني معالج\n[PROVIDER] Dr. Chen: \"Hello Mrs. Al-Rashid, thank you for calling. I'm glad you're being proactive about your son's health. To help me better assess his condition, can you tell me—besides the fever, does your son have any other symptoms such as a cough, sore throat, vomiting, diarrhea, or a rash anywhere on his body?\"\n[INTERPRETER] مرحباً على الدكتر وشيء من الى يادة وانا تفقد لقץ مات بأنه ابنكي لديه خرارة مرتكة  حالي مكريك وانتخبير منك هم هي درج خرارة وأن\n[CALLER] Yes, he has a cough and seems very tired, but I haven't noticed any rash. He also complained that his throat hurts a little when he swallows. Should I bring him in today, or can I wait and see if the fever goes down with medicine at home?",
+    "turn_count": 1,
+    "duration_min": 5,
+    "scenario": {
+      "provider_name": "Dr. Patricia Chen",
+      "provider_role": "Pediatric Nurse at Community Health Clinic",
+      "caller_name": "Fatima Al-Rashid",
+      "caller_situation": "Fatima is calling because her 4-year-old son has had a persistent high fever for two days and she wants to know if he needs to be seen in person or if it can be managed at home.",
+      "chief_issue": "Assessment of child's fever symptoms and guidance on whether in-person evaluation is necessary; discussion of when to seek emergency care",
+      "setting": "Community Health Clinic pediatric department, afternoon shift",
+      "urgency": "routine",
+      "provider_opening": "Hi, this is Dr. Chen from the pediatric clinic. I understand you're calling about your son's fever. Can you tell me how long he's had the fever and what his temperature has been?"
+    },
+    "field": "medical",
+    "language": "English → Arabic"
+  }
+}

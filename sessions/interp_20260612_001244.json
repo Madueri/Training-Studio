@@ -1,0 +1,47 @@
+{
+  "mode": "shadowing",
+  "specialization": "general",
+  "direction": "English (US)",
+  "source": "[No caption data — evaluate delivery quality only]",
+  "rendition": "What is the most astounding facts that you can share about the universe?",
+  "scores": {
+    "overall_score": 72,
+    "accuracy": 68,
+    "completeness": 65,
+    "terminology": 78,
+    "fluency": 75,
+    "grade": "Good",
+    "ideal_interpretation": "What is the most astounding fact you can share about the universe? Or: What would you say is the most profound or astonishing fact about our universe that you could share with us?",
+    "omissions": [
+      "The question frame—'What is' vs. 'What would you say is' changes pragmatic weight",
+      "Subtle invitation quality that invites personal reflection rather than factual declaration"
+    ],
+    "additions": [],
+    "term_errors": [
+      {
+        "wrong": "astounding facts",
+        "correct": "astounding fact (singular) — the source uses singular; plural shifts meaning to multiple items rather than one standout truth"
+      }
+    ],
+    "tone_analysis": {
+      "register": "formal",
+      "emotion_match": "natural",
+      "pace_assessment": "appropriate",
+      "confidence": "medium",
+      "tone_notes": "Delivery is clear and direct, but lacks the genuine curiosity and warmth that characterizes the original question's invitation for wonder. The tone reads as procedural rather than engaged."
+    },
+    "strengths": [
+      "Clean, grammatically correct structure",
+      "Appropriate register for an interview/broadcast context",
+      "Natural pacing and no disfluency",
+      "Preserves core semantic content"
+    ],
+    "coaching_tips": [
+      "Listen for singular vs. plural markers—they carry interpretive weight; don't auto-pluralize",
+      "Inject subtle curiosity into your delivery: lean slightly forward on the question, use slight vocal rise to signal genuine interest, not mere information retrieval",
+      "Practice the intonation contour: the original invites response; yours reports a query. Match the speaker's intent, not just the words"
+    ],
+    "next_drill": "Record yourself asking this question three times: (1) as a game show host (energetic, plural), (2) as a curious scientist (singular, reflective), (3) as a broadcast interviewer (warm, singular, open). Compare your tone shifts. Use take #3 as your model.",
+    "summary": "Your rendition is accurate and fluent but misses a subtle singular–plural distinction and flattens the warm, invitation-to-wonder tone that gives this question its power. With minor adjustments to form and vocal delivery, you'll capture both the letter and spirit of the source."
+  }
+}

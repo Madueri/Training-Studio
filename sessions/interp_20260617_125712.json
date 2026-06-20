@@ -1,0 +1,52 @@
+{
+  "mode": "shadowing",
+  "specialization": "medical",
+  "direction": "English (US)",
+  "source": "[No caption data — evaluate delivery quality only]",
+  "rendition": "and he thought that he would not record it.  But he was a good man.  And he was a good man.  But he was a good man.  He was a good man.",
+  "scores": {
+    "overall_score": 8,
+    "accuracy": 5,
+    "completeness": 3,
+    "terminology": 0,
+    "fluency": 15,
+    "grade": "Needs Work",
+    "ideal_interpretation": "Hemodiafiltration is an extracorporeal blood purification technique that combines hemodialysis and hemofiltration. It removes both small and middle molecular weight uremic toxins through convective and diffusive transport mechanisms, improving solute clearance and patient outcomes in end-stage renal disease management.",
+    "omissions": [
+      "entire medical topic (hemodiafiltration)",
+      "clinical terminology and treatment context",
+      "mechanism of action and clinical benefits",
+      "any reference to Fresenius or medical device context",
+      "all substantive medical content"
+    ],
+    "additions": [
+      "repetitive phrase 'he was a good man' (4 instances)",
+      "narrative content unrelated to medical topic",
+      "personal characterization irrelevant to clinical context"
+    ],
+    "term_errors": [
+      {
+        "wrong": "No medical terminology present",
+        "correct": "Expected: hemodiafiltration, dialysate, ultrafiltration, convection, diffusion, solute clearance, extracorporeal, uremia, etc."
+      }
+    ],
+    "tone_analysis": {
+      "register": "informal/narrative",
+      "emotion_match": "flat — mechanical repetition with no clinical precision",
+      "pace_assessment": "too slow — suggests uncertainty or incomplete note-taking",
+      "confidence": "low",
+      "tone_notes": "The rendition reads like fragmentary notes on a completely different topic; there is zero alignment with formal medical broadcast register and the repetitive structure suggests either mishearing or severe note-taking failure."
+    },
+    "strengths": [
+      "Grammatically coherent sentences (though content is incorrect)"
+    ],
+    "coaching_tips": [
+      "Restart with active listening: shadow 2–3 minutes of actual Fresenius hemodiafiltration content before attempting interpretation",
+      "Build a pre-session glossary: hemodiafiltration, convective transport, diffusive clearance, ultrafiltration rate, solute removal",
+      "Use consecutive note-taking: capture medical concepts (not narratives) using abbreviations; review notes before interpreting",
+      "Record yourself and compare against source: identify where source material was lost or substituted"
+    ],
+    "next_drill": "Listen to a 90-second medical explainer on hemodiafiltration (video or audio). Pause every 3 sentences. Write down 3 key terms and 1 clinical concept per pause. Then shadow-interpret with those notes visible. Repeat 3 times.",
+    "summary": "This rendition bears no relationship to the assigned medical topic and suggests either a completely different source was interpreted or a critical breakdown in listening and recall occurred. Immediate diagnostic review of the source material and shadowing retraining are essential before any live broadcast work."
+  }
+}

@@ -1,0 +1,41 @@
+{
+  "field": "medical",
+  "language": "English → Arabic",
+  "scenario": "Determine if the child needs an urgent in-person evaluation or can be managed with home care instructions; clarify medication dosing and warning signs.",
+  "turns": 0,
+  "scores": {
+    "overall_score": 0,
+    "accuracy": 0,
+    "completeness": 0,
+    "terminology": 0,
+    "fluency": 0,
+    "professional_protocol": 0,
+    "grade": "Needs Work",
+    "summary": "No interpreted turns were provided for evaluation. Cannot assess interpreter performance without source utterances and rendered interpretations.",
+    "strengths": [],
+    "coaching_tips": [
+      "Submit complete turn pairs with source text and interpreted renditions for meaningful OPI evaluation",
+      "Include provider statements, caller responses, and interpreter output for each exchange",
+      "Ensure medical terminology context is captured in source material"
+    ],
+    "next_drill": "Record and transcribe a full simulated pediatric triage call (minimum 8-10 turn pairs) where interpreter manages medication dosing clarification and urgency determination in English-to-Arabic.",
+    "protocol_notes": "Assessment cannot proceed without turn pair data. OPI evaluation requires: (1) exact source utterances from English-speaking provider, (2) actual interpreted renditions into Arabic, (3) ideal comparative renditions for accuracy benchmarking. Impartiality maintained by evaluating against standard medical interpreting protocols, not subjective preference. Accuracy assessment depends on completeness of documentation provided.",
+    "turn_evaluations": [],
+    "turn_log": [],
+    "full_transcript": "[PROVIDER] Hello, this is Dr. Mitchell's nurse from the Community Health Center pediatric clinic. I understand your son hasn't been feeling well. Can you tell me a bit about what's been going on with him over the past couple of days?\n[CALLER] السلام عليكم، أنا أم فاطمة الرشيد، أتصل لأن ابني مريض منذ أمس بحمى وسعال شديد، وأنا قلقة جداً لأنني لا أعرف إن كان يحتاج إلى فحص عاجل أم أستطيع العناية به في البيت. أيضاً أحتاج إلى معرفة الجرعة الصحيحة للدواء والأعراض التي يجب أن أنتبه\n[PROVIDER] Dr. Sarah Mitchell: Thank you for calling in, and I'm glad you reached out about your son. To better help determine if he needs to be seen urgently, can you tell me if he has any difficulty breathing, is refusing to drink fluids, or has a temperature above 103°F (39.4°C)?",
+    "turn_count": 0,
+    "duration_min": 5,
+    "scenario": {
+      "provider_name": "Dr. Sarah Mitchell",
+      "provider_role": "Pediatric Clinic Nurse",
+      "caller_name": "Fatima Al-Rashid",
+      "caller_situation": "Mother calling about her 4-year-old son's persistent fever and rash that started two days ago.",
+      "chief_issue": "Determine if the child needs an urgent in-person evaluation or can be managed with home care instructions; clarify medication dosing and warning signs.",
+      "setting": "Community Health Center pediatric outpatient clinic",
+      "urgency": "routine",
+      "provider_opening": "Hello, this is Dr. Mitchell's nurse from the Community Health Center pediatric clinic. I understand your son hasn't been feeling well. Can you tell me a bit about what's been going on with him over the past couple of days?"
+    },
+    "field": "medical",
+    "language": "English → Arabic"
+  }
+}

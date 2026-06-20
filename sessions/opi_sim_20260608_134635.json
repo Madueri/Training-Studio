@@ -1,0 +1,74 @@
+{
+  "field": "medical",
+  "language": "English → Arabic",
+  "scenario": "Understanding proper dressing changes, activity restrictions, medication schedule, and when to seek emergency care for the surgical incision.",
+  "turns": 2,
+  "scores": {
+    "overall_score": 15,
+    "accuracy": 5,
+    "completeness": 10,
+    "terminology": 8,
+    "fluency": 20,
+    "professional_protocol": 10,
+    "grade": "Needs Work",
+    "summary": "The interpreter provided only single words (مجالة and سنة) instead of rendering the full source utterances. This constitutes a critical failure to interpret the medical exchange, leaving both provider and caller without communication.",
+    "strengths": [
+      "Attempted response structure acknowledges turn-taking format"
+    ],
+    "coaching_tips": [
+      "Interpret the entire source utterance, not isolated words",
+      "Use full, natural Arabic sentences to convey medical instructions",
+      "Practice sight interpretation of medical scenarios beforehand",
+      "Verify you understand the source before rendering the target"
+    ],
+    "next_drill": "Record a full mock follow-up call interpreting all provider questions and patient responses in complete sentences, then replay to identify gaps.",
+    "protocol_notes": "As evaluator, I note the interpreter failed to deliver renditions of the source messages. مجالة (conversation/chat) and سنة (year) are unrelated to the source content. Professional medical interpretation requires complete, accurate conveyance of all utterances.",
+    "turn_evaluations": [
+      {
+        "turn": 1,
+        "speaker": "provider",
+        "source_text": "I appreciate your questions about your husband's wound care. Before we go through all of that, can you tell me specifically what type of surgery or injury did your husband have, and how many days ago did it happen?",
+        "interpreter_said": "مجالة",
+        "ideal_rendition": "أقدّر أسئلتك حول رعاية جرح زوجك. قبل أن نمر عبر كل ذلك، هل يمكنك أن تخبريني بالتحديد ما نوع الجراحة أو الإصابة التي تعرض لها زوجك، وكم يوماً مضى على ذلك؟",
+        "verdict": "error",
+        "note": "Single word provided; full medical inquiry not conveyed whatsoever."
+      },
+      {
+        "turn": 2,
+        "speaker": "caller",
+        "source_text": "Thank you, Doctor Chen. My husband had knee surgery four days ago, and the surgical site still has the original bandage on it. The surgeon gave us some written instructions, but I want to make sure I'm doing the dressing changes correctly. When should I first remove the bandage and clean the wound?",
+        "interpreter_said": "سنة",
+        "ideal_rendition": "شكراً يا دكتور تشن. زوجي أجرى جراحة في الركبة منذ أربعة أيام، وموقع الجراحة لا يزال عليه الضمادة الأصلية. أعطانا الجراح تعليمات مكتوبة، لكنني أريد التأكد من أنني أقوم بتغيير الضمادات بشكل صحيح. متى يجب أن أزيل الضمادة لأول مرة وأنظف الجرح؟",
+        "verdict": "error",
+        "note": "Single unrelated word rendered; critical patient safety information completely lost."
+      }
+    ],
+    "turn_log": [
+      {
+        "speaker": "provider",
+        "source": "\"I appreciate your questions about your husband's wound care. Before we go through all of that, can you tell me specifically what type of surgery or injury did your husband have, and how many days ago did it happen?\"",
+        "rendered": "مجالة"
+      },
+      {
+        "speaker": "caller",
+        "source": "Thank you, Doctor Chen. My husband had knee surgery four days ago, and the surgical site still has the original bandage on it. The surgeon gave us some written instructions, but I want to make sure I'm doing the dressing changes correctly. When should I first remove the bandage and clean the wound?",
+        "rendered": "سنة"
+      }
+    ],
+    "full_transcript": "[PROVIDER] Hi Ms. Al-Rashid, this is Dr. Chen from the surgery center calling to check in on your husband's recovery. I understand you had some questions about his wound care at home—I'm happy to go over everything with you step by step. Do you have a few minutes right now?\n[CALLER] # Caller's Opening Statement\n\n\"شكراً لك يا دكتور تشن على اتصالك. نعم، لدي عدة أسئلة مهمة حول العناية بالجرح في البيت وكيفية تغيير الضمادات بشكل صحيح. كما أريد أن أفهم ما هي الأنشطة التي يمكن لزوجي القيام بها والأدوية التي يجب أن يأخذها، وفي أي حالات يجب علينا الذهاب\n[PROVIDER] \"I appreciate your questions about your husband's wound care. Before we go through all of that, can you tell me specifically what type of surgery or injury did your husband have, and how many days ago did it happen?\"\n[INTERPRETER] مجالة\n[CALLER] Thank you, Doctor Chen. My husband had knee surgery four days ago, and the surgical site still has the original bandage on it. The surgeon gave us some written instructions, but I want to make sure I'm doing the dressing changes correctly. When should I first remove the bandage and clean the wound?\n[INTERPRETER] سنة\n[PROVIDER] That's helpful to know—four days is a good time to assess the incision. Most knee surgery patients can have their first bandage change around day 3 to 5, so you're right on schedule. Before we go through the steps, can you tell me if you notice any increased redness, warmth, swelling, or drainage coming through the current bandage, or does the incision look clean and dry underneath?",
+    "turn_count": 2,
+    "duration_min": 5,
+    "scenario": {
+      "provider_name": "Dr. Patricia Chen",
+      "provider_role": "Family Medicine Physician",
+      "caller_name": "Fatima Al-Rashid",
+      "caller_situation": "Ms. Al-Rashid is calling to clarify post-operative wound care instructions after her husband's minor knee surgery yesterday.",
+      "chief_issue": "Understanding proper dressing changes, activity restrictions, medication schedule, and when to seek emergency care for the surgical incision.",
+      "setting": "Outpatient Surgery Center follow-up call, Dr. Chen's clinic office",
+      "urgency": "routine",
+      "provider_opening": "Hi Ms. Al-Rashid, this is Dr. Chen from the surgery center calling to check in on your husband's recovery. I understand you had some questions about his wound care at home—I'm happy to go over everything with you step by step. Do you have a few minutes right now?"
+    },
+    "field": "medical",
+    "language": "English → Arabic"
+  }
+}

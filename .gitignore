@@ -1,0 +1,11 @@
+# Secrets — never commit. Each teammate creates their own .env from .env.example
+.env
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# OS noise
+.DS_Store

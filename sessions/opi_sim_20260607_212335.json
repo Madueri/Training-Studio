@@ -1,0 +1,41 @@
+{
+  "field": "medical",
+  "language": "English → Arabic",
+  "scenario": "Understanding wound care protocol, recognizing signs of infection, and determining whether the redness warrants an urgent follow-up visit",
+  "turns": 0,
+  "scores": {
+    "overall_score": 0,
+    "accuracy": 0,
+    "completeness": 0,
+    "terminology": 0,
+    "fluency": 0,
+    "professional_protocol": 0,
+    "grade": "Needs Work",
+    "summary": "No interpretation data provided for evaluation. Unable to assess interpreter performance without source text, rendered interpretation, or turn pair examples.",
+    "strengths": [],
+    "coaching_tips": [
+      "Provide complete turn pairs with source utterances and interpreter renditions for analysis",
+      "Include at least 3-5 substantive turns showing bidirectional interpretation",
+      "Specify medical terminology used (e.g., wound infection signs, follow-up protocols)"
+    ],
+    "next_drill": "Record and transcribe a full simulated wound care consultation (English→Arabic) with at least 8 turns covering infection recognition and urgency assessment",
+    "protocol_notes": "Assessment cannot proceed without empirical data. OPI evaluation requires direct evidence of interpreter output against source material. Resubmit with populated TURN PAIRS section containing: provider/caller utterances, interpreter's actual rendition, and contextual medical scenario details.",
+    "turn_evaluations": [],
+    "turn_log": [],
+    "full_transcript": "[PROVIDER] Hi, this is Sarah from the Community Health Center surgery follow-up line. I understand you're calling about your husband's incision from yesterday's procedure. I have an interpreter on the line to help us communicate—is now a good time to discuss his care?\n[CALLER] السلام عليكم، شكراً لك على الرد. أنا أتصل لأن زوجي أجرى عملية جراحية أمس والآن أرى احمراراً حول الجرح وأنا قلقة جداً. أريد أن أفهم إذا كان هذا طبيعياً أم أنني بحاجة لإحضاره إلى العيادة بسرعة، وأيضاً أحتاج إلى معرفة كيفية العناية بالجرح بش\n[PROVIDER] Can you describe the redness around the wound for me? Is it a small area right at the incision site, and is there any warmth, swelling, or drainage such as pus or unusual odor coming from the wound?",
+    "turn_count": 0,
+    "duration_min": 5,
+    "scenario": {
+      "provider_name": "Dr. Sarah Martinez",
+      "provider_role": "Outpatient Clinic Nurse",
+      "caller_name": "Fatima Al-Rashid",
+      "caller_situation": "Fatima is calling to clarify post-operative wound care instructions after her husband's minor surgery yesterday and has concerns about redness at the incision site.",
+      "chief_issue": "Understanding wound care protocol, recognizing signs of infection, and determining whether the redness warrants an urgent follow-up visit",
+      "setting": "Community Health Center outpatient surgery follow-up line",
+      "urgency": "routine",
+      "provider_opening": "Hi, this is Sarah from the Community Health Center surgery follow-up line. I understand you're calling about your husband's incision from yesterday's procedure. I have an interpreter on the line to help us communicate—is now a good time to discuss his care?"
+    },
+    "field": "medical",
+    "language": "English → Arabic"
+  }
+}

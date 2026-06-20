@@ -1,0 +1,51 @@
+{
+  "mode": "shadowing",
+  "specialization": "diplomatic",
+  "direction": "English (ZA)",
+  "source": "[No caption data — evaluate delivery quality only]",
+  "rendition": "I wish you a good day and see you in the next video.",
+  "scores": {
+    "overall_score": 15,
+    "accuracy": 10,
+    "completeness": 5,
+    "terminology": 20,
+    "fluency": 40,
+    "grade": "Needs Work",
+    "ideal_interpretation": "Without access to the source speech content, a professional diplomatic interpretation would typically include: formal acknowledgment of the diplomatic context, substantive reference to the minister's crisis communication efforts, specific policy positions or statements addressed, institutional references to the Department of International Relations and Cooperation (Dirco), and a formal closing appropriate to diplomatic discourse—not a casual farewell.",
+    "omissions": [
+      "entire substantive content of source speech",
+      "diplomatic context and policy substance",
+      "ministerial statements or positions",
+      "institutional references (Dirco, specific diplomatic issues)",
+      "formal diplomatic register and conventions"
+    ],
+    "additions": [
+      "casual video-style closing inappropriate to diplomatic interpreting",
+      "colloquial 'see you in the next video' — YouTube register, not diplomatic"
+    ],
+    "term_errors": [
+      {
+        "wrong": "see you in the next video",
+        "correct": "formal diplomatic closing or transition statement relevant to source content"
+      }
+    ],
+    "tone_analysis": {
+      "register": "informal",
+      "emotion_match": "uncertain",
+      "pace_assessment": "appropriate",
+      "confidence": "low",
+      "tone_notes": "Rendition adopts casual broadcast/vlogging register entirely unsuitable for diplomatic interpreting; lacks gravitas, institutional formality, and substantive engagement expected in crisis communication contexts."
+    },
+    "strengths": [
+      "Fluent delivery in English (ZA)",
+      "Clear articulation without mumbling"
+    ],
+    "coaching_tips": [
+      "Establish baseline: listen to full source speech before interpreting—this rendition contains zero substantive content from source",
+      "Diplomatic interpreting requires formal register, active listening, and accuracy-first approach—not entertainment framing",
+      "Practice diagnostic listening: pause source, note key ideas, render with precision before moving on"
+    ],
+    "next_drill": "Obtain full source speech. Listen twice without interpreting. Note 5–8 key ideas. Then interpret in formal diplomatic English (ZA). Compare to professional simultaneous interpretation sample if available. Identify register shifts.",
+    "summary": "This rendition appears to contain no substantive interpretation of the source speech, substituting instead a casual broadcast-style closing wholly inappropriate to diplomatic interpreting. Critical intervention needed: foundational training in source fidelity, diplomatic register, and the distinction between entertainment and institutional communication contexts."
+  }
+}

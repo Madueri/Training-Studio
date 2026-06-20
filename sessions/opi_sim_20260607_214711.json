@@ -1,0 +1,41 @@
+{
+  "field": "medical",
+  "language": "English → Arabic",
+  "scenario": "Determine if the mother requires an urgent clinic visit or emergency care, understand medication interactions, and provide guidance on symptom management.",
+  "turns": 0,
+  "scores": {
+    "overall_score": 0,
+    "accuracy": 0,
+    "completeness": 0,
+    "terminology": 0,
+    "fluency": 0,
+    "professional_protocol": 0,
+    "grade": "Needs Work",
+    "summary": "No turn pairs were provided for evaluation. Unable to assess interpreter performance, accuracy, terminology use, or professional protocol adherence without actual dialogue samples.",
+    "strengths": [],
+    "coaching_tips": [
+      "Submit complete turn-by-turn dialogue with source text and interpreted renditions",
+      "Include speaker labels (provider or caller) for each utterance",
+      "Provide actual interpreted output for analysis against medical terminology standards"
+    ],
+    "next_drill": "Record and transcribe a full medical intake call (minimum 8-10 turn pairs) including chief complaint, medication review, symptom assessment, and clinical recommendations in English→Arabic pairing.",
+    "protocol_notes": "As a certified OPI evaluator, I cannot render impartial assessment without substantive interpreter output to review. Evaluation requires actual interpreted renditions compared against ideal clinical Arabic standards, medication terminology accuracy, and protocol compliance in real dialogue context.",
+    "turn_evaluations": [],
+    "turn_log": [],
+    "full_transcript": "[PROVIDER] Hi Fatima, thank you for calling. I'm Dr. Mitchell from Community Health Center. I understand you're calling about your mother's health concerns. Can you tell me when these symptoms started and if she's experienced anything like this before?\n[CALLER] السلام عليكم يا دكتور ميتشل، شكراً على استقبالك لي. أمي تعاني من آلام قوية في الصدر وضيق في التنفس منذ هذا الصباح، وأنا قلق جداً عليها. بالإضافة إلى ذلك، تتناول عدة أدوية لضغط الدم والسكري، وأريد أن أعرف إذا كان هناك تفاعل بين هذه الأدوية أم أنها\n[PROVIDER] \"Thank you for bringing your mother in. These symptoms are concerning and need immediate attention. Can you tell me when exactly these chest pains started this morning, and has she experienced any chest pain like this before, or is this completely new for her?\"",
+    "turn_count": 0,
+    "duration_min": 5,
+    "scenario": {
+      "provider_name": "Dr. Sarah Mitchell",
+      "provider_role": "Primary Care Physician",
+      "caller_name": "Fatima Al-Rashid",
+      "caller_situation": "Fatima is calling on behalf of her elderly mother who has been experiencing persistent headaches and dizziness for the past week and needs medical advice.",
+      "chief_issue": "Determine if the mother requires an urgent clinic visit or emergency care, understand medication interactions, and provide guidance on symptom management.",
+      "setting": "Community Health Center in a suburban area with a significant Arabic-speaking population",
+      "urgency": "routine",
+      "provider_opening": "Hi Fatima, thank you for calling. I'm Dr. Mitchell from Community Health Center. I understand you're calling about your mother's health concerns. Can you tell me when these symptoms started and if she's experienced anything like this before?"
+    },
+    "field": "medical",
+    "language": "English → Arabic"
+  }
+}

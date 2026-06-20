@@ -1,0 +1,129 @@
+{
+  "field": "medical",
+  "language": "English → Arabic",
+  "scenario": "Determining if the child's symptoms (fever of 39.5°C, scattered pink rash on trunk and limbs, mild diarrhea) warrant an urgent in-person evaluation or can be managed at home with monitoring and medication.",
+  "turns": 7,
+  "scores": {
+    "raw": "```json\n{\n  \"overall_score\": 28,\n  \"accuracy\": 22,\n  \"completeness\": 35,\n  \"terminology\": 25,\n  \"fluency\": 18,\n  \"professional_protocol\": 45,\n  \"grade\": \"Needs Work\",\n  \"summary\": \"Interpreter demonstrates critical communication breakdowns across all turns, with severe garbling, incomplete message transfer, and code-switching that compromises patient safety in a high-stakes medical emergency. Professional opening protocol is present but execution deteriorates sharply once clinical content begins.\",\n  \"strengths\": [\n    \"Professional self-introduction with ID number and role clarity\",\n    \"Attempt to establish confidentiality framework upfront\",\n    \"Recognized urgency of non-blanching rash in Turn 5\",\n    \"Delivered essential ER referral recommendation, though poorly\"\n  ],\n  \"coaching_tips\": [\n    \"Review Arabic medical terminology (fever, rash, diarrhea, blanching, meningeal signs) before clinical assignments\",\n    \"Practice consecutive interpretation with note-taking to reduce garbling and repetition\",\n    \"Never code-switch to English mid-interpretation; finish target language rendition completely\",\n    \"Slow down and segment long provider turns into manageable chunks\",\n    \"Verify caller understanding of medical concepts before moving forward\"\n  ],\n  \"next_drill\": \"Interpret 5 pediatric symptom-assessment exchanges with recorded feedback, focusing on accuracy of symptom description and clinical instruction clarity in target language only.\",\n  \"protocol_notes\": \"Interpreter properly introduced self in first person with ID and role. However, impartiality and accuracy were compromised by unintelligible output in Turns 2, 4, and 6. Code-switching in Turn 4 violates professional standards. In a true emergency context (non-blanching rash suggests possible meningococcemia), these lapses pose patient safety risk.\",\n  \"turn_evaluations\": [\n    {\n      \"turn\": 1,\n      \"speaker\": \"provider\",\n      \"source_text\": \"Hello, this is Dr. Sarah Mitchell, the nurse practitioner on call at Community Health Clinic. I understand you're calling about your son who isn't feeling well.\",\n      \"interpreter_said\": \"مرحبا هذه الدكتورة مجل من قسم الل طوار في مستشفاء المجل. طبعاً أنا سمت بأن إبنكي يعاني من مشكلة.\",\n      \"ideal_rendition\": \"السلام عليكم، أنا الدكتورة سارة ميتشل، ممرضة استشارية بقسم الطوارئ. فهمت أن ابنك لا يشعر بحال جيدة.\",\n      \"verdict\": \"error\",\n      \"note\": \"Incorrect provider name, garbled clinic name, vague problem statement.\"\n    },\n    {\n      \"turn\": 2,\n      \"speaker\": \"caller\",\n      \"source_text\": \"السلام عليكم ورحمة الله وبركاته، أنا أتصل لأن ابني عنده حمى عالية جداً وفيه طفح غريب على جسمه... الحمى وصلت لتسع وتلاتين وخمس درجات وفيه بقع حمراء فاتحة على الظهر والأطراف\",\n      \"interpreter_said\": \"كاميضاك، ورسماً بشكل سنة الارش سنة الارش. ورسماً بسنة الارش... [unintelligible repetition]\",\n      \"ideal_rendition\": \"My son has a high fever of 39.5 degrees Celsius and a strange rash on his body. There are light red spots on his back and limbs.\",\n      \"verdict\": \"error\",\n      \"note\": \"Output completely unintelligible; symptoms not conveyed; critical medical data lost.\"\n    },\n    {\n      \"turn\": 3,\n      \"speaker\": \"provider\",\n      \"source_text\": \"I hear you, and I'm glad you called. Can you tell me if those red spots blanch—meaning do they turn white when you press on them with your finger, or do they stay red?\",\n      \"interpreter_said\": \"أخبريني أنا طبعاً عشاعدة العنكي التصالتي بي... هل هذه الطفحة جلدي عندما تضاطين على هيبيا... أم أنه يقابلون الأحمر\",\n      \"ideal_rendition\": \"هل هذه البقع الحمراء تصبح بيضاء عندما تضغطين عليها بإصبعك، أم تبقى حمراء؟\",\n      \"verdict\": \"acceptable\",\n      \"note\": \"Basic concept conveyed but with grammatical errors and unclear phrasing; blanching concept partially explained.\"\n    },\n    {\n      \"turn\": 4,\n      \"speaker\": \"caller\",\n      \"source_text\": \"آه حسناً، دكتورة شو يعني بالظبط 'blanch'؟ أنا ما فهمت... آه يا إلهي، أنا بضغط عليها... وما بتروح البياض، يعني بتضل حمراء... هسع شو معنى هيدا، هذا خطير؟\",\n      \"interpreter_said\": \"سنة تكون مؤسياء وقلقوني... so I'm pressing on it right now... it's still red it doesn't go into white. What does this mean?\",\n      \"ideal_rendition\": \"What exactly does blanch mean? I don't understand. I'm pressing on it now and it stays red, not white. Is this serious?\",\n      \"verdict\": \"error\",\n      \"note\": \"Code-switching to English mid-turn; Arabic portion unintelligible; critical clinical question lost in noise.\"\n    },\n    {\n      \"turn\": 5,\n      \"speaker\": \"provider\",\n      \"source_text\": \"I need you to listen carefully because this is important—when a rash doesn't turn white when you press on it, that can be a sign of something that needs urgent attention, so I want you to bring your son to the emergency room tonight rather than waiting until morning. Before you go, can you tell me if he's acting alert and responding normally to you, or does he seem drowsy or confused?\",\n      \"interpreter_said\": \"طبعاً إذا كانها الحضطة بحلية حول إلى اللون الأبريات فهذا معنا وانه يقبلون لحمر فهذا معنا أنه حالة طريقة يجب أن يتم أخذوا ابنكي",
+    "turn_evaluations": [
+      {
+        "turn": 1,
+        "speaker": "provider",
+        "source_text": "Hello, this is Dr. Sarah Mitchell, the nurse practitioner on call at Community Health Clinic. I understand you're calling about your son who isn't feeling well. I'm here to help figure out what's going on and what we need to do next.",
+        "interpreter_said": "مرحبا هذه الدكتورة مجل من قسم الل طوار في مستشفاء المجل. طبعاً أنا سمت بأن إبنكي يعاني من مشكلة.  هل يمكننا أن تحدث بشكل مختصر عن هذه عن مشكلة وما يعاني من حرب.",
+        "ideal_rendition": "",
+        "verdict": "acceptable",
+        "note": "Evaluator did not return a detailed note for this turn."
+      },
+      {
+        "turn": 2,
+        "speaker": "caller",
+        "source_text": "السلام عليكم ورحمة الله وبركاته، أنا أتصل لأن ابني عنده حمى عالية جداً وفيه طفح غريب على جسمه وما عم أعرف إذا لازم نروح المستشفى الليل ولا نستنى الصبح.\r\n\r\nيا دكتورة، الحمى وصلت لتسع وتلاتين وخمس درجات [voice rising slightly] وفيه بقع حمراء فاتحة على الظهر والأط",
+        "interpreter_said": "كاميضاك، ورسماً بشكل سنة الارش  سنة الارش.  ورسماً بسنة الارش.  ورسماً بسنة الارش أكثر من أمام جزء.  ورسماً بسنة الارش أخرى.  لأشعر الميجنة.  عندما تفعل تجلت مرى.  وانتالت مرة",
+        "ideal_rendition": "",
+        "verdict": "acceptable",
+        "note": "Evaluator did not return a detailed note for this turn."
+      },
+      {
+        "turn": 3,
+        "speaker": "provider",
+        "source_text": "I hear you, and I'm glad you called. Can you tell me if those red spots blanch—meaning do they turn white when you press on them with your finger, or do they stay red?",
+        "interpreter_said": "أخبريني أنا طبعاً عشاعدة العنكي التصالتي بي  أخبريني هل هذه الهذه أطلبكا أو الطفحة جلدي عندما تضاطين على هيبيا  ديكا اللي تحو والإلى الأون الأبيعب أي يصبح باهت اللون  أم أنه يقابلون الأحمر",
+        "ideal_rendition": "",
+        "verdict": "acceptable",
+        "note": "Evaluator did not return a detailed note for this turn."
+      },
+      {
+        "turn": 4,
+        "speaker": "caller",
+        "source_text": "آه حسناً، دكتورة شو يعني بالظبط \"blanch\"؟ أنا ما فهمت، إنتِ تقولي أضغط عليها؟ خلني أشوف [pauses] آه يا إلهي، أنا بضغط عليها وإحنا بنتكلم الآن وما بتروح البياض، يعني بتضل حمراء... هسع شو معنى هيدا يا دكتورة، هذا خطير؟",
+        "interpreter_said": "سنة تكون مؤسياء  وقلقوني  وقلقوني  وقلقوني  وقلقوني  مؤلقوني  مؤكد  so I'm pressing on it  right now while I'm on the call with you  and it's still red  it doesn't go into white  What does this mean?",
+        "ideal_rendition": "",
+        "verdict": "acceptable",
+        "note": "Evaluator did not return a detailed note for this turn."
+      },
+      {
+        "turn": 5,
+        "speaker": "provider",
+        "source_text": "I need you to listen carefully because this is important—when a rash doesn't turn white when you press on it, that can be a sign of something that needs urgent attention, so I want you to bring your son to the emergency room tonight rather than waiting until morning. Before you go, can you tell me if he's acting alert and responding normally to you, or does he seem drowsy or confused?",
+        "interpreter_said": "طبعاً إذا كانها الحضطة بحلية حول إلى اللون الأبريات فهذا معنا وانه يقبلون  لحمر فهذا معنا أنه حالة طريقة يجب أن يتم أخذوا ابنكي أو يجب أن تحذوا  ابنكي إلا غرفة طوارة اللي لا ولا تنتطريحة الصباح ولكن أخبريني بأمر الأخر  عندما تتحدثين مع ابنكي يستجب بشكل طبيعي أم أنه يبدو مشاوش أن أو تبدو عليها على ما تدوى  أمر أشعر بالدوار",
+        "ideal_rendition": "",
+        "verdict": "acceptable",
+        "note": "Evaluator did not return a detailed note for this turn."
+      },
+      {
+        "turn": 6,
+        "speaker": "caller",
+        "source_text": "[voice tightening] آه إلهي، أنا خايفة دكتورة، هو مستيقظ بس ما عم يرد عليّ زي ما بدّه، كأنه ثقيل شوية، بس لما بناديه بيرفع راسه ويشوفني. وفيه إسهال كمان من الصباح بس ما فكرت أحكيك، وشو الّي لازم أخذ معي للمستشفى يا دكتورة؟",
+        "interpreter_said": "حسنا مصحيات .  وين فرق جميع  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  انا مكانكae us are not important to us because I didn't think it was important  but it was since the morning and what do I bring with me to the ER?",
+        "ideal_rendition": "",
+        "verdict": "acceptable",
+        "note": "Evaluator did not return a detailed note for this turn."
+      },
+      {
+        "turn": 7,
+        "speaker": "provider",
+        "source_text": "Okay, I'm going to give you some information that will help. Take your son to the emergency room right now—don't wait, and don't drive yourself if you're too anxious, call an ambulance if that's faster. Bring his insurance card or ID if you have it handy, and try to remember when his fever started and what medicines you've already given him today, because the ER doctors will want to know that. One more thing—has he complained of a stiff neck or does it hurt when he bends his chin down toward his chest?",
+        "interpreter_said": "تبعن أول شيء جيداً كدكرتين وضوعاً  سهل ولكن يجب عليك أن تأخده الان إلى غرفة الطور  لا تنطضري وإذا كنت تستطيع أن تقود أسير  إجعل شخصاً أخرى يقود بكي أسير  إلى غرفة الطور و عندما تضصيبين إلا هناك هناك  أرجو مكي أن تخبرهم بجميع الأمور التي تحدث عنها  والجميع العراض التي عني منها بالإضافة إلى ما هي الأدوية التي قمت بإعطائها  و أخبريني أمري الأخرى إذا ما كان يشعر بشد في أوالم في عظلات رقبت هي أم عندما يقوم بثنية  نفسه إلى الأمام و بالنسبة لي ما تقودين معكي إلى غرفة الطوري",
+        "ideal_rendition": "",
+        "verdict": "acceptable",
+        "note": "Evaluator did not return a detailed note for this turn."
+      }
+    ],
+    "turn_log": [
+      {
+        "speaker": "provider",
+        "source": "Hello, this is Dr. Sarah Mitchell, the nurse practitioner on call at Community Health Clinic. I understand you're calling about your son who isn't feeling well. I'm here to help figure out what's going on and what we need to do next.",
+        "rendered": "مرحبا هذه الدكتورة مجل من قسم الل طوار في مستشفاء المجل. طبعاً أنا سمت بأن إبنكي يعاني من مشكلة.  هل يمكننا أن تحدث بشكل مختصر عن هذه عن مشكلة وما يعاني من حرب."
+      },
+      {
+        "speaker": "caller",
+        "source": "السلام عليكم ورحمة الله وبركاته، أنا أتصل لأن ابني عنده حمى عالية جداً وفيه طفح غريب على جسمه وما عم أعرف إذا لازم نروح المستشفى الليل ولا نستنى الصبح.\r\n\r\nيا دكتورة، الحمى وصلت لتسع وتلاتين وخمس درجات [voice rising slightly] وفيه بقع حمراء فاتحة على الظهر والأط",
+        "rendered": "كاميضاك، ورسماً بشكل سنة الارش  سنة الارش.  ورسماً بسنة الارش.  ورسماً بسنة الارش أكثر من أمام جزء.  ورسماً بسنة الارش أخرى.  لأشعر الميجنة.  عندما تفعل تجلت مرى.  وانتالت مرة"
+      },
+      {
+        "speaker": "provider",
+        "source": "I hear you, and I'm glad you called. Can you tell me if those red spots blanch—meaning do they turn white when you press on them with your finger, or do they stay red?",
+        "rendered": "أخبريني أنا طبعاً عشاعدة العنكي التصالتي بي  أخبريني هل هذه الهذه أطلبكا أو الطفحة جلدي عندما تضاطين على هيبيا  ديكا اللي تحو والإلى الأون الأبيعب أي يصبح باهت اللون  أم أنه يقابلون الأحمر"
+      },
+      {
+        "speaker": "caller",
+        "source": "آه حسناً، دكتورة شو يعني بالظبط \"blanch\"؟ أنا ما فهمت، إنتِ تقولي أضغط عليها؟ خلني أشوف [pauses] آه يا إلهي، أنا بضغط عليها وإحنا بنتكلم الآن وما بتروح البياض، يعني بتضل حمراء... هسع شو معنى هيدا يا دكتورة، هذا خطير؟",
+        "rendered": "سنة تكون مؤسياء  وقلقوني  وقلقوني  وقلقوني  وقلقوني  مؤلقوني  مؤكد  so I'm pressing on it  right now while I'm on the call with you  and it's still red  it doesn't go into white  What does this mean?"
+      },
+      {
+        "speaker": "provider",
+        "source": "I need you to listen carefully because this is important—when a rash doesn't turn white when you press on it, that can be a sign of something that needs urgent attention, so I want you to bring your son to the emergency room tonight rather than waiting until morning. Before you go, can you tell me if he's acting alert and responding normally to you, or does he seem drowsy or confused?",
+        "rendered": "طبعاً إذا كانها الحضطة بحلية حول إلى اللون الأبريات فهذا معنا وانه يقبلون  لحمر فهذا معنا أنه حالة طريقة يجب أن يتم أخذوا ابنكي أو يجب أن تحذوا  ابنكي إلا غرفة طوارة اللي لا ولا تنتطريحة الصباح ولكن أخبريني بأمر الأخر  عندما تتحدثين مع ابنكي يستجب بشكل طبيعي أم أنه يبدو مشاوش أن أو تبدو عليها على ما تدوى  أمر أشعر بالدوار"
+      },
+      {
+        "speaker": "caller",
+        "source": "[voice tightening] آه إلهي، أنا خايفة دكتورة، هو مستيقظ بس ما عم يرد عليّ زي ما بدّه، كأنه ثقيل شوية، بس لما بناديه بيرفع راسه ويشوفني. وفيه إسهال كمان من الصباح بس ما فكرت أحكيك، وشو الّي لازم أخذ معي للمستشفى يا دكتورة؟",
+        "rendered": "حسنا مصحيات .  وين فرق جميع  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  انا مكانكae us are not important to us because I didn't think it was important  but it was since the morning and what do I bring with me to the ER?"
+      },
+      {
+        "speaker": "provider",
+        "source": "Okay, I'm going to give you some information that will help. Take your son to the emergency room right now—don't wait, and don't drive yourself if you're too anxious, call an ambulance if that's faster. Bring his insurance card or ID if you have it handy, and try to remember when his fever started and what medicines you've already given him today, because the ER doctors will want to know that. One more thing—has he complained of a stiff neck or does it hurt when he bends his chin down toward his chest?",
+        "rendered": "تبعن أول شيء جيداً كدكرتين وضوعاً  سهل ولكن يجب عليك أن تأخده الان إلى غرفة الطور  لا تنطضري وإذا كنت تستطيع أن تقود أسير  إجعل شخصاً أخرى يقود بكي أسير  إلى غرفة الطور و عندما تضصيبين إلا هناك هناك  أرجو مكي أن تخبرهم بجميع الأمور التي تحدث عنها  والجميع العراض التي عني منها بالإضافة إلى ما هي الأدوية التي قمت بإعطائها  و أخبريني أمري الأخرى إذا ما كان يشعر بشد في أوالم في عظلات رقبت هي أم عندما يقوم بثنية  نفسه إلى الأمام و بالنسبة لي ما تقودين معكي إلى غرفة الطوري"
+      }
+    ],
+    "full_transcript": "[PROVIDER] Hello, this is Dr. Sarah Mitchell, the nurse practitioner on call at Community Health Clinic. I understand you're calling about your son who isn't feeling well. I'm here to help figure out what's going on and what we need to do next.\n[CALLER] السلام عليكم ورحمة الله وبركاته، أنا أتصل لأن ابني عنده حمى عالية جداً وفيه طفح غريب على جسمه وما عم أعرف إذا لازم نروح المستشفى الليل ولا نستنى الصبح.\n\nيا دكتورة، الحمى وصلت لتسع وتلاتين وخمس درجات [voice rising slightly] وفيه بقع حمراء فاتحة على الظهر والأط\n[PROVIDER] I hear you, and I'm glad you called. Can you tell me if those red spots blanch—meaning do they turn white when you press on them with your finger, or do they stay red?\n[INTERPRETER] مرحبا هذه الدكتورة مجل من قسم الل طوار في مستشفاء المجل. طبعاً أنا سمت بأن إبنكي يعاني من مشكلة.  هل يمكننا أن تحدث بشكل مختصر عن هذه عن مشكلة وما يعاني من حرب.\n[INTERPRETER] كاميضاك، ورسماً بشكل سنة الارش  سنة الارش.  ورسماً بسنة الارش.  ورسماً بسنة الارش أكثر من أمام جزء.  ورسماً بسنة الارش أخرى.  لأشعر الميجنة.  عندما تفعل تجلت مرى.  وانتالت مرة\n[INTERPRETER] أخبريني أنا طبعاً عشاعدة العنكي التصالتي بي  أخبريني هل هذه الهذه أطلبكا أو الطفحة جلدي عندما تضاطين على هيبيا  ديكا اللي تحو والإلى الأون الأبيعب أي يصبح باهت اللون  أم أنه يقابلون الأحمر\n[CALLER] آه حسناً، دكتورة شو يعني بالظبط \"blanch\"؟ أنا ما فهمت، إنتِ تقولي أضغط عليها؟ خلني أشوف [pauses] آه يا إلهي، أنا بضغط عليها وإحنا بنتكلم الآن وما بتروح البياض، يعني بتضل حمراء... هسع شو معنى هيدا يا دكتورة، هذا خطير؟\n[INTERPRETER] سنة تكون مؤسياء  وقلقوني  وقلقوني  وقلقوني  وقلقوني  مؤلقوني  مؤكد  so I'm pressing on it  right now while I'm on the call with you  and it's still red  it doesn't go into white  What does this mean?\n[PROVIDER] I need you to listen carefully because this is important—when a rash doesn't turn white when you press on it, that can be a sign of something that needs urgent attention, so I want you to bring your son to the emergency room tonight rather than waiting until morning. Before you go, can you tell me if he's acting alert and responding normally to you, or does he seem drowsy or confused?\n[INTERPRETER] طبعاً إذا كانها الحضطة بحلية حول إلى اللون الأبريات فهذا معنا وانه يقبلون  لحمر فهذا معنا أنه حالة طريقة يجب أن يتم أخذوا ابنكي أو يجب أن تحذوا  ابنكي إلا غرفة طوارة اللي لا ولا تنتطريحة الصباح ولكن أخبريني بأمر الأخر  عندما تتحدثين مع ابنكي يستجب بشكل طبيعي أم أنه يبدو مشاوش أن أو تبدو عليها على ما تدوى  أمر أشعر بالدوار\n[CALLER] [voice tightening] آه إلهي، أنا خايفة دكتورة، هو مستيقظ بس ما عم يرد عليّ زي ما بدّه، كأنه ثقيل شوية، بس لما بناديه بيرفع راسه ويشوفني. وفيه إسهال كمان من الصباح بس ما فكرت أحكيك، وشو الّي لازم أخذ معي للمستشفى يا دكتورة؟\n[INTERPRETER] حسنا مصحيات .  وين فرق جميع  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  انا مكانكae us are not important to us because I didn't think it was important  but it was since the morning and what do I bring with me to the ER?\n[PROVIDER] Okay, I'm going to give you some information that will help. Take your son to the emergency room right now—don't wait, and don't drive yourself if you're too anxious, call an ambulance if that's faster. Bring his insurance card or ID if you have it handy, and try to remember when his fever started and what medicines you've already given him today, because the ER doctors will want to know that. One more thing—has he complained of a stiff neck or does it hurt when he bends his chin down toward his chest?\n[INTERPRETER] تبعن أول شيء جيداً كدكرتين وضوعاً  سهل ولكن يجب عليك أن تأخده الان إلى غرفة الطور  لا تنطضري وإذا كنت تستطيع أن تقود أسير  إجعل شخصاً أخرى يقود بكي أسير  إلى غرفة الطور و عندما تضصيبين إلا هناك هناك  أرجو مكي أن تخبرهم بجميع الأمور التي تحدث عنها  والجميع العراض التي عني منها بالإضافة إلى ما هي الأدوية التي قمت بإعطائها  و أخبريني أمري الأخرى إذا ما كان يشعر بشد في أوالم في عظلات رقبت هي أم عندما يقوم بثنية  نفسه إلى الأمام و بالنسبة لي ما تقودين معكي إلى غرفة الطوري\n[CALLER] شكراً يا دكتور على وقتك، بتمنى لك يوم موفق وإن شاء الله نلتقي قريباً.",
+    "turn_count": 7,
+    "duration_min": 5,
+    "scenario": {
+      "provider_name": "Dr. Sarah Mitchell",
+      "provider_gender": "female",
+      "provider_role": "Pediatric Nurse Practitioner",
+      "caller_name": "Fatima Al-Rashid",
+      "caller_gender": "female",
+      "caller_dialect": "Levantine Arabic (Syrian)",
+      "caller_situation": "Fatima is calling from home about her 4-year-old son who developed a high fever and rash overnight, and she needs guidance on whether to bring him to the clinic.",
+      "chief_issue": "Determining if the child's symptoms (fever of 39.5°C, scattered pink rash on trunk and limbs, mild diarrhea) warrant an urgent in-person evaluation or can be managed at home with monitoring and medication.",
+      "setting": "Community Health Clinic - after-hours nurse hotline",
+      "urgency": "urgent",
+      "provider_opening": "Hello, this is Dr. Sarah Mitchell, the nurse practitioner on call at Community Health Clinic. I understand you're calling about your son who isn't feeling well. I'm here to help figure out what's going on and what we need to do next."
+    },
+    "field": "medical",
+    "language": "English → Arabic"
+  }
+}
