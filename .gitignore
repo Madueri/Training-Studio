@@ -9,3 +9,4 @@ venv/
 
 # OS noise
 .DS_Store
+.git-broken-old/
