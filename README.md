@@ -21,8 +21,14 @@ cp .env.example .env
 
 ## Run
 
+**macOS / Linux:**
 ```bash
 ./start.sh
+```
+
+**Windows (cmd or PowerShell — no Git Bash/WSL needed):**
+```
+start.bat
 ```
 
 First run creates a virtual environment and installs dependencies automatically.
