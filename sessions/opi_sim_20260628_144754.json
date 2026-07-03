@@ -1,0 +1,46 @@
+{
+  "field": "medical",
+  "language": "English → Arabic",
+  "scenario": "Determine severity of mother's symptoms, assess whether emergency care is needed, and provide immediate first-aid instructions while waiting for transport.",
+  "turns": 0,
+  "scores": {
+    "overall_score": 0,
+    "accuracy": 0,
+    "fusha_compliance": 100,
+    "completeness": 0,
+    "terminology": 0,
+    "fluency": 0,
+    "professional_protocol": 0,
+    "grade": "Needs Work (<60)",
+    "summary": "No interpreted turn pairs were provided for evaluation; only a malformed self-introduction with grammatical errors and no actual interpreting work. Assessment cannot proceed without source-target dialogue samples.",
+    "strengths": [
+      "Interpreter attempted to establish ground rules for pacing and turn-taking, showing awareness of consecutive mode requirements."
+    ],
+    "coaching_tips": [
+      "Rewrite intro: 'I am [Name], the interpreter for this call. Please speak clearly and pause between sentences. I will interpret everything accurately. Do you understand?' Use first-person singular, avoid redundancy, clarify confidentiality/impartiality explicitly."
+    ],
+    "next_drill": "Record a full mock medical triage call (3–5 turn pairs minimum) with realistic symptoms, vital signs, and first-aid instructions. Interpret consecutively into Fusha with all factual content preserved and correct medical terminology.",
+    "protocol_notes": "Intro contains grammar errors ('in your interpreter' → 'am your interpreter'), name inconsistency (al-Wubi vs. al-Washer), and lacks explicit confidentiality/impartiality statement required for medical OPI.",
+    "turn_evaluations": [],
+    "turn_log": [],
+    "full_transcript": "[PROVIDER] Hello, this is Dr. Rajesh Patel calling from Metro Central Hospital Emergency Department. I understand you're calling about a family member experiencing chest pain. I'm here to help assess what's happening and guide you on next steps—can you tell me who we're talking about and what symptoms they're experiencing right now?\n[CALLER] وايش يا دكتور، أنا فاطمة، أم أخوي، يمكن عمرها خمسة وستين سنة، الحين فيها ألم شديد جداً في الصدر وتقول إنها ما تقدر تتنفس زين، وأنا خايفة عليها [voice breaking] وما أبي نضيع الوقت، أبغى تقولي وش أسوي الآن.\n[PROVIDER] Okay, I hear you and we're going to help her right now. Is she conscious and able to talk to you right now, and has she had any chest pain like this before or is this completely new for her?",
+    "turn_count": 0,
+    "duration_min": 5,
+    "scenario": {
+      "provider_name": "Dr. Rajesh Patel",
+      "provider_gender": "male",
+      "provider_role": "Emergency Medicine Physician",
+      "caller_name": "Fatima Al-Rashid",
+      "caller_gender": "female",
+      "caller_dialect": "Gulf/Khaleeji",
+      "caller_situation": "Fatima's elderly mother has been experiencing severe chest pain and shortness of breath for the past two hours and needs immediate guidance on whether to go to the ER.",
+      "chief_issue": "Determine severity of mother's symptoms, assess whether emergency care is needed, and provide immediate first-aid instructions while waiting for transport.",
+      "setting": "Metro Central Hospital Emergency Department, telephone triage line",
+      "urgency": "emergency",
+      "provider_opening": "Hello, this is Dr. Rajesh Patel calling from Metro Central Hospital Emergency Department. I understand you're calling about a family member experiencing chest pain. I'm here to help assess what's happening and guide you on next steps—can you tell me who we're talking about and what symptoms they're experiencing right now?"
+    },
+    "field": "medical",
+    "language": "English → Arabic",
+    "video": false
+  }
+}

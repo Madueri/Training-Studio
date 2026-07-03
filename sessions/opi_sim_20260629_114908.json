@@ -1,0 +1,58 @@
+{
+  "field": "medical",
+  "language": "English → Arabic",
+  "scenario": "Determining whether the child needs an in-person visit or if home care instructions are sufficient; clarifying medication dosage and when to seek emergency care.",
+  "turns": 0,
+  "scores": {
+    "overall_score": 8,
+    "accuracy": 5,
+    "fusha_compliance": 2,
+    "completeness": 0,
+    "terminology": 0,
+    "fluency": 5,
+    "professional_protocol": 0,
+    "grade": "Needs Work (<60)",
+    "summary": "The self-introduction is unintelligible, consisting of phonetic gibberish (\"سباح الفير،\" \"رحكم نترجم لنغرها\") that bears no recognizable relationship to standard Arabic or English. No actual interpreting of medical content occurred; without turn pairs to assess, the session cannot be evaluated for clinical accuracy, terminology, or completeness.",
+    "strengths": [
+      "Unable to identify any demonstrable strength in the provided material; the introduction is non-functional."
+    ],
+    "coaching_tips": [
+      "Begin with a clear, scripted bilingual self-introduction in both English and Fusha: 'Good morning. My name is [Name]. I am a certified interpreter. I will interpret everything accurately and impartially, without adding or omitting information. هذا صباح الخير. أنا [الاسم]، مترجم معتمد. سأقوم بالترجمة بدقة وحياد.' Avoid phonetic composition; use a standard template."
+    ],
+    "next_drill": "Record a 30-second bilingual self-introduction in English and Modern Standard Arabic, focusing on clarity and proper Fusha morphology. Verify with a native speaker before use in live calls.",
+    "protocol_notes": "Professional protocol receives 0: the introduction lacks coherence, omits impartiality/accuracy reminders, violates Fusha grammar, and fails to establish interpreter role or confidentiality framework required for OPI compliance.",
+    "turn_evaluations": [
+      {
+        "turn": "N/A",
+        "speaker": "N/A",
+        "source_text": "No source dialogue provided in call metadata.",
+        "interpreter_said": "N/A",
+        "ideal_rendition": "N/A",
+        "verdict": "incomplete_submission",
+        "omissions": "Entire dialogue absent from submission",
+        "additions": "",
+        "note": "Cannot assess accuracy, completeness, terminology, or fluency without dialogue turns."
+      }
+    ],
+    "turn_log": [],
+    "full_transcript": "[PROVIDER] Hello, this is Dr. Rajesh Patel from Riyadh Medical Plaza Pediatrics. I have your son Hamad's chart here, and I understand he's been under the weather. Let me help you figure out what's going on and what we should do next.\n[CALLER] الحمد لله على السلامة يا دكتور، أبي أعرف وش الحين نسوي لحمود، هذا اليوم الثاني يشتكي من حرارة وما أبغى يتحرك من السرير [pauses] وأبي أتأكد هل لازم نروح العيادة ولا نقدر نعالجه بالبيت؟\n[PROVIDER] Okay, so Hamoud's been running a fever for two days now and he doesn't want to get out of bed. That's helpful to know. Can you tell me what his temperature is reading, and has he been able to drink anything or eat anything since yesterday?",
+    "turn_count": 0,
+    "duration_min": 5,
+    "scenario": {
+      "provider_name": "Dr. Rajesh Patel",
+      "provider_gender": "male",
+      "provider_role": "Pediatrician",
+      "caller_name": "Fatima Al-Rashid",
+      "caller_gender": "female",
+      "caller_dialect": "Gulf/Khaleeji",
+      "caller_situation": "Mother calling about her 4-year-old son who has had a persistent cough and fever for three days.",
+      "chief_issue": "Determining whether the child needs an in-person visit or if home care instructions are sufficient; clarifying medication dosage and when to seek emergency care.",
+      "setting": "Riyadh Medical Plaza Pediatric Clinic, Saudi Arabia (patient calling from home)",
+      "urgency": "routine",
+      "provider_opening": "Hello, this is Dr. Rajesh Patel from Riyadh Medical Plaza Pediatrics. I have your son Hamad's chart here, and I understand he's been under the weather. Let me help you figure out what's going on and what we should do next."
+    },
+    "field": "medical",
+    "language": "English → Arabic",
+    "video": false
+  }
+}

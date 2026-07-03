@@ -1,0 +1,46 @@
+{
+  "field": "medical",
+  "language": "English → Arabic",
+  "scenario": "Determine whether the child needs urgent evaluation or if at-home management is appropriate; clarify medication dosing and warning signs.",
+  "turns": 0,
+  "scores": {
+    "overall_score": 0,
+    "accuracy": 0,
+    "fusha_compliance": 0,
+    "completeness": 0,
+    "terminology": 0,
+    "fluency": 0,
+    "professional_protocol": 0,
+    "grade": "Needs Work (<60)",
+    "summary": "No interpreted dialogue was provided for assessment; only an inadequate self-introduction exists. The opening fails to establish professional protocol: it lacks name clarity, omits interpreter role specification, contains grammatical errors ('a 13th year'), and provides no confidentiality or impartiality statement.",
+    "strengths": [
+      "Attempted to open with a greeting and identify as interpreter"
+    ],
+    "coaching_tips": [
+      "Deliver a complete OPI opener: 'My name is [Full Name]. I am a certified interpreter working in both English and Modern Standard Arabic. I will interpret everything accurately and remain impartial throughout this call. Do you understand?' Avoid colloquial phrasing like 'a 13th year'; state credentials clearly (e.g., 'interpreter with 13 years' experience')."
+    ],
+    "next_drill": "Record and transcribe a full professional opening in both English and Fusha Arabic for a pediatric medical scenario, then compare against AIIC standards.",
+    "protocol_notes": "Opening is non-compliant: grammatically flawed, vague on role, missing confidentiality/impartiality clause, and lacks first-person professional framing required for medical OPI.",
+    "turn_evaluations": [],
+    "turn_log": [],
+    "full_transcript": "[PROVIDER] Good afternoon, this is Dr. Rajesh Patel from the pediatric clinic at Al-Noor Medical Center. I understand you're calling about your son. Can you tell me his name and what's been happening since last night?\n[CALLER] السلام عليكم يا دكتور، أنا أم فهد، ابني عنده حمى من البارحة والحين درجة الحرارة ما تنزل حتى مع البروفين، وأبغى أتأكد إن شاء الله وش اللي أسويه في البيت ولا لازم نروح المستشفى الحين.\n[PROVIDER] Okay Um Fahd, I hear you. So when you took his temperature just now, what was the exact number you got, and has he had any other symptoms like a cough, sore throat, or maybe vomiting or diarrhea?",
+    "turn_count": 0,
+    "duration_min": 5,
+    "scenario": {
+      "provider_name": "Dr. Rajesh Patel",
+      "provider_gender": "male",
+      "provider_role": "Pediatrician",
+      "caller_name": "Layla Al-Rashid",
+      "caller_gender": "female",
+      "caller_dialect": "Gulf/Khaleeji",
+      "caller_situation": "Layla is calling from home to ask about her 4-year-old son's persistent fever and rash that appeared overnight.",
+      "chief_issue": "Determine whether the child needs urgent evaluation or if at-home management is appropriate; clarify medication dosing and warning signs.",
+      "setting": "Pediatric Clinic, Al-Noor Medical Center, Dubai",
+      "urgency": "urgent",
+      "provider_opening": "Good afternoon, this is Dr. Rajesh Patel from the pediatric clinic at Al-Noor Medical Center. I understand you're calling about your son. Can you tell me his name and what's been happening since last night?"
+    },
+    "field": "medical",
+    "language": "English → Arabic",
+    "video": false
+  }
+}

@@ -1,0 +1,64 @@
+{
+  "field": "medical",
+  "language": "English → Arabic",
+  "scenario": "The mother needs to understand the nurse's assessment questions and receive guidance on whether the child needs to be seen urgently or can be managed at home.",
+  "turns": 1,
+  "scores": {
+    "overall_score": 8,
+    "accuracy": 5,
+    "fusha_compliance": 10,
+    "completeness": 2,
+    "terminology": 5,
+    "fluency": 3,
+    "professional_protocol": 0,
+    "grade": "Needs Work (<60)",
+    "summary": "The interpreter's output is largely incoherent and fails to convey any meaningful content from the source message. The opening self-introduction is unintelligible gibberish, and the turn 1 rendition consists of repeated, disconnected Arabic words that bear no relationship to the provider's substantive question about the child's name and symptom onset.",
+    "strengths": [
+      "Attempted use of Modern Standard Arabic rather than dialect"
+    ],
+    "coaching_tips": [
+      "Practice structured note-taking during provider statements; for example, Dr. Patel's introduction and question should be rendered as: 'أنا الدكتورة راشيدة باتل من عيادة صني فالي لطب الأطفال. أفهم أن لديك قلق بشأن صحة ابنك. هل يمكنك إخباري باسمه ومتى بدأت هذه المشكلة؟'"
+    ],
+    "next_drill": "Record yourself interpreting a 3-turn medical intake scenario (provider question → patient response → provider follow-up) focusing on complete, accurate rendition of all factual details (names, timeframes, symptoms) in clear, grammatically correct Fusha before proceeding to further sessions.",
+    "protocol_notes": "No professional self-introduction was delivered; the opening is incomprehensible, failing the mandatory first-person, bilingual (English + Fusha) introduction with impartiality/confidentiality statement, resulting in automatic 0 for professional_protocol.",
+    "turn_evaluations": [
+      {
+        "turn": 1,
+        "speaker": "provider",
+        "source_text": "Hi there, this is Dr. Rashida Patel calling from Sunny Valley Pediatric Clinic. I understand you have concerns about your son's health. Can you tell me his name and when this started?",
+        "interpreter_said": "ترد ترد نعم نعم نعم نعم",
+        "ideal_rendition": "السلام عليكم، أنا الدكتورة رشيدة باتيل من عيادة صني فالي لطب الأطفال. أفهم أن لديك قلق بشأن صحة ابنك. ما اسمه ومتى بدأت المشكلة؟",
+        "verdict": "distortion",
+        "omissions": "entire source message: doctor's name, clinic name, acknowledgment of concerns, request for child's name and symptom onset timeline",
+        "additions": "",
+        "note": "Rendered text is incoherent repetition with no semantic content. Complete failure to convey provider's opening statement and triage questions."
+      }
+    ],
+    "turn_log": [
+      {
+        "speaker": "provider",
+        "source": "Hi there, this is Dr. Rashida Patel calling from Sunny Valley Pediatric Clinic. I understand you have concerns about your son's health. Can you tell me his name and when this started?",
+        "rendered": "ترد  ترد  نعم  نعم  نعم  نعم"
+      }
+    ],
+    "full_transcript": "[PROVIDER] Hi there, this is Dr. Rashida Patel calling from Sunny Valley Pediatric Clinic. I understand you have concerns about your son's health. Can you tell me his name and when this started?\n[CALLER] والله يا دكتورة اسمه محمد، له يومين والحين فيه حرارة ما تنزل ويشتكي من وجعه في الحلق [sighs] وأنا ما أدري إذا لازم نجيه للعيادة ولا أقدر أعالجه في البيت، أبغى تساعديني وش الأفضل؟\n[PROVIDER] Okay, so he's had the fever for two days now—has he had any vomiting or diarrhea, or is it mainly just the sore throat and the fever? And also, what's his temperature been running, like do you know if it's going over 39 or 40 degrees?\n[INTERPRETER] ترد  ترد  نعم  نعم  نعم  نعم",
+    "turn_count": 1,
+    "duration_min": 10,
+    "scenario": {
+      "provider_name": "Dr. Rashida Patel",
+      "provider_gender": "female",
+      "provider_role": "Pediatric Clinic Nurse",
+      "caller_name": "Fatima Al-Mansouri",
+      "caller_gender": "female",
+      "caller_dialect": "Gulf/Khaleeji",
+      "caller_situation": "Fatima is calling on behalf of her 4-year-old son who has had a high fever and rash for two days.",
+      "chief_issue": "The mother needs to understand the nurse's assessment questions and receive guidance on whether the child needs to be seen urgently or can be managed at home.",
+      "setting": "Sunny Valley Pediatric Clinic, outpatient phone triage line",
+      "urgency": "urgent",
+      "provider_opening": "Hi there, this is Dr. Rashida Patel calling from Sunny Valley Pediatric Clinic. I understand you have concerns about your son's health. Can you tell me his name and when this started?"
+    },
+    "field": "medical",
+    "language": "English → Arabic",
+    "video": false
+  }
+}

@@ -1,0 +1,176 @@
+{
+  "field": "medical",
+  "language": "English → Arabic",
+  "scenario": "Determine whether the child needs an urgent in-person evaluation or if symptoms can be managed at home with guidance.",
+  "turns": 9,
+  "scores": {
+    "raw": "```json\n{\n  \"overall_score\": 18,\n  \"accuracy\": 12,\n  \"fusha_compliance\": 8,\n  \"completeness\": 15,\n  \"terminology\": 10,\n  \"fluency\": 5,\n  \"professional_protocol\": 0,\n  \"grade\": \"Needs Work (<60)\",\n  \"summary\": \"Interpreter demonstrated severe comprehension and production failures across all turns, with incoherent Arabic output, extensive code-switching, complete omissions of critical medical information, and no professional opening. Clinical safety is critically compromised.\",\n  \"strengths\": [\n    \"Attempted to engage with medical terminology (ibuprofen, acetaminophen, rash) in turns 3 and 6, showing some domain awareness.\"\n  ],\n  \"coaching_tips\": [\n    \"Restart with fundamentals: transcribe and interpret a simple 2-turn medical phone call (fever assessment) in standard Fusha only—no English mid-stream—before attempting OPI-level work.\"\n  ],\n  \"next_drill\": \"Interpret 5 consecutive English→Fusha medical sentences (symptom queries: cough, rash, temperature, appetite, activity level) with zero code-switching and full accuracy on all medical terms. Record and self-review for fluency.\",\n  \"protocol_notes\": \"Opening self-introduction is unintelligible gibberish with no name, role clarification, confidentiality statement, or impartiality reminder; automatic 0 assignment.\",\n  \"turn_evaluations\": [\n    {\n      \"turn\": 1,\n      \"speaker\": \"provider\",\n      \"source_text\": \"Hello, this is Dr. Rajesh Patel at Sunny Hills Pediatric Clinic. I understand you're calling about your son today. Can you tell me his name and when the fever started?\",\n      \"interpreter_said\": \"مرحباً لدكتور رجيش بتل من الأيادة و اتعاء اتقد بأنك اتصمت بشأن ابنك الذي يعني من بعض العرض لن كنت تتحدث عن الأرلحوم التي يعني منها\",\n      \"ideal_rendition\": \"مرحباً، أنا الدكتور رجيش باتل من عيادة صانيّ هيلز لطب الأطفال. أفهم أنك تتصل بشأن ابنك. ما اسمه، ومتى بدأت الحمّى؟\",\n      \"verdict\": \"distortion\",\n      \"omissions\": \"clinic name garbled; question about child's name entirely omitted; fever onset timing lost\",\n      \"additions\": \"extraneous phrases with no source basis\",\n      \"note\": \"Syntactic collapse; key questions unrecognizable. Medical register absent.\"\n    },\n    {\n      \"turn\": 2,\n      \"speaker\": \"caller\",\n      \"source_text\": \"والله يا دكتور، أبي أتأكد إن ولدي بخير، ما أدري إذا أروح فيه للعيادة ولا أقدر أتركه بالبيت. الحين عنده حرارة من البارحة والحين وما أدري وش أسوي بصراحة.\",\n      \"interpreter_said\": \"لا gonna see if i should take it to the to the clinic or should i stay at home because he's devoted if he were yesterday and I'm confused\",\n      \"ideal_rendition\": \"I want to make sure my son is okay. I don't know if I should take him to the clinic or leave him at home. He's had fever since yesterday and I'm confused about what to do.\",\n      \"verdict\": \"distortion\",\n      \"omissions\": \"parent's stated desire to ensure child is well; temporal clarity (since yesterday); explicit anxiety\",\n      \"additions\": \"word 'devoted' (nonsensical); grammatical errors throughout\",\n      \"note\": \"Massive code-switching; English fractured and incoherent. Parent's concern tone lost entirely.\"\n    },\n    {\n      \"turn\": 3,\n      \"speaker\": \"provider\",\n      \"source_text\": \"Okay, I hear you. So he's had the fever since yesterday—is it staying pretty high, or does it go down when you give him medicine like ibuprofen or acetaminophen? And is he acting normal otherwise, like playing and eating, or is he kind of lying around and not himself?\",\n      \"interpreter_said\": \"أفهم كجريد. أول دونا سلكي دكان حرارة وطن خفضلوا عطريتي أعيب بروفن أوسيد بروفن وهل ين يومارس حياته بشكل طبيعي حيالي العبام يقول أنه ليس على طبيعي\",\n      \"ideal_rendition\": \"حسناً، فهمت. هل الحمّى مرتفعة أم تنخفض مع الأيبوبروفين أو الأسيتامينوفين؟ هل الطفل يلعب ويأكل بشكل طبيعي أم يستلقي ولا يتصرف كطبيعته؟\",\n      \"verdict\": \"distortion\",\n      \"omissions\": \"medicine efficacy question; normal vs abnormal behavior comparison; eating detail\",\n      \"additions\": \"garbled words without meaning (كجريد، دونا سلكي، دكان، خفضلوا)\",\n      \"note\": \"Unintelligible output. Drug names mangled. Clinical assessment axis completely lost.\"\n    },\n    {\n      \"turn\": 4,\n      \"speaker\": \"caller\",\n      \"source_text\": \"والله يا دكتور، الحرارة ما تنزل كثير حتى لما أعطيه الدواء، والحين ما يبي يلعب زي ما يلعب كل يوم، صاير يقعد نايم وما يبي يأكل كثير، وانا خايفة شوي عليه [hesitates] ايش أفضل؟\",\n      \"interpreter_said\": \"لكنه ساره، اعتبره سرانين سرانين محبار ربعه، منذ إنه سرانين سرانين الراقع ويجعله، سرانين سرانين لنحو بسبب.\",\n      \"ideal_rendition\": \"Doctor, the fever doesn't go down much even when I give medicine. He won't play like usual, just sleeps, won't eat much. I'm scared. What should I do?\",\n      \"verdict\": \"distortion\",\n      \"omissions\": \"fever persistence; medication inefficacy; refusal to play; sleeping increase; reduced eating; parent's fear; request for advice\",\n      \"additions\": \"nonsense words (سرانين، محبار، ربعه) repeated\",\n      \"note\": \"Complete semantic collapse. No recognizable content preserved. Gibberish output.\"\n    },\n    {\n      \"turn\": 5,\n      \"speaker\": \"provider\",\n      \"source_text\": \"I understand your concern, and it's good you're paying close attention to him. A couple more things—does he have any other symptoms like a cough, sore throat, or rash anywhere on his body? And what's his temperature right now when you take it?\",\n      \"interpreter_said\": \"أن أعتappهم وهذا الوضع ولكن أوضوعنا سركه حيو عاني من أي عرادن أخرى مثل السعال أو الاسطفرار ومثنان على سبيل مثال أو أن يلديه الطفاحة اللي في أي مناطق الجسمه وما يدرزت حرارة أن أعنبعد أن قستيه\",\n      \"",
+    "turn_evaluations": [
+      {
+        "turn": 1,
+        "speaker": "provider",
+        "source_text": "Hello, this is Dr. Rajesh Patel at Sunny Hills Pediatric Clinic. I understand you're calling about your son today. Can you tell me his name and when the fever started?",
+        "interpreter_said": "مرحباً لدكتور رجيش بتل من الأيادة و اتعاء اتقد بأنك اتصمت بشأن ابنك الذي يعني من بعض العرض  لن كنت تتحدث عن الأرلحوم التي يعني منها",
+        "ideal_rendition": "",
+        "verdict": "acceptable",
+        "omissions": "",
+        "additions": "",
+        "note": "Evaluator did not return a detailed note for this turn."
+      },
+      {
+        "turn": 2,
+        "speaker": "caller",
+        "source_text": "والله يا دكتور، أبي أتأكد إن ولدي بخير، ما أدري إذا أروح فيه للعيادة ولا أقدر أتركه بالبيت. الحين عنده حرارة من البارحة والحين وما أدري وش أسوي بصراحة.",
+        "interpreter_said": "لا gonna see  if i should take it to the  to the clinic or should i stay at home because  he's devoted if he were yesterday and I'm confused",
+        "ideal_rendition": "",
+        "verdict": "acceptable",
+        "omissions": "",
+        "additions": "",
+        "note": "Evaluator did not return a detailed note for this turn."
+      },
+      {
+        "turn": 3,
+        "speaker": "provider",
+        "source_text": "Okay, I hear you. So he's had the fever since yesterday—is it staying pretty high, or does it go down when you give him medicine like ibuprofen or acetaminophen? And is he acting normal otherwise, like playing and eating, or is he kind of lying around and not himself?",
+        "interpreter_said": "أفهم كجريد. أول دونا سلكي دكان حرارة وطن خفضلوا عطريتي  أعيب بروفن أوسيد بروفن وهل ين يومارس حياته بشكل طبيعي  حيالي العبام يقول أنه ليس على طبيعي",
+        "ideal_rendition": "",
+        "verdict": "acceptable",
+        "omissions": "",
+        "additions": "",
+        "note": "Evaluator did not return a detailed note for this turn."
+      },
+      {
+        "turn": 4,
+        "speaker": "caller",
+        "source_text": "والله يا دكتور، الحرارة ما تنزل كثير حتى لما أعطيه الدواء، والحين ما يبي يلعب زي ما يلعب كل يوم، صاير يقعد نايم وما يبي يأكل كثير، وانا خايفة شوي عليه [hesitates] ايش أفضل؟",
+        "interpreter_said": "لكنه ساره، اعتبره سرانين سرانين محبار ربعه، منذ إنه سرانين سرانين الراقع  ويجعله، سرانين سرانين لنحو بسبب.",
+        "ideal_rendition": "",
+        "verdict": "acceptable",
+        "omissions": "",
+        "additions": "",
+        "note": "Evaluator did not return a detailed note for this turn."
+      },
+      {
+        "turn": 5,
+        "speaker": "provider",
+        "source_text": "I understand your concern, and it's good you're paying close attention to him. A couple more things—does he have any other symptoms like a cough, sore throat, or rash anywhere on his body? And what's his temperature right now when you take it?",
+        "interpreter_said": "أن أعتappهم وهذا الوضع ولكن أوضوعنا سركه حيو عاني من أي عرادن أخرى مثل السعال أو  الاسطفرار ومثنان على سبيل مثال أو أن يلديه الطفاحة اللي في أي مناطق الجسمه  وما يدرزت حرارة أن أعنبعد أن قستيه",
+        "ideal_rendition": "",
+        "verdict": "acceptable",
+        "omissions": "",
+        "additions": "",
+        "note": "Evaluator did not return a detailed note for this turn."
+      },
+      {
+        "turn": 6,
+        "speaker": "caller",
+        "source_text": "والله يا دكتور، ما فيه سعال ولا حلق أحمر، بس شفت عنده طفح صغير في الجسم الحين [hesitates]، والحرارة الآن تقريباً تسعة وثلاثين ونص، ايش أسوي يا دكتور، أروح به للعيادة ولا أنتظر شوي؟",
+        "interpreter_said": "probably more than you say because you put your hands in your hand.  So the temperature is about 39 right now  and he has no soft throat, no cuffing  but he has a rash on his body  and he is much better to go to the clinic right now  or should I wait.",
+        "ideal_rendition": "",
+        "verdict": "acceptable",
+        "omissions": "",
+        "additions": "",
+        "note": "Evaluator did not return a detailed note for this turn."
+      },
+      {
+        "turn": 7,
+        "speaker": "provider",
+        "source_text": "I'm glad you told me about that rash—that's important information. Can you describe it a little more for me? Is it raised and bumpy, or flat and red? And if you press on it with your finger, does the redness go away or does it stay there?",
+        "interpreter_said": "أنا سعيد لانك أخضرتين عن ذلك أن تفح أجلدي  ودونا سلكي فيما يخص هذا أطفح الهوة بارز  ولونا أحمر أنه بلونا أحمر ومصط حالة الجلد  وإذا ضغط على ذلك أن تفح الجديه الهيزول  لأن الأحمر أم أنه يقاك معوا",
+        "ideal_rendition": "",
+        "verdict": "acceptable",
+        "omissions": "",
+        "additions": "",
+        "note": "Evaluator did not return a detailed note for this turn."
+      },
+      {
+        "turn": 8,
+        "speaker": "caller",
+        "source_text": "والله يا دكتور، الطفح جذي أحمر وفيه نقاط صغيرة، ما أدري إذا مرتفع أو مسطح [hesitates]، بس لما ضغطت عليه بإصبعي ما رجع اللون الأحمر، الحين أنا خايفة شوي، وش أبي أسوي يا دكتور، أروح فيه الآن ولا أنتظر؟",
+        "interpreter_said": "مجتبت عرفة عندما يدعبها إلى ما تبعبها  وعجبتها انا يجببها يدعبها  مجدبها يدعبها  وما ستقوم لن أخبرنا  وما فرعبها وخبرنا  اذاك أن ترى الأخيراً  إنما تقوم أخيراً  فرعبها لأخيراً  وكي كثيراً",
+        "ideal_rendition": "",
+        "verdict": "acceptable",
+        "omissions": "",
+        "additions": "",
+        "note": "Evaluator did not return a detailed note for this turn."
+      },
+      {
+        "turn": 9,
+        "speaker": "provider",
+        "source_text": "I need you to bring him in right away—a rash that doesn't blanch when you press on it can be serious, and combined with the high fever and how tired he's been, we should see him today. Can you get him here within the next hour or so? I'm going to let our front desk know you're coming.",
+        "interpreter_said": "في ما يخص هذه العراط في أنها تبدو أعراض خطيرة قليلاً  هو الدومеньكي أن تقديه إلى الى يادة بشكل مباشر  لأنها التفحل جلدي الذي لا يزول لحمرار منه مباشرة  ولا يصبح لون أبيض في أنه ذلك مقرون من بأن لحرارة المرتكة  يد العناء الوضع خطيرة و بحاجة الاناية مباشراء  و الدوميكي أن تقديه إلى الى يادة هل يمكنك",
+        "ideal_rendition": "",
+        "verdict": "acceptable",
+        "omissions": "",
+        "additions": "",
+        "note": "Evaluator did not return a detailed note for this turn."
+      }
+    ],
+    "turn_log": [
+      {
+        "speaker": "provider",
+        "source": "Hello, this is Dr. Rajesh Patel at Sunny Hills Pediatric Clinic. I understand you're calling about your son today. Can you tell me his name and when the fever started?",
+        "rendered": "مرحباً لدكتور رجيش بتل من الأيادة و اتعاء اتقد بأنك اتصمت بشأن ابنك الذي يعني من بعض العرض  لن كنت تتحدث عن الأرلحوم التي يعني منها"
+      },
+      {
+        "speaker": "caller",
+        "source": "والله يا دكتور، أبي أتأكد إن ولدي بخير، ما أدري إذا أروح فيه للعيادة ولا أقدر أتركه بالبيت. الحين عنده حرارة من البارحة والحين وما أدري وش أسوي بصراحة.",
+        "rendered": "لا gonna see  if i should take it to the  to the clinic or should i stay at home because  he's devoted if he were yesterday and I'm confused"
+      },
+      {
+        "speaker": "provider",
+        "source": "Okay, I hear you. So he's had the fever since yesterday—is it staying pretty high, or does it go down when you give him medicine like ibuprofen or acetaminophen? And is he acting normal otherwise, like playing and eating, or is he kind of lying around and not himself?",
+        "rendered": "أفهم كجريد. أول دونا سلكي دكان حرارة وطن خفضلوا عطريتي  أعيب بروفن أوسيد بروفن وهل ين يومارس حياته بشكل طبيعي  حيالي العبام يقول أنه ليس على طبيعي"
+      },
+      {
+        "speaker": "caller",
+        "source": "والله يا دكتور، الحرارة ما تنزل كثير حتى لما أعطيه الدواء، والحين ما يبي يلعب زي ما يلعب كل يوم، صاير يقعد نايم وما يبي يأكل كثير، وانا خايفة شوي عليه [hesitates] ايش أفضل؟",
+        "rendered": "لكنه ساره، اعتبره سرانين سرانين محبار ربعه، منذ إنه سرانين سرانين الراقع  ويجعله، سرانين سرانين لنحو بسبب."
+      },
+      {
+        "speaker": "provider",
+        "source": "I understand your concern, and it's good you're paying close attention to him. A couple more things—does he have any other symptoms like a cough, sore throat, or rash anywhere on his body? And what's his temperature right now when you take it?",
+        "rendered": "أن أعتappهم وهذا الوضع ولكن أوضوعنا سركه حيو عاني من أي عرادن أخرى مثل السعال أو  الاسطفرار ومثنان على سبيل مثال أو أن يلديه الطفاحة اللي في أي مناطق الجسمه  وما يدرزت حرارة أن أعنبعد أن قستيه"
+      },
+      {
+        "speaker": "caller",
+        "source": "والله يا دكتور، ما فيه سعال ولا حلق أحمر، بس شفت عنده طفح صغير في الجسم الحين [hesitates]، والحرارة الآن تقريباً تسعة وثلاثين ونص، ايش أسوي يا دكتور، أروح به للعيادة ولا أنتظر شوي؟",
+        "rendered": "probably more than you say because you put your hands in your hand.  So the temperature is about 39 right now  and he has no soft throat, no cuffing  but he has a rash on his body  and he is much better to go to the clinic right now  or should I wait."
+      },
+      {
+        "speaker": "provider",
+        "source": "I'm glad you told me about that rash—that's important information. Can you describe it a little more for me? Is it raised and bumpy, or flat and red? And if you press on it with your finger, does the redness go away or does it stay there?",
+        "rendered": "أنا سعيد لانك أخضرتين عن ذلك أن تفح أجلدي  ودونا سلكي فيما يخص هذا أطفح الهوة بارز  ولونا أحمر أنه بلونا أحمر ومصط حالة الجلد  وإذا ضغط على ذلك أن تفح الجديه الهيزول  لأن الأحمر أم أنه يقاك معوا"
+      },
+      {
+        "speaker": "caller",
+        "source": "والله يا دكتور، الطفح جذي أحمر وفيه نقاط صغيرة، ما أدري إذا مرتفع أو مسطح [hesitates]، بس لما ضغطت عليه بإصبعي ما رجع اللون الأحمر، الحين أنا خايفة شوي، وش أبي أسوي يا دكتور، أروح فيه الآن ولا أنتظر؟",
+        "rendered": "مجتبت عرفة عندما يدعبها إلى ما تبعبها  وعجبتها انا يجببها يدعبها  مجدبها يدعبها  وما ستقوم لن أخبرنا  وما فرعبها وخبرنا  اذاك أن ترى الأخيراً  إنما تقوم أخيراً  فرعبها لأخيراً  وكي كثيراً"
+      },
+      {
+        "speaker": "provider",
+        "source": "I need you to bring him in right away—a rash that doesn't blanch when you press on it can be serious, and combined with the high fever and how tired he's been, we should see him today. Can you get him here within the next hour or so? I'm going to let our front desk know you're coming.",
+        "rendered": "في ما يخص هذه العراط في أنها تبدو أعراض خطيرة قليلاً  هو الدومеньكي أن تقديه إلى الى يادة بشكل مباشر  لأنها التفحل جلدي الذي لا يزول لحمرار منه مباشرة  ولا يصبح لون أبيض في أنه ذلك مقرون من بأن لحرارة المرتكة  يد العناء الوضع خطيرة و بحاجة الاناية مباشراء  و الدوميكي أن تقديه إلى الى يادة هل يمكنك"
+      }
+    ],
+    "full_transcript": "[PROVIDER] Hello, this is Dr. Rajesh Patel at Sunny Hills Pediatric Clinic. I understand you're calling about your son today. Can you tell me his name and when the fever started?\n[CALLER] والله يا دكتور، أبي أتأكد إن ولدي بخير، ما أدري إذا أروح فيه للعيادة ولا أقدر أتركه بالبيت. الحين عنده حرارة من البارحة والحين وما أدري وش أسوي بصراحة.\n[PROVIDER] Okay, I hear you. So he's had the fever since yesterday—is it staying pretty high, or does it go down when you give him medicine like ibuprofen or acetaminophen? And is he acting normal otherwise, like playing and eating, or is he kind of lying around and not himself?\n[INTERPRETER] مرحباً لدكتور رجيش بتل من الأيادة و اتعاء اتقد بأنك اتصمت بشأن ابنك الذي يعني من بعض العرض  لن كنت تتحدث عن الأرلحوم التي يعني منها\n[INTERPRETER] لا gonna see  if i should take it to the  to the clinic or should i stay at home because  he's devoted if he were yesterday and I'm confused\n[INTERPRETER] أفهم كجريد. أول دونا سلكي دكان حرارة وطن خفضلوا عطريتي  أعيب بروفن أوسيد بروفن وهل ين يومارس حياته بشكل طبيعي  حيالي العبام يقول أنه ليس على طبيعي\n[CALLER] والله يا دكتور، الحرارة ما تنزل كثير حتى لما أعطيه الدواء، والحين ما يبي يلعب زي ما يلعب كل يوم، صاير يقعد نايم وما يبي يأكل كثير، وانا خايفة شوي عليه [hesitates] ايش أفضل؟\n[INTERPRETER] لكنه ساره، اعتبره سرانين سرانين محبار ربعه، منذ إنه سرانين سرانين الراقع  ويجعله، سرانين سرانين لنحو بسبب.\n[PROVIDER] I understand your concern, and it's good you're paying close attention to him. A couple more things—does he have any other symptoms like a cough, sore throat, or rash anywhere on his body? And what's his temperature right now when you take it?\n[INTERPRETER] أن أعتappهم وهذا الوضع ولكن أوضوعنا سركه حيو عاني من أي عرادن أخرى مثل السعال أو  الاسطفرار ومثنان على سبيل مثال أو أن يلديه الطفاحة اللي في أي مناطق الجسمه  وما يدرزت حرارة أن أعنبعد أن قستيه\n[CALLER] والله يا دكتور، ما فيه سعال ولا حلق أحمر، بس شفت عنده طفح صغير في الجسم الحين [hesitates]، والحرارة الآن تقريباً تسعة وثلاثين ونص، ايش أسوي يا دكتور، أروح به للعيادة ولا أنتظر شوي؟\n[INTERPRETER] probably more than you say because you put your hands in your hand.  So the temperature is about 39 right now  and he has no soft throat, no cuffing  but he has a rash on his body  and he is much better to go to the clinic right now  or should I wait.\n[PROVIDER] I'm glad you told me about that rash—that's important information. Can you describe it a little more for me? Is it raised and bumpy, or flat and red? And if you press on it with your finger, does the redness go away or does it stay there?\n[INTERPRETER] أنا سعيد لانك أخضرتين عن ذلك أن تفح أجلدي  ودونا سلكي فيما يخص هذا أطفح الهوة بارز  ولونا أحمر أنه بلونا أحمر ومصط حالة الجلد  وإذا ضغط على ذلك أن تفح الجديه الهيزول  لأن الأحمر أم أنه يقاك معوا\n[CALLER] والله يا دكتور، الطفح جذي أحمر وفيه نقاط صغيرة، ما أدري إذا مرتفع أو مسطح [hesitates]، بس لما ضغطت عليه بإصبعي ما رجع اللون الأحمر، الحين أنا خايفة شوي، وش أبي أسوي يا دكتور، أروح فيه الآن ولا أنتظر؟\n[INTERPRETER] مجتبت عرفة عندما يدعبها إلى ما تبعبها  وعجبتها انا يجببها يدعبها  مجدبها يدعبها  وما ستقوم لن أخبرنا  وما فرعبها وخبرنا  اذاك أن ترى الأخيراً  إنما تقوم أخيراً  فرعبها لأخيراً  وكي كثيراً\n[PROVIDER] I need you to bring him in right away—a rash that doesn't blanch when you press on it can be serious, and combined with the high fever and how tired he's been, we should see him today. Can you get him here within the next hour or so? I'm going to let our front desk know you're coming.\n[INTERPRETER] في ما يخص هذه العراط في أنها تبدو أعراض خطيرة قليلاً  هو الدومеньكي أن تقديه إلى الى يادة بشكل مباشر  لأنها التفحل جلدي الذي لا يزول لحمرار منه مباشرة  ولا يصبح لون أبيض في أنه ذلك مقرون من بأن لحرارة المرتكة  يد العناء الوضع خطيرة و بحاجة الاناية مباشراء  و الدوميكي أن تقديه إلى الى يادة هل يمكنك\n[CALLER] تمام يا دكتور، شكراً لك على الوقت وبنطبق اللي قلت لنا الحين، وإن شاء الله نتواصل معك بعد الكشفة.",
+    "turn_count": 9,
+    "duration_min": 5,
+    "scenario": {
+      "provider_name": "Dr. Rajesh Patel",
+      "provider_gender": "male",
+      "provider_role": "Pediatrician",
+      "caller_name": "Fatima Al-Rashid",
+      "caller_gender": "female",
+      "caller_dialect": "Gulf/Khaleeji",
+      "caller_situation": "Mother calling about her 4-year-old son's persistent fever and rash that started three days ago.",
+      "chief_issue": "Determine whether the child needs an urgent in-person evaluation or if symptoms can be managed at home with guidance.",
+      "setting": "Sunny Hills Pediatric Clinic, afternoon phone line",
+      "urgency": "urgent",
+      "provider_opening": "Hello, this is Dr. Rajesh Patel at Sunny Hills Pediatric Clinic. I understand you're calling about your son today. Can you tell me his name and when the fever started?"
+    },
+    "field": "medical",
+    "language": "English → Arabic",
+    "video": false
+  }
+}
