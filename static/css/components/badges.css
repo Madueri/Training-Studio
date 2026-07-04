@@ -1,0 +1,364 @@
+/* ============================================================
+   badges.css — Badge, tag, progress bar, and gamification
+   components. Uses tokens.css custom properties.
+   Deep Focus design system: dark mode default.
+   ============================================================ */
+
+/* ── Base Badge ───────────────────────────────────────────── */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-1);
+  padding: var(--space-1) var(--space-2);
+  border-radius: var(--radius-full);
+  font-family: var(--font-sans);
+  font-size: var(--text-caption);
+  font-weight: var(--weight-semibold);
+  line-height: var(--leading-tight);
+  letter-spacing: 0.02em;
+  background: var(--bg-overlay);
+  border: 1px solid var(--border);
+  color: var(--text-secondary);
+  transition: all var(--duration-fast) var(--ease-smooth);
+  white-space: nowrap;
+  user-select: none;
+}
+
+.badge:hover {
+  background: var(--bg-overlay-hover);
+  border-color: var(--border-strong);
+}
+
+/* ── Semantic Badge Variants ──────────────────────────────── */
+.badge-primary {
+  background: var(--primary-subtle);
+  border-color: rgba(var(--primary-rgb), 0.35);
+  color: var(--primary);
+  box-shadow: 0 0 12px rgba(var(--primary-rgb), 0.08);
+}
+
+.badge-primary:hover {
+  background: rgba(var(--primary-rgb), 0.15);
+  border-color: rgba(var(--primary-rgb), 0.5);
+}
+
+.badge-secondary {
+  background: var(--bg-elevated);
+  border-color: var(--border);
+  color: var(--text-secondary);
+}
+
+.badge-secondary:hover {
+  background: var(--bg-overlay-hover);
+  border-color: var(--border-strong);
+}
+
+.badge-success {
+  background: var(--success-subtle);
+  border-color: rgba(var(--success-rgb), 0.35);
+  color: var(--success);
+  box-shadow: 0 0 12px rgba(var(--success-rgb), 0.08);
+}
+
+.badge-success:hover {
+  background: rgba(var(--success-rgb), 0.15);
+  border-color: rgba(var(--success-rgb), 0.5);
+}
+
+.badge-warning {
+  background: var(--warning-subtle);
+  border-color: rgba(var(--warning-rgb), 0.35);
+  color: var(--warning);
+  box-shadow: 0 0 12px rgba(var(--warning-rgb), 0.08);
+}
+
+.badge-warning:hover {
+  background: rgba(var(--warning-rgb), 0.15);
+  border-color: rgba(var(--warning-rgb), 0.5);
+}
+
+.badge-danger {
+  background: var(--error-subtle);
+  border-color: rgba(var(--error-rgb), 0.35);
+  color: var(--error);
+  box-shadow: 0 0 12px rgba(var(--error-rgb), 0.08);
+}
+
+.badge-danger:hover {
+  background: rgba(var(--error-rgb), 0.15);
+  border-color: rgba(var(--error-rgb), 0.5);
+}
+
+.badge-gold {
+  background: var(--accent-subtle);
+  border-color: rgba(var(--accent-rgb), 0.35);
+  color: var(--accent);
+  box-shadow: 0 0 12px rgba(var(--accent-rgb), 0.08);
+}
+
+.badge-gold:hover {
+  background: rgba(var(--accent-rgb), 0.15);
+  border-color: rgba(var(--accent-rgb), 0.5);
+}
+
+.badge-purple {
+  background: rgba(168, 85, 247, 0.12);
+  border-color: rgba(168, 85, 247, 0.35);
+  color: var(--mode-si);
+  box-shadow: 0 0 12px rgba(168, 85, 247, 0.08);
+}
+
+.badge-purple:hover {
+  background: rgba(168, 85, 247, 0.18);
+  border-color: rgba(168, 85, 247, 0.5);
+}
+
+/* ── Progress Bars ──────────────────────────────────────── */
+.progress-bar {
+  width: 100%;
+  height: var(--space-2);
+  background: var(--bg-overlay);
+  border-radius: var(--radius-full);
+  overflow: hidden;
+  position: relative;
+}
+
+.progress-bar-fill {
+  height: 100%;
+  background: var(--primary);
+  border-radius: var(--radius-full);
+  transition: width var(--duration-slow) var(--ease-smooth);
+  box-shadow: 0 0 10px rgba(var(--primary-rgb), 0.2);
+}
+
+.skill-bar {
+  width: 100%;
+  height: var(--space-2);
+  background: var(--bg-overlay);
+  border-radius: var(--radius-full);
+  overflow: hidden;
+  position: relative;
+}
+
+.skill-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--primary), var(--accent));
+  border-radius: var(--radius-full);
+  transition: width var(--duration-slow) var(--ease-smooth);
+  box-shadow: 0 0 10px rgba(var(--primary-rgb), 0.15);
+}
+
+.xp-bar {
+  width: 100%;
+  height: var(--space-2);
+  background: var(--bg-overlay);
+  border-radius: var(--radius-full);
+  overflow: hidden;
+  position: relative;
+}
+
+.xp-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--primary), var(--accent));
+  border-radius: var(--radius-full);
+  transition: width var(--duration-slow) var(--ease-smooth);
+  box-shadow: 0 0 10px rgba(var(--accent-rgb), 0.2);
+}
+
+/* ── Gamification Badges ────────────────────────────────── */
+.level-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, var(--primary), var(--accent));
+  color: #fff;
+  padding: var(--space-1) var(--space-2);
+  border-radius: var(--radius-lg);
+  font-family: var(--font-sans);
+  font-size: var(--text-caption);
+  font-weight: var(--weight-bold);
+  line-height: var(--leading-tight);
+  letter-spacing: 0.03em;
+  box-shadow: 0 4px 12px rgba(var(--primary-rgb), 0.25), inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+.streak-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-1);
+  background: linear-gradient(135deg, var(--warning), var(--accent));
+  color: #000;
+  padding: var(--space-1) var(--space-2);
+  border-radius: var(--radius-lg);
+  font-family: var(--font-sans);
+  font-size: var(--text-caption);
+  font-weight: var(--weight-bold);
+  line-height: var(--leading-tight);
+  box-shadow: 0 4px 12px rgba(var(--warning-rgb), 0.25), inset 0 0 0 1px rgba(255, 255, 255, 0.15);
+}
+
+/* ── Legacy / Index.html Patterns ───────────────────────── */
+.band-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-2) var(--space-4);
+  border-radius: var(--radius-md);
+  font-family: var(--font-mono);
+  font-size: var(--text-heading-2);
+  font-weight: var(--weight-bold);
+  line-height: var(--leading-tight);
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  color: var(--text-primary);
+}
+
+.mod-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  padding: 2px var(--space-2);
+  border-radius: var(--radius-full);
+  font-family: var(--font-sans);
+  font-size: var(--text-overline);
+  font-weight: var(--weight-bold);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.mod-tag-theory {
+  background: rgba(var(--primary-rgb), 0.12);
+  border: 1px solid rgba(var(--primary-rgb), 0.2);
+  color: var(--primary);
+}
+
+.mod-tag-lab {
+  background: rgba(168, 85, 247, 0.12);
+  border: 1px solid rgba(168, 85, 247, 0.2);
+  color: var(--mode-si);
+}
+
+.mod-tag-sim {
+  background: rgba(var(--accent-rgb), 0.12);
+  border: 1px solid rgba(var(--accent-rgb), 0.2);
+  color: var(--accent);
+}
+
+.mod-tag-assess {
+  background: rgba(var(--success-rgb), 0.12);
+  border: 1px solid rgba(var(--success-rgb), 0.2);
+  color: var(--success);
+}
+
+.mod-status-badge {
+  font-family: var(--font-sans);
+  font-size: var(--text-overline);
+  font-weight: var(--weight-bold);
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+}
+
+.mod-status-badge.done {
+  color: var(--success);
+}
+
+.mod-status-badge.active {
+  color: var(--accent);
+}
+
+/* ── Light Mode Overrides ───────────────────────────────── */
+[data-theme="light"] .badge {
+  background: var(--bg-elevated);
+  border-color: var(--border);
+  color: var(--text-secondary);
+}
+
+[data-theme="light"] .badge-primary {
+  background: var(--primary-subtle);
+  border-color: rgba(var(--primary-rgb), 0.25);
+  color: var(--primary);
+}
+
+[data-theme="light"] .badge-success {
+  background: var(--success-subtle);
+  border-color: rgba(var(--success-rgb), 0.25);
+  color: var(--success);
+}
+
+[data-theme="light"] .badge-warning {
+  background: var(--warning-subtle);
+  border-color: rgba(var(--warning-rgb), 0.25);
+  color: var(--warning);
+}
+
+[data-theme="light"] .badge-danger {
+  background: var(--error-subtle);
+  border-color: rgba(var(--error-rgb), 0.25);
+  color: var(--error);
+}
+
+[data-theme="light"] .badge-gold {
+  background: var(--accent-subtle);
+  border-color: rgba(var(--accent-rgb), 0.25);
+  color: var(--accent);
+}
+
+[data-theme="light"] .badge-purple {
+  background: rgba(168, 85, 247, 0.1);
+  border-color: rgba(168, 85, 247, 0.25);
+  color: var(--mode-si);
+}
+
+[data-theme="light"] .level-badge {
+  box-shadow: 0 4px 12px rgba(var(--primary-rgb), 0.15), inset 0 0 0 1px rgba(255, 255, 255, 0.5);
+}
+
+[data-theme="light"] .streak-badge {
+  box-shadow: 0 4px 12px rgba(var(--warning-rgb), 0.15), inset 0 0 0 1px rgba(255, 255, 255, 0.5);
+}
+
+[data-theme="light"] .band-badge {
+  background: var(--bg-elevated);
+  border-color: var(--border);
+  color: var(--text-primary);
+}
+
+[data-theme="light"] .progress-bar,
+[data-theme="light"] .skill-bar,
+[data-theme="light"] .xp-bar {
+  background: var(--bg-overlay);
+}
+
+[data-theme="light"] .mod-tag-theory {
+  background: rgba(var(--primary-rgb), 0.1);
+  border-color: rgba(var(--primary-rgb), 0.25);
+}
+
+[data-theme="light"] .mod-tag-lab {
+  background: rgba(168, 85, 247, 0.1);
+  border-color: rgba(168, 85, 247, 0.25);
+}
+
+[data-theme="light"] .mod-tag-sim {
+  background: rgba(var(--accent-rgb), 0.1);
+  border-color: rgba(var(--accent-rgb), 0.25);
+}
+
+[data-theme="light"] .mod-tag-assess {
+  background: rgba(var(--success-rgb), 0.1);
+  border-color: rgba(var(--success-rgb), 0.25);
+}
+
+/* ── Reduced Motion ─────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  .progress-bar-fill,
+  .skill-bar-fill,
+  .xp-bar-fill {
+    transition: none;
+  }
+}

@@ -1,0 +1,11 @@
+/* ═══════════════════════════════════════════════════════════════════
+   MAD Training Studio — Component Library Master Import
+   All component modules for the Deep Focus design system
+   ═══════════════════════════════════════════════════════════════════ */
+
+@import url("components/animations.css");
+@import url("components/badges.css");
+@import url("components/buttons.css");
+@import url("components/cards.css");
+@import url("components/forms.css");
+@import url("components/modals.css");

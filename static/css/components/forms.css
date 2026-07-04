@@ -1,0 +1,522 @@
+/* ============================================================
+   MAD Training Studio — Form Components
+   Deep Focus Design System v1.0
+   ============================================================ */
+
+/* ------------------------------------------------------------
+   Form Group
+   ------------------------------------------------------------ */
+.form-group {
+  margin-bottom: var(--space-4);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.form-group:last-child {
+  margin-bottom: 0;
+}
+
+/* Inline layout for multiple fields in a row */
+.form-inline {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: var(--space-3);
+}
+
+.form-inline .form-group {
+  flex: 1;
+  min-width: 160px;
+  margin-bottom: 0;
+}
+
+/* ------------------------------------------------------------
+   Form Label
+   ------------------------------------------------------------ */
+.form-label {
+  display: block;
+  font-family: var(--font-sans);
+  font-size: var(--text-body-small);
+  font-weight: var(--weight-semibold);
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  cursor: pointer;
+}
+
+.form-label .required {
+  color: var(--error);
+  margin-left: 2px;
+}
+
+[dir="rtl"] .form-label .required {
+  margin-left: 0;
+  margin-right: 2px;
+}
+
+/* ------------------------------------------------------------
+   Form Input, Textarea, Select
+   ------------------------------------------------------------ */
+.form-input,
+.form-textarea,
+.form-select {
+  width: 100%;
+  font-family: var(--font-sans);
+  font-size: var(--text-body-small);
+  font-weight: var(--weight-regular);
+  color: var(--text-primary);
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: var(--space-2) var(--space-3);
+  outline: none;
+  line-height: var(--leading-normal);
+  transition: border-color var(--duration-fast) var(--ease-smooth),
+              box-shadow var(--duration-fast) var(--ease-smooth),
+              background var(--duration-fast) var(--ease-smooth);
+}
+
+.form-input::placeholder,
+.form-textarea::placeholder {
+  color: var(--text-muted);
+  opacity: 1;
+}
+
+.form-input:hover,
+.form-textarea:hover,
+.form-select:hover {
+  border-color: var(--border-strong);
+}
+
+.form-input:focus,
+.form-textarea:focus,
+.form-select:focus {
+  border-color: var(--accent);
+  background: var(--bg-elevated);
+  box-shadow: 0 0 0 3px rgba(var(--accent-rgb), 0.15);
+}
+
+/* Error state — modifier on input or via parent .has-error */
+.form-input.form-error,
+.form-textarea.form-error,
+.form-select.form-error,
+.form-group.has-error .form-input,
+.form-group.has-error .form-textarea,
+.form-group.has-error .form-select {
+  border-color: var(--error);
+  background: var(--error-subtle);
+}
+
+.form-input.form-error:focus,
+.form-textarea.form-error:focus,
+.form-select.form-error:focus,
+.form-group.has-error .form-input:focus,
+.form-group.has-error .form-textarea:focus,
+.form-group.has-error .form-select:focus {
+  box-shadow: 0 0 0 3px rgba(var(--error-rgb), 0.2);
+}
+
+/* Disabled state */
+.form-input:disabled,
+.form-textarea:disabled,
+.form-select:disabled,
+.form-input[aria-disabled="true"],
+.form-textarea[aria-disabled="true"],
+.form-select[aria-disabled="true"] {
+  opacity: 0.55;
+  cursor: not-allowed;
+  background: var(--bg-base);
+  border-color: var(--border-subtle);
+  color: var(--text-tertiary);
+}
+
+/* ------------------------------------------------------------
+   Form Textarea
+   ------------------------------------------------------------ */
+.form-textarea {
+  min-height: 90px;
+  resize: vertical;
+  line-height: var(--leading-relaxed);
+}
+
+/* ------------------------------------------------------------
+   Form Select
+   ------------------------------------------------------------ */
+.form-select {
+  appearance: none;
+  -webkit-appearance: none;
+  /* Hardcoded stroke inside the data URI is unavoidable; overridden
+     per-theme below so the chevron stays readable in both modes. */
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2394A3B8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  padding-right: 36px;
+  cursor: pointer;
+  min-width: 160px;
+}
+
+.form-select option {
+  background: var(--bg-elevated);
+  color: var(--text-primary);
+}
+
+[dir="rtl"] .form-select {
+  background-position: left 10px center;
+  padding-right: var(--space-3);
+  padding-left: 36px;
+}
+
+/* Light-mode chevron override */
+[data-theme="light"] .form-select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23475569' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+}
+
+/* ------------------------------------------------------------
+   Form Hint & Error Message
+   ------------------------------------------------------------ */
+.form-hint {
+  display: block;
+  font-family: var(--font-sans);
+  font-size: var(--text-caption);
+  color: var(--text-tertiary);
+  margin-top: var(--space-1);
+  line-height: var(--leading-relaxed);
+}
+
+.form-error {
+  display: block;
+  font-family: var(--font-sans);
+  font-size: var(--text-caption);
+  font-weight: var(--weight-medium);
+  color: var(--error);
+  margin-top: var(--space-1);
+  line-height: var(--leading-relaxed);
+}
+
+/* When the parent group has an error, tint the hint as well */
+.form-group.has-error .form-hint {
+  color: var(--error);
+}
+
+.form-group.has-error .form-label {
+  color: var(--error);
+}
+
+/* ------------------------------------------------------------
+   Form Check (Checkbox)
+   ------------------------------------------------------------ */
+.form-check {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-2);
+  cursor: pointer;
+  position: relative;
+}
+
+.form-check-input {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 18px;
+  height: 18px;
+  min-width: 18px;
+  min-height: 18px;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  margin-top: 2px;
+  cursor: pointer;
+  transition: all var(--duration-fast) var(--ease-smooth);
+  display: grid;
+  place-content: center;
+}
+
+.form-check-input::before {
+  content: "";
+  width: 10px;
+  height: 10px;
+  border-radius: 2px;
+  background: var(--primary);
+  transform: scale(0);
+  transition: transform var(--duration-fast) var(--ease-bounce);
+}
+
+.form-check-input:checked {
+  border-color: var(--primary);
+  background: var(--primary-subtle);
+}
+
+.form-check-input:checked::before {
+  transform: scale(1);
+}
+
+.form-check-input:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(var(--primary-rgb), 0.15);
+}
+
+.form-check-input:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  background: var(--bg-base);
+  border-color: var(--border-subtle);
+}
+
+.form-check-input:disabled + .form-check-label {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.form-check-label {
+  font-family: var(--font-sans);
+  font-size: var(--text-body-small);
+  color: var(--text-primary);
+  line-height: var(--leading-normal);
+  cursor: pointer;
+  user-select: none;
+}
+
+/* Checkbox error state */
+.form-check-input.form-error,
+.form-group.has-error .form-check-input {
+  border-color: var(--error);
+  background: var(--error-subtle);
+}
+
+.form-check-input.form-error:focus,
+.form-group.has-error .form-check-input:focus {
+  box-shadow: 0 0 0 3px rgba(var(--error-rgb), 0.2);
+}
+
+.form-group.has-error .form-check-input:checked::before,
+.form-check-input.form-error:checked::before {
+  background: var(--error);
+}
+
+/* ------------------------------------------------------------
+   Form Radio
+   ------------------------------------------------------------ */
+.form-radio {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-2);
+  cursor: pointer;
+  position: relative;
+}
+
+.form-radio-input {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 18px;
+  height: 18px;
+  min-width: 18px;
+  min-height: 18px;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-full);
+  margin-top: 2px;
+  cursor: pointer;
+  transition: all var(--duration-fast) var(--ease-smooth);
+  display: grid;
+  place-content: center;
+}
+
+.form-radio-input::before {
+  content: "";
+  width: 8px;
+  height: 8px;
+  border-radius: var(--radius-full);
+  background: var(--primary);
+  transform: scale(0);
+  transition: transform var(--duration-fast) var(--ease-bounce);
+}
+
+.form-radio-input:checked {
+  border-color: var(--primary);
+  background: var(--primary-subtle);
+}
+
+.form-radio-input:checked::before {
+  transform: scale(1);
+}
+
+.form-radio-input:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(var(--primary-rgb), 0.15);
+}
+
+.form-radio-input:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  background: var(--bg-base);
+  border-color: var(--border-subtle);
+}
+
+.form-radio-input:disabled + .form-radio-label {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.form-radio-label {
+  font-family: var(--font-sans);
+  font-size: var(--text-body-small);
+  color: var(--text-primary);
+  line-height: var(--leading-normal);
+  cursor: pointer;
+  user-select: none;
+}
+
+/* Radio error state */
+.form-radio-input.form-error,
+.form-group.has-error .form-radio-input {
+  border-color: var(--error);
+  background: var(--error-subtle);
+}
+
+.form-radio-input.form-error:focus,
+.form-group.has-error .form-radio-input:focus {
+  box-shadow: 0 0 0 3px rgba(var(--error-rgb), 0.2);
+}
+
+.form-group.has-error .form-radio-input:checked::before,
+.form-radio-input.form-error:checked::before {
+  background: var(--error);
+}
+
+/* ------------------------------------------------------------
+   Form Switch (Toggle)
+   ------------------------------------------------------------ */
+.form-switch {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  cursor: pointer;
+  position: relative;
+}
+
+.form-switch-input {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 0;
+  height: 0;
+  position: absolute;
+  opacity: 0;
+}
+
+.form-switch-track {
+  position: relative;
+  width: 40px;
+  height: 22px;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-full);
+  cursor: pointer;
+  transition: background var(--duration-fast) var(--ease-smooth),
+              border-color var(--duration-fast) var(--ease-smooth);
+  flex-shrink: 0;
+}
+
+.form-switch-thumb {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 16px;
+  height: 16px;
+  background: var(--text-secondary);
+  border-radius: var(--radius-full);
+  transition: transform var(--duration-fast) var(--ease-smooth),
+              background var(--duration-fast) var(--ease-smooth);
+  pointer-events: none;
+}
+
+.form-switch-input:checked + .form-switch-track {
+  background: var(--primary);
+  border-color: var(--primary);
+}
+
+.form-switch-input:checked + .form-switch-track .form-switch-thumb {
+  transform: translateX(18px);
+  background: var(--text-primary);
+}
+
+.form-switch-input:focus + .form-switch-track {
+  box-shadow: 0 0 0 3px rgba(var(--primary-rgb), 0.15);
+}
+
+.form-switch-input:disabled + .form-switch-track {
+  opacity: 0.45;
+  cursor: not-allowed;
+  background: var(--bg-base);
+  border-color: var(--border-subtle);
+}
+
+.form-switch-input:disabled + .form-switch-track .form-switch-thumb {
+  background: var(--text-muted);
+}
+
+.form-switch-input:disabled ~ .form-switch-label {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.form-switch-label {
+  font-family: var(--font-sans);
+  font-size: var(--text-body-small);
+  color: var(--text-primary);
+  line-height: var(--leading-normal);
+  cursor: pointer;
+  user-select: none;
+}
+
+/* Switch error state */
+.form-switch-input.form-error + .form-switch-track,
+.form-group.has-error .form-switch-input + .form-switch-track {
+  border-color: var(--error);
+  background: var(--error-subtle);
+}
+
+.form-switch-input.form-error:focus + .form-switch-track,
+.form-group.has-error .form-switch-input:focus + .form-switch-track {
+  box-shadow: 0 0 0 3px rgba(var(--error-rgb), 0.2);
+}
+
+.form-group.has-error .form-switch-input:checked + .form-switch-track,
+.form-switch-input.form-error:checked + .form-switch-track {
+  background: var(--error);
+  border-color: var(--error);
+}
+
+/* ------------------------------------------------------------
+   RTL Support
+   ------------------------------------------------------------ */
+[dir="rtl"] .form-label,
+[dir="rtl"] .form-input,
+[dir="rtl"] .form-textarea,
+[dir="rtl"] .form-select,
+[dir="rtl"] .form-check-label,
+[dir="rtl"] .form-radio-label,
+[dir="rtl"] .form-switch-label,
+[dir="rtl"] .form-hint,
+[dir="rtl"] .form-error {
+  font-family: var(--font-arabic), var(--font-sans);
+}
+
+/* ------------------------------------------------------------
+   Reduced Motion
+   ------------------------------------------------------------ */
+@media (prefers-reduced-motion: reduce) {
+  .form-input,
+  .form-textarea,
+  .form-select,
+  .form-check-input,
+  .form-radio-input,
+  .form-switch-track,
+  .form-switch-thumb {
+    transition-duration: 0.01ms !important;
+  }
+
+  .form-check-input::before,
+  .form-radio-input::before {
+    transition-duration: 0.01ms !important;
+  }
+}

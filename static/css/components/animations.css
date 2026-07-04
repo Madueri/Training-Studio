@@ -1,0 +1,283 @@
+/* ============================================
+   MAD Training Studio — Animation & Utilities
+   Deep Focus Design System v1.0
+   ============================================ */
+
+/* ───────────────────────────────────────────
+   Keyframes
+   ─────────────────────────────────────────── */
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeDown {
+  from { opacity: 0; transform: translateY(-20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideInLeft {
+  from { opacity: 0; transform: translateX(-30px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes slideInRight {
+  from { opacity: 0; transform: translateX(30px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes scaleIn {
+  from { opacity: 0; transform: scale(0.9); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50%      { transform: scale(1.05); opacity: 0.85; }
+}
+
+@keyframes shimmer {
+  0%   { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-8px); }
+}
+
+/* ───────────────────────────────────────────
+   Entrance Animations
+   ─────────────────────────────────────────── */
+
+.fade-in {
+  animation: fadeIn var(--duration-normal) var(--ease-enter) both;
+}
+
+.fade-up {
+  animation: fadeUp var(--duration-normal) var(--ease-enter) both;
+}
+
+.fade-down {
+  animation: fadeDown var(--duration-normal) var(--ease-enter) both;
+}
+
+.slide-in-left {
+  animation: slideInLeft var(--duration-normal) var(--ease-enter) both;
+}
+
+.slide-in-right {
+  animation: slideInRight var(--duration-normal) var(--ease-enter) both;
+}
+
+.scale-in {
+  animation: scaleIn var(--duration-normal) var(--ease-elastic) both;
+}
+
+/* ───────────────────────────────────────────
+   Continuous Animations
+   ─────────────────────────────────────────── */
+
+.pulse {
+  animation: pulse var(--duration-dramatic) var(--ease-smooth) infinite;
+}
+
+.shimmer {
+  background: linear-gradient(
+    90deg,
+    var(--bg-elevated) 25%,
+    var(--bg-overlay) 50%,
+    var(--bg-elevated) 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s linear infinite;
+}
+
+.spin {
+  animation: spin 1s linear infinite;
+}
+
+.bounce {
+  animation: bounce 1.2s var(--ease-bounce) infinite;
+}
+
+/* ───────────────────────────────────────────
+   Hover Effects
+   ─────────────────────────────────────────── */
+
+.hover-lift {
+  transition: transform var(--duration-fast) var(--ease-smooth),
+              box-shadow var(--duration-fast) var(--ease-smooth);
+}
+
+.hover-lift:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg);
+}
+
+.hover-scale {
+  transition: transform var(--duration-fast) var(--ease-smooth);
+}
+
+.hover-scale:hover {
+  transform: scale(1.04);
+}
+
+.hover-glow {
+  transition: box-shadow var(--duration-fast) var(--ease-smooth);
+}
+
+.hover-glow:hover {
+  box-shadow: var(--shadow-glow-primary);
+}
+
+/* ───────────────────────────────────────────
+   Transition Utilities
+   ─────────────────────────────────────────── */
+
+.transition-fast {
+  transition: all var(--duration-fast) var(--ease-smooth);
+}
+
+.transition-normal {
+  transition: all var(--duration-normal) var(--ease-smooth);
+}
+
+.transition-slow {
+  transition: all var(--duration-slow) var(--ease-smooth);
+}
+
+/* ───────────────────────────────────────────
+   Animation Delays
+   ─────────────────────────────────────────── */
+
+.delay-1 { animation-delay: calc(var(--duration-instant) * 1); }
+.delay-2 { animation-delay: calc(var(--duration-instant) * 2); }
+.delay-3 { animation-delay: calc(var(--duration-instant) * 3); }
+.delay-4 { animation-delay: calc(var(--duration-instant) * 4); }
+.delay-5 { animation-delay: calc(var(--duration-instant) * 5); }
+
+/* ───────────────────────────────────────────
+   Stagger Children
+   ─────────────────────────────────────────── */
+
+.stagger-children > * {
+  opacity: 0;
+  animation: fadeUp var(--duration-normal) var(--ease-enter) both;
+}
+
+.stagger-children > *:nth-child(1)  { animation-delay: calc(var(--duration-instant) * 0); }
+.stagger-children > *:nth-child(2)  { animation-delay: calc(var(--duration-instant) * 1); }
+.stagger-children > *:nth-child(3)  { animation-delay: calc(var(--duration-instant) * 2); }
+.stagger-children > *:nth-child(4)  { animation-delay: calc(var(--duration-instant) * 3); }
+.stagger-children > *:nth-child(5)  { animation-delay: calc(var(--duration-instant) * 4); }
+.stagger-children > *:nth-child(6)  { animation-delay: calc(var(--duration-instant) * 5); }
+.stagger-children > *:nth-child(7)  { animation-delay: calc(var(--duration-instant) * 6); }
+.stagger-children > *:nth-child(8)  { animation-delay: calc(var(--duration-instant) * 7); }
+.stagger-children > *:nth-child(9)  { animation-delay: calc(var(--duration-instant) * 8); }
+.stagger-children > *:nth-child(10) { animation-delay: calc(var(--duration-instant) * 9); }
+.stagger-children > *:nth-child(11) { animation-delay: calc(var(--duration-instant) * 10); }
+.stagger-children > *:nth-child(12) { animation-delay: calc(var(--duration-instant) * 11); }
+
+/* ───────────────────────────────────────────
+   Layout Utilities
+   ─────────────────────────────────────────── */
+
+.flex         { display: flex; }
+.flex-col     { display: flex; flex-direction: column; }
+.flex-wrap    { flex-wrap: wrap; }
+
+.justify-center  { justify-content: center; }
+.justify-between { justify-content: space-between; }
+
+.items-center { align-items: center; }
+
+.gap-1 { gap: var(--space-1); }
+.gap-2 { gap: var(--space-2); }
+.gap-3 { gap: var(--space-3); }
+.gap-4 { gap: var(--space-4); }
+.gap-5 { gap: var(--space-5); }
+.gap-6 { gap: var(--space-6); }
+.gap-7 { gap: calc(var(--space-6) + var(--space-1)); }
+.gap-8 { gap: var(--space-8); }
+
+/* ───────────────────────────────────────────
+   Text Utilities
+   ─────────────────────────────────────────── */
+
+.text-center { text-align: center; }
+.text-left   { text-align: left; }
+.text-right  { text-align: right; }
+
+.truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.line-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.line-clamp-3 {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+/* ───────────────────────────────────────────
+   Reduced Motion
+   ─────────────────────────────────────────── */
+
+@media (prefers-reduced-motion: reduce) {
+  .fade-in,
+  .fade-up,
+  .fade-down,
+  .slide-in-left,
+  .slide-in-right,
+  .scale-in,
+  .pulse,
+  .shimmer,
+  .spin,
+  .bounce,
+  .stagger-children > * {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+
+  .hover-lift,
+  .hover-scale,
+  .hover-glow,
+  .transition-fast,
+  .transition-normal,
+  .transition-slow {
+    transition: none;
+  }
+}

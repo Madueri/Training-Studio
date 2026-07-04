@@ -1,0 +1,355 @@
+/* ============================================================
+   MAD Training Studio — Button System
+   Deep Focus Design Tokens v1.0
+   Dark-mode default | Navy + Gold accent | Inter + Cairo
+   ============================================================ */
+
+/* ── Base Button ─────────────────────────────────────────── */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-5);
+  border-radius: var(--radius-md);
+  font-family: var(--font-sans);
+  font-size: var(--text-body-small);
+  font-weight: var(--weight-semibold);
+  line-height: var(--leading-snug);
+  letter-spacing: 0.3px;
+  text-decoration: none;
+  text-align: center;
+  white-space: nowrap;
+  cursor: pointer;
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--text-primary);
+  transition:
+    background-color var(--duration-fast) var(--ease-smooth),
+    border-color      var(--duration-fast) var(--ease-smooth),
+    color             var(--duration-fast) var(--ease-smooth),
+    box-shadow        var(--duration-fast) var(--ease-smooth),
+    transform         var(--duration-instant) var(--ease-smooth);
+  position: relative;
+  overflow: hidden;
+  user-select: none;
+  -webkit-user-select: none;
+  vertical-align: middle;
+}
+
+/* Focus ring */
+.btn:focus-visible {
+  outline: none;
+  box-shadow:
+    0 0 0 2px var(--bg-base),
+    0 0 0 4px var(--primary);
+}
+
+/* Active / pressed */
+.btn:active:not(:disabled):not(.btn-loading) {
+  transform: translateY(1px);
+  transition-duration: var(--duration-instant);
+}
+
+/* Disabled */
+.btn:disabled,
+.btn.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+/* ── Color Variants ──────────────────────────────────────── */
+
+/* Primary — Navy */
+.btn-primary,
+.btn-blue {
+  background: var(--primary);
+  color: #fff;
+  border-color: var(--primary);
+  box-shadow: var(--shadow-sm);
+}
+
+.btn-primary:hover:not(:disabled):not(.btn-loading),
+.btn-blue:hover:not(:disabled):not(.btn-loading) {
+  background: var(--primary-hover);
+  border-color: var(--primary-hover);
+  box-shadow: var(--shadow-md), var(--shadow-glow-primary);
+}
+
+/* Secondary — Elevated surface */
+.btn-secondary {
+  background: var(--bg-elevated);
+  color: var(--text-primary);
+  border-color: var(--border);
+}
+
+.btn-secondary:hover:not(:disabled):not(.btn-loading) {
+  background: var(--bg-overlay);
+  border-color: var(--border-strong);
+}
+
+/* Ghost — Transparent */
+.btn-ghost {
+  background: transparent;
+  color: var(--text-primary);
+  border-color: var(--border);
+}
+
+.btn-ghost:hover:not(:disabled):not(.btn-loading) {
+  background: var(--bg-elevated);
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
+/* Danger / Error */
+.btn-danger,
+.btn-red {
+  background: var(--error);
+  color: #fff;
+  border-color: var(--error);
+  box-shadow: var(--shadow-sm);
+}
+
+.btn-danger:hover:not(:disabled):not(.btn-loading),
+.btn-red:hover:not(:disabled):not(.btn-loading) {
+  filter: brightness(1.12);
+  box-shadow: var(--shadow-md);
+}
+
+/* Gold / Accent */
+.btn-gold,
+.btn-accent {
+  background: var(--accent);
+  color: #000;
+  border-color: var(--accent);
+  font-weight: var(--weight-bold);
+  box-shadow: var(--shadow-sm);
+}
+
+.btn-gold:hover:not(:disabled):not(.btn-loading),
+.btn-accent:hover:not(:disabled):not(.btn-loading) {
+  background: var(--accent-hover);
+  border-color: var(--accent-hover);
+  box-shadow: var(--shadow-md), var(--shadow-glow-accent);
+}
+
+/* Dark */
+.btn-dark {
+  background: var(--bg-overlay);
+  color: var(--text-primary);
+  border-color: var(--border);
+}
+
+.btn-dark:hover:not(:disabled):not(.btn-loading) {
+  background: var(--bg-overlay-hover);
+  border-color: var(--border-strong);
+}
+
+/* Success — Backward compatible with .btn-green */
+.btn-success,
+.btn-green {
+  background: var(--success);
+  color: var(--bg-base);
+  border-color: var(--success);
+  box-shadow: var(--shadow-sm);
+}
+
+.btn-success:hover:not(:disabled):not(.btn-loading),
+.btn-green:hover:not(:disabled):not(.btn-loading) {
+  filter: brightness(1.12);
+  box-shadow: var(--shadow-md), var(--shadow-glow-success);
+}
+
+/* Warning / Amber — Backward compatible with .btn-amber */
+.btn-warning,
+.btn-amber {
+  background: var(--warning);
+  color: var(--bg-base);
+  border-color: var(--warning);
+  box-shadow: var(--shadow-sm);
+}
+
+.btn-warning:hover:not(:disabled):not(.btn-loading),
+.btn-amber:hover:not(:disabled):not(.btn-loading) {
+  filter: brightness(1.12);
+  box-shadow: var(--shadow-md);
+}
+
+/* Info */
+.btn-info {
+  background: var(--info);
+  color: #fff;
+  border-color: var(--info);
+  box-shadow: var(--shadow-sm);
+}
+
+.btn-info:hover:not(:disabled):not(.btn-loading) {
+  filter: brightness(1.12);
+  box-shadow: var(--shadow-md);
+}
+
+/* ── Size Variants ───────────────────────────────────────── */
+
+.btn-small {
+  padding: var(--space-1) var(--space-3);
+  font-size: var(--text-caption);
+  border-radius: var(--radius-sm);
+  gap: var(--space-1);
+}
+
+.btn-large {
+  padding: var(--space-3) var(--space-6);
+  font-size: var(--text-body);
+  border-radius: var(--radius-lg);
+  gap: var(--space-3);
+}
+
+/* Icon-only button */
+.btn-icon {
+  padding: 0;
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-md);
+  flex-shrink: 0;
+}
+
+.btn-icon.btn-small {
+  width: 28px;
+  height: 28px;
+}
+
+.btn-icon.btn-large {
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-lg);
+}
+
+/* Block / full-width */
+.btn-block {
+  display: flex;
+  width: 100%;
+}
+
+/* ── Button Group ────────────────────────────────────────── */
+
+.btn-group {
+  display: inline-flex;
+  vertical-align: middle;
+  position: relative;
+}
+
+.btn-group > .btn {
+  position: relative;
+  border-radius: 0;
+  flex: 1 1 auto;
+}
+
+.btn-group > .btn:not(:first-child) {
+  margin-left: -1px;
+}
+
+.btn-group > .btn:first-child {
+  border-top-left-radius: var(--radius-md);
+  border-bottom-left-radius: var(--radius-md);
+}
+
+.btn-group > .btn:last-child {
+  border-top-right-radius: var(--radius-md);
+  border-bottom-right-radius: var(--radius-md);
+}
+
+.btn-group > .btn:hover,
+.btn-group > .btn:focus-visible {
+  z-index: 1;
+}
+
+/* Vertical button group */
+.btn-group-vertical {
+  display: inline-flex;
+  flex-direction: column;
+  vertical-align: middle;
+}
+
+.btn-group-vertical > .btn {
+  position: relative;
+  border-radius: 0;
+  width: 100%;
+}
+
+.btn-group-vertical > .btn:not(:first-child) {
+  margin-top: -1px;
+  margin-left: 0;
+}
+
+.btn-group-vertical > .btn:first-child {
+  border-top-left-radius: var(--radius-md);
+  border-top-right-radius: var(--radius-md);
+}
+
+.btn-group-vertical > .btn:last-child {
+  border-bottom-left-radius: var(--radius-md);
+  border-bottom-right-radius: var(--radius-md);
+}
+
+.btn-group-vertical > .btn:hover,
+.btn-group-vertical > .btn:focus-visible {
+  z-index: 1;
+}
+
+/* ── Loading State ───────────────────────────────────────── */
+
+.btn-loading {
+  position: relative;
+  color: transparent !important;
+  pointer-events: none;
+  cursor: wait;
+}
+
+.btn-loading::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  width: 16px;
+  height: 16px;
+  border: 2px solid var(--border);
+  border-top-color: var(--text-primary);
+  border-radius: 50%;
+  animation: btn-spin 0.75s linear infinite;
+}
+
+@keyframes btn-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ── Reduced Motion ──────────────────────────────────────── */
+
+@media (prefers-reduced-motion: reduce) {
+  .btn,
+  .btn::after {
+    transition: none !important;
+    animation: none !important;
+  }
+}
+
+/* ── RTL Support ─────────────────────────────────────────── */
+
+[dir="rtl"] .btn-group > .btn:not(:first-child) {
+  margin-left: 0;
+  margin-right: -1px;
+}
+
+[dir="rtl"] .btn-group > .btn:first-child {
+  border-radius: 0 var(--radius-md) var(--radius-md) 0;
+}
+
+[dir="rtl"] .btn-group > .btn:last-child {
+  border-radius: var(--radius-md) 0 0 var(--radius-md);
+}
+
+[dir="rtl"] .btn-group-vertical > .btn:not(:first-child) {
+  margin-right: 0;
+}
