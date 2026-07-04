@@ -72,7 +72,7 @@
 .skill-tree-node {
   position: relative;
   width: 220px;
-  background: var(--bg2);
+  background: var(--bg-elevated);
   border: 2px solid var(--border);
   border-radius: var(--radius-xl);
   padding: var(--space-5);
@@ -105,15 +105,15 @@
   transition: background var(--duration-normal) var(--ease-smooth);
 }
 
-/* Mode-specific accent gradients */
-.skill-tree-node[data-mode="shadowing"]::after    { background: linear-gradient(90deg, var(--green), var(--teal)); }
-.skill-tree-node[data-mode="consecutive"]::after  { background: linear-gradient(90deg, var(--gold), var(--amber)); }
-.skill-tree-node[data-mode="simultaneous"]::after { background: linear-gradient(90deg, var(--red), var(--purple)); }
-.skill-tree-node[data-mode="chuchotage"]::after   { background: linear-gradient(90deg, var(--teal), var(--blue)); }
-.skill-tree-node[data-mode="escort"]::after       { background: linear-gradient(90deg, var(--gold), var(--gold2)); }
-.skill-tree-node[data-mode="legal"]::after        { background: linear-gradient(90deg, var(--purple), var(--blue)); }
-.skill-tree-node[data-mode="sight"]::after        { background: linear-gradient(90deg, var(--amber), var(--gold)); }
-.skill-tree-node[data-mode="opi"]::after          { background: linear-gradient(90deg, var(--purple), var(--blue)); }
+/* Mode-specific accent gradients using tokens.css */
+.skill-tree-node[data-mode="shadowing"]::after    { background: linear-gradient(90deg, var(--mode-shadowing), var(--success)); }
+.skill-tree-node[data-mode="consecutive"]::after  { background: linear-gradient(90deg, var(--primary), var(--info)); }
+.skill-tree-node[data-mode="simultaneous"]::after { background: linear-gradient(90deg, var(--mode-si), var(--primary)); }
+.skill-tree-node[data-mode="chuchotage"]::after   { background: linear-gradient(90deg, var(--mode-chuchotage), var(--accent)); }
+.skill-tree-node[data-mode="escort"]::after       { background: linear-gradient(90deg, var(--accent), var(--mode-escort)); }
+.skill-tree-node[data-mode="legal"]::after        { background: linear-gradient(90deg, var(--mode-legal), var(--border-strong)); }
+.skill-tree-node[data-mode="sight"]::after        { background: linear-gradient(90deg, var(--mode-sight), var(--mode-shadowing)); }
+.skill-tree-node[data-mode="opi"]::after          { background: linear-gradient(90deg, var(--mode-opi), var(--error)); }
 
 /* ── Node Icon ────────────────────────────────────────────── */
 .stn-icon {
@@ -124,7 +124,7 @@
   align-items: center;
   justify-content: center;
   margin-bottom: var(--space-1);
-  background: var(--bg3);
+  background: var(--bg-overlay);
   border: 1px solid var(--border);
   transition: all var(--duration-normal) var(--ease-smooth);
 }
@@ -138,21 +138,21 @@
   fill: none;
 }
 
-/* Mode-specific icon colors */
-.skill-tree-node[data-mode="shadowing"]    .stn-icon { color: var(--green); }
-.skill-tree-node[data-mode="consecutive"]  .stn-icon { color: var(--gold); }
-.skill-tree-node[data-mode="simultaneous"] .stn-icon { color: var(--red); }
-.skill-tree-node[data-mode="chuchotage"]   .stn-icon { color: var(--teal); }
-.skill-tree-node[data-mode="escort"]       .stn-icon { color: var(--gold); }
-.skill-tree-node[data-mode="legal"]        .stn-icon { color: var(--purple); }
-.skill-tree-node[data-mode="sight"]        .stn-icon { color: var(--amber); }
-.skill-tree-node[data-mode="opi"]          .stn-icon { color: var(--purple); }
+/* Mode-specific icon colors using tokens.css */
+.skill-tree-node[data-mode="shadowing"]    .stn-icon { color: var(--mode-shadowing); }
+.skill-tree-node[data-mode="consecutive"]  .stn-icon { color: var(--primary); }
+.skill-tree-node[data-mode="simultaneous"] .stn-icon { color: var(--mode-si); }
+.skill-tree-node[data-mode="chuchotage"]   .stn-icon { color: var(--mode-chuchotage); }
+.skill-tree-node[data-mode="escort"]       .stn-icon { color: var(--accent); }
+.skill-tree-node[data-mode="legal"]        .stn-icon { color: var(--mode-legal); }
+.skill-tree-node[data-mode="sight"]        .stn-icon { color: var(--mode-sight); }
+.skill-tree-node[data-mode="opi"]          .stn-icon { color: var(--mode-opi); }
 
 /* ── Node Text ────────────────────────────────────────────── */
 .stn-name {
   font-size: var(--text-body);
   font-weight: var(--weight-bold);
-  color: var(--text);
+  color: var(--text-primary);
   line-height: var(--leading-tight);
   margin-bottom: 2px;
 }
@@ -174,25 +174,25 @@
 
 .skill-tree-node.unlocked:hover {
   transform: translateY(-4px);
-  border-color: var(--gold);
-  background: var(--bg3);
+  border-color: var(--accent);
+  background: var(--bg-overlay);
   box-shadow: 0 12px 32px rgba(0, 0, 0, 0.4);
 }
 
 .skill-tree-node.unlocked:hover::after {
-  background: var(--gold) !important;
+  background: var(--accent) !important;
 }
 
 /* ── State: Active / Current ──────────────────────────────── */
 .skill-tree-node.active {
-  border-color: var(--gold);
-  box-shadow: 0 0 0 3px rgba(232, 151, 30, 0.15), 0 0 24px rgba(232, 151, 30, 0.12);
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(var(--accent-rgb), 0.15), 0 0 24px rgba(var(--accent-rgb), 0.12);
   animation: stnPulseGlow 2.5s ease-in-out infinite;
 }
 
 @keyframes stnPulseGlow {
-  0%, 100% { box-shadow: 0 0 0 3px rgba(232, 151, 30, 0.15), 0 0 24px rgba(232, 151, 30, 0.12); }
-  50%      { box-shadow: 0 0 0 5px rgba(232, 151, 30, 0.22), 0 0 36px rgba(232, 151, 30, 0.22); }
+  0%, 100% { box-shadow: 0 0 0 3px rgba(var(--accent-rgb), 0.15), 0 0 24px rgba(var(--accent-rgb), 0.12); }
+  50%      { box-shadow: 0 0 0 5px rgba(var(--accent-rgb), 0.22), 0 0 36px rgba(var(--accent-rgb), 0.22); }
 }
 
 /* ── State: Locked ────────────────────────────────────────── */
@@ -231,7 +231,7 @@
 .stn-lock-overlay svg {
   width: 14px;
   height: 14px;
-  color: var(--dim);
+  color: var(--text-muted);
   stroke-width: 2;
   fill: none;
   stroke-linecap: round;
@@ -253,12 +253,12 @@
   right: 10px;
   width: 22px;
   height: 22px;
-  background: var(--green);
+  background: var(--success);
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 2px solid var(--bg2);
+  border: 2px solid var(--bg-elevated);
   opacity: 0;
   transform: scale(0.6);
   transition: all var(--duration-fast) var(--ease-bounce);
@@ -317,7 +317,7 @@
 .stt-title {
   font-size: var(--text-body-small);
   font-weight: var(--weight-bold);
-  color: var(--text);
+  color: var(--text-primary);
   margin-bottom: 4px;
 }
 
@@ -424,6 +424,6 @@
 
   .skill-tree-node.active {
     animation: none;
-    box-shadow: 0 0 0 3px rgba(232, 151, 30, 0.2);
+    box-shadow: 0 0 0 3px rgba(var(--accent-rgb), 0.2);
   }
 }
