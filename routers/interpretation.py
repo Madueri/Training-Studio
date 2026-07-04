@@ -2317,6 +2317,7 @@ async def ci_new_session(
     noise_level:    str = Form("quiet"),       # Chuchotage only: "quiet" | "moderate" | "noisy"
     scenario_type:  str = Form(""),            # Escort/Liaison only: "business" | "social" | "administrative"
     document_type:  str = Form("letter"),      # Sight Translation only: "letter" | "form" | "contract-excerpt" | "news"
+    sight_mode:     str = Form("continuous"),   # Sight Translation only: "continuous" | "chunked"
 ):
     """
     Create a new CI/SI/Chuchotage/Escort/Sight-Translation session. Generates the scenario
@@ -2348,7 +2349,7 @@ async def ci_new_session(
         is_chuchotage = mode == "chuchotage"
         is_escort = mode == "escort"
         is_sight = mode == "sight"
-        is_legal_verbatim = mode == "legal_verbatim"
+        is_legal_verbatim = mode in ("legal_verbatim", "legal")
         is_live_render = is_si or is_chuchotage  # concurrent listen+render, no replay
         if is_escort and difficulty in ("advanced", "expert"):
             # Escort/Liaison is explicitly the lowest-stakes mode — never let it run at
@@ -2604,6 +2605,7 @@ Rules:
             "noise_level": noise_level,
             "scenario_type": scenario_type,
             "document_type": document_type,
+            "sight_mode": sight_mode,
             "wpm_target": wpm_target,
             "pairs": [],          # {segment_text, interpreter_text, segment_num, decalage_sec}
             "segments_done": 0,
@@ -2621,6 +2623,7 @@ Rules:
             "max_segments": segments,
             "segment_num": 1,
             "segment_text": segment_text,
+            "document_text": segment_text if is_sight else "",
             "audio_b64": audio_b64,
             "mode": mode,
             "atmosphere": atmosphere,
@@ -2629,6 +2632,7 @@ Rules:
             "noise_level": noise_level,
             "scenario_type": scenario_type,
             "document_type": document_type,
+            "sight_mode": sight_mode,
             "wpm_target": wpm_target,
             "seg_words": seg_words,
         })
@@ -2674,7 +2678,7 @@ async def ci_get_segment(session_id: str = Form(...)):
         is_chuchotage = mode == "chuchotage"
         is_escort = mode == "escort"
         is_sight = mode == "sight"
-        is_legal_verbatim = mode == "legal_verbatim"
+        is_legal_verbatim = mode in ("legal_verbatim", "legal")
         atmosphere = sess.get("atmosphere", "booth")
         atmosphere_note = ""
         if is_si and atmosphere != "booth":
@@ -2799,6 +2803,7 @@ Rules:
             "session_id": session_id,
             "segment_num": seg_num,
             "segment_text": segment_text,
+            "document_text": segment_text if is_sight else "",
             "audio_b64": audio_b64,
             "done": False,
         })
@@ -2901,7 +2906,7 @@ async def ci_end_session(session_id: str = Form(...)):
     is_chuchotage = sess_mode == "chuchotage"
     is_escort = sess_mode == "escort"
     is_sight = sess_mode == "sight"
-    is_legal_verbatim = sess_mode == "legal_verbatim"
+    is_legal_verbatim = sess_mode in ("legal_verbatim", "legal")
     atmosphere = sess.get("atmosphere", "booth")
 
     if is_si or is_chuchotage:

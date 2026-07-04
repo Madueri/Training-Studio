@@ -390,6 +390,16 @@
  </div>
  <div style="margin-top:14px;font-size:11px;color:var(--dim)">Converse both ways → Score on cultural mediation &amp; naturalness</div>
  </div>
+ <div class="mode-card-v2 legal" onclick="enterPractice('legal')">
+ <div class="mc-icon"></div>
+ <div class="mc-title">Legal Verbatim</div>
+ <div class="mc-desc">Word-for-word legal interpretation — depositions, court statements, and sworn testimony. Exact reproduction required, no summarization.</div>
+ <div class="mc-tags">
+ <span class="mc-tag badge-advanced">Advanced</span>
+ <span class="mc-tag" style="background:var(--bg3);color:var(--dim);border:1px solid var(--border)">Legal register</span>
+ </div>
+ <div style="margin-top:14px;font-size:11px;color:var(--dim)">Exact wording → No paraphrasing → Legal precision scoring</div>
+ </div>
  <div class="mode-card-v2 simultaneous" onclick="enterPractice('simultaneous')">
  <div class="mc-icon"></div>
  <div class="mc-title">Simultaneous</div>
@@ -701,6 +711,22 @@
     </div>
    </div>
    <button onclick="showCISim('escort')" style="background:var(--gold);color:#fff;padding:13px 26px;border-radius:9px;border:none;cursor:pointer;font-size:14px;font-weight:800;white-space:nowrap;flex-shrink:0;transition:opacity .2s" onmouseover="this.style.opacity='.85'" onmouseout="this.style.opacity='1'">Start Simulation</button>
+  </div>
+ </div>
+
+ <!-- Legal Verbatim Simulation card — word-for-word legal mode, reuses the CI overlay with mode='legal' -->
+ <div id="legal-ai-launch-card" style="display:none;margin-top:20px;background:var(--bg2);border:1px solid rgba(167,139,250,.3);border-radius:12px;padding:20px">
+  <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap">
+   <div>
+    <div style="font-size:13px;font-weight:800;color:var(--purple);margin-bottom:5px">AI Legal Verbatim Simulation</div>
+    <div style="font-size:12px;color:var(--dim);line-height:1.5;max-width:480px">AI delivers formal legal speech — depositions, court statements, and sworn testimony. You interpret word-for-word with exact reproduction. No summarization or paraphrasing allowed. Scored on verbatim accuracy, legal register preservation, and Fusha compliance.</div>
+    <div style="display:flex;gap:6px;margin-top:8px">
+     <span style="font-size:11px;background:rgba(167,139,250,.08);border:1px solid rgba(167,139,250,.25);color:var(--purple);padding:2px 9px;border-radius:20px">Exact wording</span>
+     <span style="font-size:11px;background:rgba(72,120,240,.08);border:1px solid rgba(72,120,240,.25);color:var(--blue);padding:2px 9px;border-radius:20px">Legal register</span>
+     <span style="font-size:11px;background:rgba(232,151,30,.08);border:1px solid rgba(232,151,30,.25);color:var(--gold);padding:2px 9px;border-radius:20px">Fusha compliance</span>
+    </div>
+   </div>
+   <button onclick="showCISim('legal')" style="background:var(--purple);color:#fff;padding:13px 26px;border-radius:9px;border:none;cursor:pointer;font-size:14px;font-weight:800;white-space:nowrap;flex-shrink:0;transition:opacity .2s" onmouseover="this.style.opacity='.85'" onmouseout="this.style.opacity='1'">Start Simulation</button>
   </div>
  </div>
 
@@ -3181,6 +3207,7 @@ let ciField        = '';         // legacy compat (set at session start)
 let ciLang         = '';         // legacy compat (set at session start)
 let ciDifficulty   = 'intermediate';
 let ciRenditions   = [];         // {seg: N, notes, rendered}
+let ciSightMode    = 'continuous'; // 'continuous' | 'chunked' — sight translation only
 let ciAudioEl      = null;
 let ciAudioBytes   = null;       // stored bytes for replay fix
 let ciState        = 'setup';    // setup|loading|listening|rendering|submitting|evaluating|done
@@ -3202,6 +3229,8 @@ let ciDocumentType = 'letter';      // Sight Translation only: 'letter' | 'form'
 let ciReadStartTs  = 0;             // Sight Translation only: timestamp when document text was shown, for WPM capture
 let ciEvsTargetSec = 3.0;           // SI/Chuchotage only: Ear-Voice-Span target for this pace/difficulty
 let ciSegStartTs   = 0;             // SI/Chuchotage only: timestamp when current segment audio started, for décalage capture
+let ciDecalageTimer = null;         // SI/Chuchotage: interval for updating décalage UI
+let ciRecStartTs    = 0;            // SI/Chuchotage: timestamp when recording started
 let ciWpmTarget    = 62.0;          // Sight Translation only: target words-per-minute throughput for this pace/difficulty
 let ciRotationShown = false;        // SI/CI: 20-30 min rotation-reminder shown-once flag
 // Canvas
@@ -3212,7 +3241,7 @@ let ciSessionTimer = null;
 
 // ── CI Overlay Controls ──────────────────────────────────────────────────────
 function showCISim(modeKind) {
-  ciModeKind = ['simultaneous','chuchotage','escort','sight'].includes(modeKind) ? modeKind : 'consecutive';
+  ciModeKind = ['simultaneous','chuchotage','escort','sight','legal'].includes(modeKind) ? modeKind : 'consecutive';
   ciRotationShown = false;
   const ov = document.getElementById('ci-sim-overlay');
   if (ov) ov.style.display = 'flex';
@@ -3228,6 +3257,8 @@ function exitCISim() {
   if (ciCameraStream) { ciCameraStream.getTracks().forEach(t=>t.stop()); ciCameraStream = null; }
   if (ciMediaRecorder && ciMediaRecorder.state !== 'inactive') { try{ciMediaRecorder.stop();}catch(e){} }
   ciMediaRecorder = null;
+  if (ciDecalageTimer) { clearInterval(ciDecalageTimer); ciDecalageTimer = null; }
+  ciSegStartTs = 0; ciRecStartTs = 0;
 }
 
 function ciSwitchView(viewId) {
@@ -3267,11 +3298,71 @@ function ciInitCIOverlay() {
 // atmosphere change. No new generated-content path — same CI backend, mode flag only.
 function ciIsLiveRender() { return ciModeKind === 'simultaneous' || ciModeKind === 'chuchotage'; }
 
+// ── Auto-start recording for SI/Chuchotage (called when source audio begins) ──
+function ciAutoStartRecording() {
+  if (!ciCameraStream) return; // camera not available — cannot auto-record
+  if (!ciMediaRecorder || ciMediaRecorder.state === 'inactive') {
+    ciRecordChunks = [];
+    try {
+      ciMediaRecorder = new MediaRecorder(ciCameraStream, {mimeType:'video/webm;codecs=vp8,opus'});
+    } catch(e) {
+      ciMediaRecorder = new MediaRecorder(ciCameraStream);
+    }
+    ciMediaRecorder.ondataavailable = e => { if (e.data.size > 0) ciRecordChunks.push(e.data); };
+    ciMediaRecorder.onstop = () => {
+      const blob = new Blob(ciRecordChunks, {type:'video/webm'});
+      const url  = URL.createObjectURL(blob);
+      const a    = document.createElement('a');
+      a.href     = url;
+      a.download = `ci-session-${Date.now()}.webm`;
+      a.click();
+      URL.revokeObjectURL(url);
+      ciRecordChunks = [];
+    };
+    ciMediaRecorder.start();
+    // Sync session-view camera button
+    const sessCamBtn = document.getElementById('ci-cam-btn');
+    if (sessCamBtn) {
+      sessCamBtn.textContent = 'Stop Recording';
+      sessCamBtn.style.background  = 'rgba(244,63,94,.22)';
+      sessCamBtn.style.borderColor = 'rgba(244,63,94,.6)';
+      sessCamBtn.style.color       = 'var(--red)';
+    }
+    // Pulsing red dot
+    const head = document.querySelector('.ci-sess-right .ci-camera-head') || document.querySelector('.ci-camera-head');
+    if (head && !head.querySelector('.ci-rec-dot')) {
+      const dot = document.createElement('span');
+      dot.className   = 'ci-rec-dot';
+      dot.title       = 'Recording';
+      dot.style.cssText = 'display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--red);animation:ciRecPulse 1s ease-in-out infinite;margin-left:4px';
+      head.insertBefore(dot, head.querySelector('.ci-camera-btn') || head.firstChild);
+    }
+  }
+  ciRecStartTs = Date.now();
+}
+
+// ── Stop auto-recording (segment end or session end) ─────────────────────────
+function ciAutoStopRecording() {
+  if (ciMediaRecorder && ciMediaRecorder.state !== 'inactive') {
+    ciMediaRecorder.stop();
+  }
+  // Sync session-view camera button
+  const sessCamBtn = document.getElementById('ci-cam-btn');
+  if (sessCamBtn) {
+    sessCamBtn.textContent = 'Record';
+    sessCamBtn.style.background  = 'rgba(244,63,94,.12)';
+    sessCamBtn.style.borderColor = 'rgba(244,63,94,.35)';
+    sessCamBtn.style.color       = 'var(--red)';
+  }
+  document.querySelector('.ci-rec-dot')?.remove();
+}
+
 function ciApplyModeKindUI() {
   const isSI = ciModeKind === 'simultaneous';
   const isChuchotage = ciModeKind === 'chuchotage';
   const isEscort = ciModeKind === 'escort';
   const isSight = ciModeKind === 'sight';
+  const isLegal = ciModeKind === 'legal';
   const isLiveRender = ciIsLiveRender();
   const MODE_META = {
     consecutive:  {title: 'CI Simulation', badge: 'CONSECUTIVE', color: 'var(--blue)',   bg: 'rgba(72,120,240,.08)',  border: 'rgba(72,120,240,.2)'},
@@ -3279,6 +3370,7 @@ function ciApplyModeKindUI() {
     chuchotage:   {title: 'Chuchotage Simulation', badge: 'CHUCHOTAGE', color: 'var(--teal)', bg: 'rgba(45,212,191,.08)', border: 'rgba(45,212,191,.2)'},
     escort:       {title: 'Escort/Liaison Simulation', badge: 'ESCORT/LIAISON', color: 'var(--gold)', bg: 'rgba(232,151,30,.08)', border: 'rgba(232,151,30,.2)'},
     sight:        {title: 'Sight Translation Simulation', badge: 'SIGHT TRANSLATION', color: 'var(--amber)', bg: 'rgba(245,158,11,.08)', border: 'rgba(245,158,11,.2)'},
+    legal:        {title: 'Legal Verbatim Simulation', badge: 'LEGAL VERBATIM', color: 'var(--purple)', bg: 'rgba(167,139,250,.08)', border: 'rgba(167,139,250,.2)'},
   };
   const meta = MODE_META[ciModeKind] || MODE_META.consecutive;
   const titleEl = document.querySelector('.ci-ov-hdr span[style*="font-weight:800"]');
@@ -3817,6 +3909,7 @@ async function ciStartSession() {
   }
   if (ciModeKind === 'sight') {
     fd.append('document_type', ciDocumentType);
+    fd.append('sight_mode', ciSightMode);
   }
 
   try {
@@ -3826,10 +3919,10 @@ async function ciStartSession() {
 
     ciSid          = d.session_id;
     ciPersona      = d.persona || {};
-    ciSegText      = d.segment_text;
+    ciSegText      = d.document_text || d.segment_text;
     ciSegNum       = 1;
     ciFirstSegAudio = d.audio_b64;
-    ciFirstSegText  = d.segment_text;
+    ciFirstSegText  = d.document_text || d.segment_text;
     ciEvsTargetSec  = d.evs_target_sec || ciEvsTargetSec;
     ciWpmTarget     = d.wpm_target || ciWpmTarget;
 
@@ -3879,6 +3972,11 @@ async function ciStartSession() {
     // Reset prep camera state
     ciPrepCameraReady = false;
     ciUpdateBeginBtn();
+
+    // Show sight-mode toggle only for sight translation
+    const sightToggle = document.getElementById('ci-sight-mode-toggle');
+    if (sightToggle) sightToggle.style.display = ciModeKind === 'sight' ? '' : 'none';
+    ciSetSightMode(ciSightMode); // refresh button styles
 
     ciSwitchView('ci-prep-view');
 
@@ -4028,6 +4126,27 @@ function ciPlaySegment(audio_b64, seg_text, seg_num) {
     const url    = URL.createObjectURL(blob);
     ciAudioEl    = new Audio(url);
     ciSegStartTs = Date.now(); // décalage (EVS) measurement start — SI only, harmless for CI
+
+    // ── SI/Chuchotage: auto-start recording after 1–2 s EVS delay ─────────────
+    if (isSI) {
+      const decalageEl = document.getElementById('ci-decalage-indicator');
+      if (decalageEl) decalageEl.style.display = '';
+      const evsDelay = 1000 + Math.random() * 1000; // 1–2 s
+      setTimeout(() => {
+        ciAutoStartRecording();
+        // Start real-time décalage timer
+        if (ciDecalageTimer) clearInterval(ciDecalageTimer);
+        ciDecalageTimer = setInterval(() => {
+          if (!ciSegStartTs) return;
+          const lag = ((Date.now() - ciSegStartTs) / 1000).toFixed(1);
+          const el = document.getElementById('ci-decalage-indicator');
+          if (el) el.textContent = `Décalage: ${lag}s`;
+        }, 100);
+      }, evsDelay);
+    } else {
+      document.getElementById('ci-decalage-indicator').style.display = 'none';
+    }
+
     ciAudioEl.onended = () => { URL.revokeObjectURL(url); ciAudioEl._url = null; ciOnSegmentEnd(); };
     ciAudioEl.onerror = () => { URL.revokeObjectURL(url); ciOnSegmentEnd(); };
     ciAudioEl._url = url;
@@ -4037,14 +4156,36 @@ function ciPlaySegment(audio_b64, seg_text, seg_num) {
 
 function ciOnSegmentEnd() {
   const isSI = ciIsLiveRender();
-  document.getElementById('ci-player-active').style.display  = 'none';
-  document.getElementById('ci-player-idle').textContent      = isSI
-    ? 'Playback complete — finish your rendition.'
+  document.getElementById('ci-player-active').style.display = 'none';
+  document.getElementById('ci-player-idle').textContent = isSI
+    ? 'Playback complete — segment ended.'
     : 'Playback complete — render your interpretation below.';
-  document.getElementById('ci-player-idle').style.display    = '';
-  document.getElementById('ci-replay-zone').style.display    = isSI ? 'none' : ''; // no-replay protocol for SI
-  ciSetState('rendering');
-  document.getElementById('ci-render-zone').style.display    = '';
+  document.getElementById('ci-player-idle').style.display = '';
+  document.getElementById('ci-replay-zone').style.display = isSI ? 'none' : ''; // no-replay protocol for SI
+
+  // Clear décalage timer
+  if (ciDecalageTimer) { clearInterval(ciDecalageTimer); ciDecalageTimer = null; }
+
+  if (isSI) {
+    // SI/Chuchotage: go straight to Between (rendering already happened live)
+    ciAutoStopRecording();
+    ciSetState('between');
+    document.getElementById('ci-between-zone').style.display = '';
+    document.getElementById('ci-listening-zone').style.display = 'none';
+    const isLast = ciSegNum >= ciMaxSegs;
+    document.getElementById('ci-between-msg').textContent = isLast
+      ? 'All segments complete!'
+      : `Segment ${ciSegNum} complete`;
+    document.getElementById('ci-between-sub').textContent = isLast
+      ? `${ciMaxSegs} segments completed — ready for full evaluation.`
+      : `${ciMaxSegs - ciSegNum} segment${ciMaxSegs - ciSegNum !== 1 ? 's' : ''} remaining`;
+    document.getElementById('ci-next-btn').style.display = isLast ? 'none' : '';
+    document.getElementById('ci-finish-btn').style.display = isLast ? '' : 'none';
+    ciRenderPips();
+  } else {
+    ciSetState('rendering');
+    document.getElementById('ci-render-zone').style.display = '';
+  }
 }
 
 function ciReplaySegment() {
@@ -5376,6 +5517,7 @@ const MODE_META = {
  opi: { name:'OPI / VRI', sub:'Over-the-Phone & Video Remote Interpreting', instructions:'① Select a field — call scenarios match real OPI/VRI call types\n② Toggle "Video call (VRI)" if you want the visual channel — a camera panel activates with non-verbal cues to read\n③ Go online and accept the incoming call, interpreting both parties\n④ End the call — you will be assessed on accuracy, turn-taking, professional register, and (in VRI mode) visual-cue handling' },
  chuchotage: { name:'Chuchotage', sub:'Whispered simultaneous interpreting', instructions:'① Set your language pair and field, plus ambient noise and listener count\n② Press Start Recording first, then play the video\n③ Whisper your interpretation live, in real-time, with no booth or equipment — no replay is allowed\n④ Press Finish when the segment ends — you will be scored on décalage control and volume & noise discipline' },
  escort: { name:'Escort/Liaison', sub:'Informal bidirectional interpreting', instructions:'① Choose a scenario — business, social, or administrative — and a field\n② Watch each short exchange, then press Start Recording and interpret it naturally in either direction\n③ Keep the register conversational — contractions and informality are expected\n④ Press Finish — you will be scored on cultural mediation and conversational naturalness' },
+ legal: { name:'Legal Verbatim', sub:'Word-for-word legal interpretation', instructions:'① Choose a legal field — depositions, court statements, or sworn testimony\n② AI delivers formal legal speech segment by segment\n③ Interpret word-for-word with exact reproduction — no summarization, no paraphrasing\n④ Press Finish — scored on verbatim accuracy, legal register preservation, Fusha compliance, and strict impartiality' },
  sight: { name:'Sight Translation', sub:'Written-input, oral-output interpreting', instructions:'① Choose a document type — letter, form, contract excerpt, or news clipping — and a field\n② Press Start — the document appears on screen and stays visible the whole time (no audio, no replay needed)\n③ Read ahead silently while speaking your oral rendition aloud, at a sustained pace\n④ Press Finish — you will be scored on register fidelity, completeness, WPM throughput, and public-speaking delivery' }
 };
 
@@ -5394,12 +5536,14 @@ async function enterPractice(mode) {
  const siCard   = document.getElementById('si-ai-launch-card');
  const chuchotageCard = document.getElementById('chuchotage-ai-launch-card');
  const escortCard     = document.getElementById('escort-ai-launch-card');
+ const legalCard      = document.getElementById('legal-ai-launch-card');
  const sightCard      = document.getElementById('sight-ai-launch-card');
  if (opiCard) opiCard.style.display  = mode === 'opi'         ? 'block' : 'none';
  if (ciCard)  ciCard.style.display   = mode === 'consecutive' ? 'block' : 'none';
  if (siCard)  siCard.style.display   = mode === 'simultaneous' ? 'block' : 'none';
  if (chuchotageCard) chuchotageCard.style.display = mode === 'chuchotage' ? 'block' : 'none';
  if (escortCard)     escortCard.style.display     = mode === 'escort'     ? 'block' : 'none';
+ if (legalCard)      legalCard.style.display      = mode === 'legal'      ? 'block' : 'none';
  if (sightCard)      sightCard.style.display      = mode === 'sight'      ? 'block' : 'none';
 
  // Show correct language UI. Every block below has an explicit grid-column
@@ -6768,6 +6912,23 @@ window.addEventListener('DOMContentLoaded', () => {
           </div>
         </div>
 
+        <!-- Sight Translation mode toggle -->
+        <div id="ci-sight-mode-toggle" style="display:none;background:var(--bg2);border:1px solid rgba(251,146,60,.25);border-radius:10px;padding:12px 14px">
+          <div style="font-size:9px;font-weight:800;color:var(--amber);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px">Sight Translation Mode</div>
+          <div style="display:flex;gap:8px">
+            <button id="ci-sight-mode-continuous" onclick="ciSetSightMode('continuous')"
+              style="flex:1;padding:10px 0;border-radius:7px;font-size:12px;font-weight:700;cursor:pointer;border:1px solid var(--amber);background:var(--amber);color:#fff;transition:all .2s">
+              Continuous
+              <div style="font-size:10px;font-weight:400;opacity:.85;margin-top:2px">Read ahead while speaking — SI-like</div>
+            </button>
+            <button id="ci-sight-mode-chunked" onclick="ciSetSightMode('chunked')"
+              style="flex:1;padding:10px 0;border-radius:7px;font-size:12px;font-weight:700;cursor:pointer;border:1px solid var(--border);background:transparent;color:var(--dim);transition:all .2s">
+              Chunked
+              <div style="font-size:10px;font-weight:400;opacity:.7;margin-top:2px">Read first, then render — CI-like</div>
+            </button>
+          </div>
+        </div>
+
         <!-- Begin CTA -->
         <div style="display:flex;flex-direction:column;gap:8px">
           <button id="ci-begin-btn" onclick="ciBeginInterpretation()"
@@ -6794,7 +6955,10 @@ window.addEventListener('DOMContentLoaded', () => {
           <!-- Canvas legend — populated by ciUpdateLegend() at session start -->
           <div id="ci-canvas-legend" style="display:flex;align-items:center;gap:14px;flex-wrap:wrap;padding:6px 14px;background:var(--bg2);border-top:1px solid var(--border);min-height:32px"></div>
           <div class="ci-room-bottom-bar">
-            <div id="ci-seg-status" style="font-size:11px;color:var(--dim)">Segment 1 of 4</div>
+            <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px">
+              <div id="ci-seg-status" style="font-size:11px;color:var(--dim)">Segment 1 of 4</div>
+              <span id="ci-decalage-indicator" style="display:none;font-size:11px;font-weight:700;color:var(--purple);background:rgba(167,139,250,.1);border:1px solid rgba(167,139,250,.3);border-radius:6px;padding:3px 10px">Décalage: 0.0s</span>
+            </div>
           </div>
         </div>
 
@@ -6819,6 +6983,13 @@ window.addEventListener('DOMContentLoaded', () => {
               <span id="ci-sight-doc-meta" style="color:var(--dim);font-weight:600"></span>
             </div>
             <div id="ci-sight-doc-text" style="background:var(--bg2);border:1px solid rgba(251,146,60,.25);border-radius:9px;padding:16px;font-size:14px;line-height:1.7;color:var(--text);max-height:260px;overflow-y:auto;white-space:pre-wrap"></div>
+            <!-- Chunked mode: Start Rendering button -->
+            <div id="ci-sight-chunked-start" style="display:none;margin-top:12px;text-align:center">
+              <button class="btn btn-amber" onclick="ciStartSightRendering()" style="padding:12px 28px;font-size:13px;font-weight:700">
+                Start Rendering
+              </button>
+              <div style="font-size:11px;color:var(--dim);margin-top:6px">Read the text first, then press Start Rendering when you're ready</div>
+            </div>
           </div>
           <div style="margin-top:13px">
             <div class="ci-notepad-label">
