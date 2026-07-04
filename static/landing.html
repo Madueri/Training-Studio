@@ -3,43 +3,70 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="MAD Training Studio — AI-powered training for professional interpreters. Master all 7 interpreting modes with real-time feedback.">
+<meta name="description" content="MAD Training Studio — AI-powered training for professional interpreters. Master all 8 interpreting modes with real-time feedback.">
 <meta name="theme-color" content="#121212">
 <title>MAD Training Studio — Master the Art of Interpretation</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Cairo:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Cairo:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/static/css/tokens.css">
+<link rel="stylesheet" href="/static/css/components.css">
 <link rel="stylesheet" href="/static/css/landing.css">
 </head>
 <body>
 
 <!-- ════════════════════════════════════════════════════════════
+     NAVIGATION
+     ════════════════════════════════════════════════════════════ -->
+<nav class="landing-nav" id="landing-nav">
+  <a href="#" class="landing-nav-brand">
+    <div class="landing-nav-logo">🎯</div>
+    <div class="landing-nav-logotype">MAD<span>Studio</span></div>
+  </a>
+  <div class="landing-nav-links">
+    <a href="#features" class="landing-nav-link">Features</a>
+    <a href="#modes" class="landing-nav-link">Modes</a>
+    <a href="#how-it-works" class="landing-nav-link">How It Works</a>
+    <a href="#pricing" class="landing-nav-link">Pricing</a>
+    <a href="#testimonials" class="landing-nav-link">Testimonials</a>
+    <a href="#faq" class="landing-nav-link">FAQ</a>
+    <a href="/app" class="btn btn-gold landing-nav-cta">Get Started</a>
+  </div>
+</nav>
+
+<!-- ════════════════════════════════════════════════════════════
      HERO
      ════════════════════════════════════════════════════════════ -->
 <section class="hero" id="hero" aria-label="Hero">
+  <div class="hero__particles" aria-hidden="true">
+    <div class="hero__particle"></div>
+    <div class="hero__particle"></div>
+    <div class="hero__particle"></div>
+    <div class="hero__particle"></div>
+    <div class="hero__particle"></div>
+  </div>
   <div class="hero__content">
     <p class="hero__eyebrow">MAD Training Studio</p>
     <h1 class="hero__title">Master the Art of Interpretation — <span>AI-Powered Training</span> for Professional Interpreters</h1>
-    <p class="hero__sub">Train all 7 interpreting modes with real-time AI feedback, certification-aligned scenarios, and personalized progress tracking. From shadowing to simultaneous — elevate your craft.</p>
-    <div class="hero__ctas">
-      <a href="/app" class="btn btn-primary btn-large">Start Training</a>
-      <a href="#video" class="btn btn-ghost btn-large" onclick="document.getElementById('how-it-works').scrollIntoView({behavior:'smooth'});return false;">Watch Demo</a>
+    <p class="hero__subtitle">Train all 8 interpreting modes with real-time AI feedback, certification-aligned scenarios, and personalized progress tracking. From shadowing to simultaneous — elevate your craft.</p>
+    <div class="hero__actions">
+      <a href="/app" class="btn btn-primary btn-large">Sign In / Start Training</a>
+      <a href="#how-it-works" class="btn btn-ghost btn-large">Watch Demo</a>
     </div>
   </div>
-  <div class="hero__scroll-hint" aria-hidden="true">↓</div>
 </section>
 
 <!-- ════════════════════════════════════════════════════════════
      TRUST BAR
      ════════════════════════════════════════════════════════════ -->
-<section class="trust-bar" aria-label="Trusted by certification bodies">
-  <div class="trust-bar__inner">
-    <p class="trust-bar__label">Trusted by interpreters certified by</p>
-    <div class="trust-bar__logos">
-      <span class="trust-bar__logo">AIIC</span>
-      <span class="trust-bar__logo">CCHI</span>
-      <span class="trust-bar__logo">NBCMI</span>
-      <span class="trust-bar__logo">NAJIT</span>
+<section class="trust" aria-label="Trusted by certification bodies">
+  <div class="trust__inner">
+    <p class="trust__label">Trusted by interpreters certified by</p>
+    <div class="trust__logos">
+      <span class="trust__logo">AIIC</span>
+      <span class="trust__logo">CCHI</span>
+      <span class="trust__logo">NBCMI</span>
+      <span class="trust__logo">NAJIT</span>
     </div>
   </div>
 </section>
@@ -47,38 +74,39 @@
 <!-- ════════════════════════════════════════════════════════════
      FEATURES
      ════════════════════════════════════════════════════════════ -->
-<section class="section" id="features" aria-labelledby="features-heading">
+<section class="features" id="features" aria-labelledby="features-heading">
   <div class="section-header">
-    <h2 id="features-heading">Everything You Need to Excel</h2>
-    <p>A complete training platform built by interpreters, for interpreters.</p>
+    <p class="section-header__eyebrow">Features</p>
+    <h2 class="section-header__title" id="features-heading">Everything You Need to Excel</h2>
+    <p class="section-header__desc">A complete training platform built by interpreters, for interpreters.</p>
   </div>
-  <div class="features-grid stagger-children">
-    <article class="feature-card">
+  <div class="features__grid stagger-reveal">
+    <article class="feature-card scroll-reveal">
       <span class="feature-card__icon" aria-hidden="true">🎧</span>
-      <h3 class="feature-card__title">7 Interpreting Modes</h3>
-      <p class="feature-card__desc">Shadowing, consecutive, simultaneous, chuchotage, sight, OPI, and legal — all in one platform.</p>
+      <h3 class="feature-card__title">8 Interpreting Modes</h3>
+      <p class="feature-card__desc">Shadowing, consecutive, simultaneous, chuchotage, sight, escort, legal, and OPI — all in one platform.</p>
     </article>
-    <article class="feature-card">
+    <article class="feature-card scroll-reveal">
       <span class="feature-card__icon" aria-hidden="true">⚡</span>
       <h3 class="feature-card__title">Real-Time AI Feedback</h3>
       <p class="feature-card__desc">Get instant analysis on accuracy, completeness, terminology, and delivery after every session.</p>
     </article>
-    <article class="feature-card">
+    <article class="feature-card scroll-reveal">
       <span class="feature-card__icon" aria-hidden="true">🎯</span>
       <h3 class="feature-card__title">Certification-Aligned</h3>
       <p class="feature-card__desc">Scenarios and rubrics aligned with AIIC, CCHI, NBCMI, and NAJIT standards.</p>
     </article>
-    <article class="feature-card">
+    <article class="feature-card scroll-reveal">
       <span class="feature-card__icon" aria-hidden="true">📊</span>
       <h3 class="feature-card__title">Progress Tracking</h3>
       <p class="feature-card__desc">Visual dashboards, skill trees, streaks, and milestone achievements to keep you motivated.</p>
     </article>
-    <article class="feature-card">
+    <article class="feature-card scroll-reveal">
       <span class="feature-card__icon" aria-hidden="true">🌍</span>
       <h3 class="feature-card__title">Dialect-Specific Training</h3>
       <p class="feature-card__desc">Practice with Levantine, Gulf, Egyptian, Maghrebi, and Modern Standard Arabic scenarios.</p>
     </article>
-    <article class="feature-card">
+    <article class="feature-card scroll-reveal">
       <span class="feature-card__icon" aria-hidden="true">🏆</span>
       <h3 class="feature-card__title">Gamified Learning</h3>
       <p class="feature-card__desc">XP, levels, badges, and weekly challenges make training engaging and competitive.</p>
@@ -89,38 +117,39 @@
 <!-- ════════════════════════════════════════════════════════════
      HOW IT WORKS
      ════════════════════════════════════════════════════════════ -->
-<section class="section" id="how-it-works" aria-labelledby="how-heading">
+<section class="how-it-works" id="how-it-works" aria-labelledby="how-heading">
   <div class="section-header">
-    <h2 id="how-heading">How It Works</h2>
-    <p>From scenario to feedback in four simple steps.</p>
+    <p class="section-header__eyebrow">How It Works</p>
+    <h2 class="section-header__title" id="how-heading">Four Steps to Mastery</h2>
+    <p class="section-header__desc">From scenario to feedback in four simple steps.</p>
   </div>
   <div class="timeline">
-    <div class="timeline-step">
-      <div class="timeline-step__num">1</div>
-      <div class="timeline-step__content">
-        <h3>Choose Your Mode</h3>
-        <p>Select from 7 interpreting modes — from beginner shadowing to advanced simultaneous.</p>
+    <div class="timeline__step scroll-reveal scroll-reveal--left">
+      <div class="timeline__num">1</div>
+      <div class="timeline__content">
+        <h3 class="timeline__title">Choose Your Mode</h3>
+        <p class="timeline__desc">Select from 8 interpreting modes — from beginner shadowing to advanced simultaneous.</p>
       </div>
     </div>
-    <div class="timeline-step">
-      <div class="timeline-step__num">2</div>
-      <div class="timeline-step__content">
-        <h3>AI Generates a Scenario</h3>
-        <p>Our AI crafts realistic, context-rich scenarios tailored to your level and language pair.</p>
+    <div class="timeline__step scroll-reveal scroll-reveal--left">
+      <div class="timeline__num">2</div>
+      <div class="timeline__content">
+        <h3 class="timeline__title">AI Generates a Scenario</h3>
+        <p class="timeline__desc">Our AI crafts realistic, context-rich scenarios tailored to your level and language pair.</p>
       </div>
     </div>
-    <div class="timeline-step">
-      <div class="timeline-step__num">3</div>
-      <div class="timeline-step__content">
-        <h3>Practice Interpreting</h3>
-        <p>Interpret the source audio or text in real time, just like a live assignment.</p>
+    <div class="timeline__step scroll-reveal scroll-reveal--left">
+      <div class="timeline__num">3</div>
+      <div class="timeline__content">
+        <h3 class="timeline__title">Practice Interpreting</h3>
+        <p class="timeline__desc">Interpret the source audio or text in real time, just like a live assignment.</p>
       </div>
     </div>
-    <div class="timeline-step">
-      <div class="timeline-step__num">4</div>
-      <div class="timeline-step__content">
-        <h3>Get Detailed Feedback</h3>
-        <p>Receive AI-powered analysis on accuracy, completeness, terminology, and delivery quality.</p>
+    <div class="timeline__step scroll-reveal scroll-reveal--left">
+      <div class="timeline__num">4</div>
+      <div class="timeline__content">
+        <h3 class="timeline__title">Get Detailed Feedback</h3>
+        <p class="timeline__desc">Receive AI-powered analysis on accuracy, completeness, terminology, and delivery quality.</p>
       </div>
     </div>
   </div>
@@ -129,13 +158,14 @@
 <!-- ════════════════════════════════════════════════════════════
      MODES SHOWCASE
      ════════════════════════════════════════════════════════════ -->
-<section class="section" id="modes" aria-labelledby="modes-heading">
+<section class="modes" id="modes" aria-labelledby="modes-heading">
   <div class="section-header">
-    <h2 id="modes-heading">7 Interpreting Modes</h2>
-    <p>Train every mode you need for a versatile interpreting career.</p>
+    <p class="section-header__eyebrow">Modes</p>
+    <h2 class="section-header__title" id="modes-heading">8 Interpreting Modes</h2>
+    <p class="section-header__desc">Train every mode you need for a versatile interpreting career.</p>
   </div>
-  <div class="modes-grid">
-    <article class="card-mode card-mode--shadowing" aria-label="Shadowing mode">
+  <div class="modes__grid">
+    <article class="card-mode card-mode--shadowing scroll-reveal" aria-label="Shadowing mode">
       <div class="card-mode__icon" aria-hidden="true">🎙️</div>
       <h3 class="card-mode__title">Shadowing</h3>
       <p class="card-mode__desc">Repeat source speech in real time to build fluency, rhythm, and automaticity.</p>
@@ -143,7 +173,7 @@
         <span class="card__tag card__tag--beginner">Beginner</span>
       </div>
     </article>
-    <article class="card-mode card-mode--consecutive" aria-label="Consecutive interpreting mode">
+    <article class="card-mode card-mode--consecutive scroll-reveal" aria-label="Consecutive interpreting mode">
       <div class="card-mode__icon" aria-hidden="true">📝</div>
       <h3 class="card-mode__title">Consecutive</h3>
       <p class="card-mode__desc">Listen, take notes, and render the message accurately after the speaker pauses.</p>
@@ -151,7 +181,7 @@
         <span class="card__tag card__tag--intermediate">Intermediate</span>
       </div>
     </article>
-    <article class="card-mode card-mode--simultaneous" aria-label="Simultaneous interpreting mode">
+    <article class="card-mode card-mode--simultaneous scroll-reveal" aria-label="Simultaneous interpreting mode">
       <div class="card-mode__icon" aria-hidden="true">🎧</div>
       <h3 class="card-mode__title">Simultaneous</h3>
       <p class="card-mode__desc">Interpret in real time with only a few seconds of decalage — the gold standard.</p>
@@ -159,7 +189,7 @@
         <span class="card__tag card__tag--advanced">Advanced</span>
       </div>
     </article>
-    <article class="card-mode card-mode--chuchotage" aria-label="Chuchotage mode">
+    <article class="card-mode card-mode--chuchotage scroll-reveal" aria-label="Chuchotage mode">
       <div class="card-mode__icon" aria-hidden="true">👤</div>
       <h3 class="card-mode__title">Chuchotage</h3>
       <p class="card-mode__desc">Whispered simultaneous interpreting for one or two listeners in close proximity.</p>
@@ -167,7 +197,7 @@
         <span class="card__tag card__tag--intermediate">Intermediate</span>
       </div>
     </article>
-    <article class="card-mode card-mode--sight" aria-label="Sight translation mode">
+    <article class="card-mode card-mode--sight scroll-reveal" aria-label="Sight translation mode">
       <div class="card-mode__icon" aria-hidden="true">📄</div>
       <h3 class="card-mode__title">Sight Translation</h3>
       <p class="card-mode__desc">Translate a written text aloud on the spot — essential for legal and medical settings.</p>
@@ -175,18 +205,26 @@
         <span class="card__tag card__tag--beginner">Beginner</span>
       </div>
     </article>
-    <article class="card-mode card-mode--opi" aria-label="OPI mode">
-      <div class="card-mode__icon" aria-hidden="true">📞</div>
-      <h3 class="card-mode__title">OPI</h3>
-      <p class="card-mode__desc">Over-the-phone interpreting — short consecutive for remote, high-stakes dialogue.</p>
+    <article class="card-mode card-mode--escort scroll-reveal" aria-label="Escort mode">
+      <div class="card-mode__icon" aria-hidden="true">🤝</div>
+      <h3 class="card-mode__title">Escort / Liaison</h3>
+      <p class="card-mode__desc">Bidirectional informal interpreting for business, social, and administrative settings.</p>
       <div class="card-mode__tags">
         <span class="card__tag card__tag--intermediate">Intermediate</span>
       </div>
     </article>
-    <article class="card-mode card-mode--legal" aria-label="Legal interpreting mode">
+    <article class="card-mode card-mode--opi scroll-reveal" aria-label="OPI mode">
+      <div class="card-mode__icon" aria-hidden="true">📞</div>
+      <h3 class="card-mode__title">OPI / VRI</h3>
+      <p class="card-mode__desc">Over-the-phone and video remote interpreting for high-stakes triadic dialogue.</p>
+      <div class="card-mode__tags">
+        <span class="card__tag card__tag--intermediate">Intermediate</span>
+      </div>
+    </article>
+    <article class="card-mode card-mode--legal scroll-reveal" aria-label="Legal interpreting mode">
       <div class="card-mode__icon" aria-hidden="true">⚖️</div>
-      <h3 class="card-mode__title">Legal Interpreting</h3>
-      <p class="card-mode__desc">Specialized consecutive and simultaneous scenarios for court and legal proceedings.</p>
+      <h3 class="card-mode__title">Legal Verbatim</h3>
+      <p class="card-mode__desc">Specialized word-for-word interpretation for court and legal proceedings.</p>
       <div class="card-mode__tags">
         <span class="card__tag card__tag--advanced">Advanced</span>
       </div>
@@ -197,16 +235,17 @@
 <!-- ════════════════════════════════════════════════════════════
      PRICING
      ════════════════════════════════════════════════════════════ -->
-<section class="section" id="pricing" aria-labelledby="pricing-heading">
+<section class="pricing" id="pricing" aria-labelledby="pricing-heading">
   <div class="section-header">
-    <h2 id="pricing-heading">Simple, Transparent Pricing</h2>
-    <p>Start free. Upgrade when you are ready to go pro.</p>
+    <p class="section-header__eyebrow">Pricing</p>
+    <h2 class="section-header__title" id="pricing-heading">Simple, Transparent Pricing</h2>
+    <p class="section-header__desc">Start free. Upgrade when you are ready to go pro.</p>
   </div>
-  <div class="pricing-grid">
-    <article class="pricing-card" aria-label="Basic plan">
+  <div class="pricing__grid">
+    <article class="pricing-card scroll-reveal scroll-reveal--scale" aria-label="Basic plan">
       <h3 class="pricing-card__name">Basic</h3>
       <p class="pricing-card__price">Free <span>/ forever</span></p>
-      <p class="pricing-card__desc">Perfect for getting started.</p>
+      <p class="pricing-card__period">Perfect for getting started.</p>
       <ul class="pricing-card__features">
         <li>1 mode (Shadowing)</li>
         <li>5 scenarios per week</li>
@@ -216,13 +255,13 @@
       </ul>
       <a href="/app" class="btn btn-secondary btn-block">Get Started</a>
     </article>
-    <article class="pricing-card pricing-card--featured" aria-label="Pro plan">
+    <article class="pricing-card pricing-card--pro scroll-reveal scroll-reveal--scale" aria-label="Pro plan">
       <span class="pricing-card__badge">Most Popular</span>
       <h3 class="pricing-card__name">Pro</h3>
       <p class="pricing-card__price">$29 <span>/ month</span></p>
-      <p class="pricing-card__desc">For serious interpreters.</p>
+      <p class="pricing-card__period">For serious interpreters.</p>
       <ul class="pricing-card__features">
-        <li>All 7 modes</li>
+        <li>All 8 modes</li>
         <li>Unlimited scenarios</li>
         <li>Advanced AI feedback</li>
         <li>Dialect-specific training</li>
@@ -231,10 +270,10 @@
       </ul>
       <a href="/app" class="btn btn-primary btn-block">Start Free Trial</a>
     </article>
-    <article class="pricing-card" aria-label="Enterprise plan">
+    <article class="pricing-card scroll-reveal scroll-reveal--scale" aria-label="Enterprise plan">
       <h3 class="pricing-card__name">Enterprise</h3>
       <p class="pricing-card__price">Custom</p>
-      <p class="pricing-card__desc">For teams and institutions.</p>
+      <p class="pricing-card__period">For teams and institutions.</p>
       <ul class="pricing-card__features">
         <li>Everything in Pro</li>
         <li>Team management</li>
@@ -251,36 +290,37 @@
 <!-- ════════════════════════════════════════════════════════════
      TESTIMONIALS
      ════════════════════════════════════════════════════════════ -->
-<section class="section" id="testimonials" aria-labelledby="testimonials-heading">
+<section class="testimonials" id="testimonials" aria-labelledby="testimonials-heading">
   <div class="section-header">
-    <h2 id="testimonials-heading">What Interpreters Say</h2>
-    <p>Trusted by professionals around the world.</p>
+    <p class="section-header__eyebrow">Testimonials</p>
+    <h2 class="section-header__title" id="testimonials-heading">What Interpreters Say</h2>
+    <p class="section-header__desc">Trusted by professionals around the world.</p>
   </div>
-  <div class="testimonials-grid">
-    <article class="testimonial-card">
+  <div class="testimonials__grid">
+    <article class="testimonial-card scroll-reveal">
       <p class="testimonial-card__quote">The AI feedback is incredibly detailed. It caught nuances I never noticed in my own recordings. My consecutive scores improved by 30% in six weeks.</p>
       <div class="testimonial-card__author">
-        <div class="testimonial-card__avatar" aria-hidden="true">👩</div>
+        <div class="testimonial-card__avatar" aria-hidden="true">SA</div>
         <div>
           <p class="testimonial-card__name">Sarah Al-Rashid</p>
           <p class="testimonial-card__role">Conference Interpreter, Dubai</p>
         </div>
       </div>
     </article>
-    <article class="testimonial-card">
+    <article class="testimonial-card scroll-reveal">
       <p class="testimonial-card__quote">I used MAD to prepare for my NBCMI exam. The certification-aligned scenarios and real-time feedback gave me the confidence I needed to pass on my first attempt.</p>
       <div class="testimonial-card__author">
-        <div class="testimonial-card__avatar" aria-hidden="true">👨</div>
+        <div class="testimonial-card__avatar" aria-hidden="true">OB</div>
         <div>
           <p class="testimonial-card__name">Omar Benali</p>
           <p class="testimonial-card__role">Medical Interpreter, Chicago</p>
         </div>
       </div>
     </article>
-    <article class="testimonial-card">
+    <article class="testimonial-card scroll-reveal">
       <p class="testimonial-card__quote">The dialect-specific training is a game changer. Being able to practice Levantine and Gulf scenarios separately has made me a much more versatile interpreter.</p>
       <div class="testimonial-card__author">
-        <div class="testimonial-card__avatar" aria-hidden="true">👩</div>
+        <div class="testimonial-card__avatar" aria-hidden="true">LH</div>
         <div>
           <p class="testimonial-card__name">Layla Haddad</p>
           <p class="testimonial-card__role">Community Interpreter, London</p>
@@ -293,67 +333,115 @@
 <!-- ════════════════════════════════════════════════════════════
      FAQ
      ════════════════════════════════════════════════════════════ -->
-<section class="section" id="faq" aria-labelledby="faq-heading">
+<section class="faq" id="faq" aria-labelledby="faq-heading">
   <div class="section-header">
-    <h2 id="faq-heading">Frequently Asked Questions</h2>
-    <p>Everything you need to know about MAD Training Studio.</p>
+    <p class="section-header__eyebrow">FAQ</p>
+    <h2 class="section-header__title" id="faq-heading">Frequently Asked Questions</h2>
+    <p class="section-header__desc">Everything you need to know about MAD Training Studio.</p>
   </div>
-  <div class="faq-list">
-    <details class="faq-item">
-      <summary class="faq-item__question">What is MAD Training Studio? <span class="faq-item__icon" aria-hidden="true">+</span></summary>
-      <p class="faq-item__answer">MAD Training Studio is an AI-powered training platform for professional interpreters. It offers realistic scenarios across 7 interpreting modes, with real-time feedback, progress tracking, and certification-aligned content.</p>
-    </details>
-    <details class="faq-item">
-      <summary class="faq-item__question">Which interpreting modes are supported? <span class="faq-item__icon" aria-hidden="true">+</span></summary>
-      <p class="faq-item__answer">We support Shadowing, Consecutive, Simultaneous, Chuchotage (Whispered), Sight Translation, OPI (Over-the-Phone), and Legal Interpreting.</p>
-    </details>
-    <details class="faq-item">
-      <summary class="faq-item__question">Is it suitable for beginners? <span class="faq-item__icon" aria-hidden="true">+</span></summary>
-      <p class="faq-item__answer">Absolutely. Our Beginner mode starts with Shadowing and Sight Translation, gradually building skills toward more advanced modes like Simultaneous and Legal.</p>
-    </details>
-    <details class="faq-item">
-      <summary class="faq-item__question">Can I use it to prepare for certification exams? <span class="faq-item__icon" aria-hidden="true">+</span></summary>
-      <p class="faq-item__answer">Yes. Our scenarios and rubrics are aligned with AIIC, CCHI, NBCMI, and NAJIT standards. Pro users get access to dedicated certification prep tracks.</p>
-    </details>
-    <details class="faq-item">
-      <summary class="faq-item__question">What language pairs are available? <span class="faq-item__icon" aria-hidden="true">+</span></summary>
-      <p class="faq-item__answer">Arabic-English is our most complete pair. We also support Arabic-French, English-French, and multiple dialects including Levantine, Gulf, Egyptian, and Maghrebi.</p>
-    </details>
-    <details class="faq-item">
-      <summary class="faq-item__question">How does the AI feedback work? <span class="faq-item__icon" aria-hidden="true">+</span></summary>
-      <p class="faq-item__answer">After each session, our AI analyzes your interpretation for accuracy, completeness, terminology usage, and delivery quality. You receive a detailed breakdown with specific improvement suggestions.</p>
-    </details>
-    <details class="faq-item">
-      <summary class="faq-item__question">Is there a free trial? <span class="faq-item__icon" aria-hidden="true">+</span></summary>
-      <p class="faq-item__answer">Yes. The Basic plan is free forever. Pro plans come with a 14-day free trial with no credit card required.</p>
-    </details>
-    <details class="faq-item">
-      <summary class="faq-item__question">Can I cancel my subscription anytime? <span class="faq-item__icon" aria-hidden="true">+</span></summary>
-      <p class="faq-item__answer">Yes, you can cancel your Pro subscription at any time. You will retain access until the end of your billing period.</p>
-    </details>
-    <details class="faq-item">
-      <summary class="faq-item__question">Do you offer team or institutional licenses? <span class="faq-item__icon" aria-hidden="true">+</span></summary>
-      <p class="faq-item__answer">Yes. Our Enterprise plan includes team management, custom scenario creation, LMS integration, and dedicated support. Contact us for a custom quote.</p>
-    </details>
-    <details class="faq-item">
-      <summary class="faq-item__question">What devices and browsers are supported? <span class="faq-item__icon" aria-hidden="true">+</span></summary>
-      <p class="faq-item__answer">MAD Training Studio works on all modern browsers including Chrome, Firefox, Safari, and Edge. It is fully responsive on desktop, tablet, and mobile devices.</p>
-    </details>
+  <div class="faq__list">
+    <div class="faq__item">
+      <button class="faq__question" aria-expanded="false" onclick="this.setAttribute('aria-expanded', this.getAttribute('aria-expanded') === 'true' ? 'false' : 'true'); this.parentElement.classList.toggle('open');">
+        What is MAD Training Studio?
+        <span class="faq__icon" aria-hidden="true"></span>
+      </button>
+      <div class="faq__answer">
+        <p>MAD Training Studio is an AI-powered training platform for professional interpreters. It offers realistic scenarios across 8 interpreting modes, with real-time feedback, progress tracking, and certification-aligned content.</p>
+      </div>
+    </div>
+    <div class="faq__item">
+      <button class="faq__question" aria-expanded="false" onclick="this.setAttribute('aria-expanded', this.getAttribute('aria-expanded') === 'true' ? 'false' : 'true'); this.parentElement.classList.toggle('open');">
+        Which interpreting modes are supported?
+        <span class="faq__icon" aria-hidden="true"></span>
+      </button>
+      <div class="faq__answer">
+        <p>We support Shadowing, Consecutive, Simultaneous, Chuchotage (Whispered), Sight Translation, Escort/Liaison, OPI (Over-the-Phone), and Legal Verbatim.</p>
+      </div>
+    </div>
+    <div class="faq__item">
+      <button class="faq__question" aria-expanded="false" onclick="this.setAttribute('aria-expanded', this.getAttribute('aria-expanded') === 'true' ? 'false' : 'true'); this.parentElement.classList.toggle('open');">
+        Is it suitable for beginners?
+        <span class="faq__icon" aria-hidden="true"></span>
+      </button>
+      <div class="faq__answer">
+        <p>Absolutely. Our Beginner mode starts with Shadowing and Sight Translation, gradually building skills toward more advanced modes like Simultaneous and Legal.</p>
+      </div>
+    </div>
+    <div class="faq__item">
+      <button class="faq__question" aria-expanded="false" onclick="this.setAttribute('aria-expanded', this.getAttribute('aria-expanded') === 'true' ? 'false' : 'true'); this.parentElement.classList.toggle('open');">
+        Can I use it to prepare for certification exams?
+        <span class="faq__icon" aria-hidden="true"></span>
+      </button>
+      <div class="faq__answer">
+        <p>Yes. Our scenarios and rubrics are aligned with AIIC, CCHI, NBCMI, and NAJIT standards. Pro users get access to dedicated certification prep tracks.</p>
+      </div>
+    </div>
+    <div class="faq__item">
+      <button class="faq__question" aria-expanded="false" onclick="this.setAttribute('aria-expanded', this.getAttribute('aria-expanded') === 'true' ? 'false' : 'true'); this.parentElement.classList.toggle('open');">
+        What language pairs are available?
+        <span class="faq__icon" aria-hidden="true"></span>
+      </button>
+      <div class="faq__answer">
+        <p>Arabic-English is our most complete pair. We also support Arabic-French, English-French, and multiple dialects including Levantine, Gulf, Egyptian, and Maghrebi.</p>
+      </div>
+    </div>
+    <div class="faq__item">
+      <button class="faq__question" aria-expanded="false" onclick="this.setAttribute('aria-expanded', this.getAttribute('aria-expanded') === 'true' ? 'false' : 'true'); this.parentElement.classList.toggle('open');">
+        How does the AI feedback work?
+        <span class="faq__icon" aria-hidden="true"></span>
+      </button>
+      <div class="faq__answer">
+        <p>After each session, our AI analyzes your interpretation for accuracy, completeness, terminology usage, and delivery quality. You receive a detailed breakdown with specific improvement suggestions.</p>
+      </div>
+    </div>
+    <div class="faq__item">
+      <button class="faq__question" aria-expanded="false" onclick="this.setAttribute('aria-expanded', this.getAttribute('aria-expanded') === 'true' ? 'false' : 'true'); this.parentElement.classList.toggle('open');">
+        Is there a free trial?
+        <span class="faq__icon" aria-hidden="true"></span>
+      </button>
+      <div class="faq__answer">
+        <p>Yes. The Basic plan is free forever. Pro plans come with a 14-day free trial with no credit card required.</p>
+      </div>
+    </div>
+    <div class="faq__item">
+      <button class="faq__question" aria-expanded="false" onclick="this.setAttribute('aria-expanded', this.getAttribute('aria-expanded') === 'true' ? 'false' : 'true'); this.parentElement.classList.toggle('open');">
+        Can I cancel my subscription anytime?
+        <span class="faq__icon" aria-hidden="true"></span>
+      </button>
+      <div class="faq__answer">
+        <p>Yes, you can cancel your Pro subscription at any time. You will retain access until the end of your billing period.</p>
+      </div>
+    </div>
+    <div class="faq__item">
+      <button class="faq__question" aria-expanded="false" onclick="this.setAttribute('aria-expanded', this.getAttribute('aria-expanded') === 'true' ? 'false' : 'true'); this.parentElement.classList.toggle('open');">
+        Do you offer team or institutional licenses?
+        <span class="faq__icon" aria-hidden="true"></span>
+      </button>
+      <div class="faq__answer">
+        <p>Yes. Our Enterprise plan includes team management, custom scenario creation, LMS integration, and dedicated support. Contact us for a custom quote.</p>
+      </div>
+    </div>
+    <div class="faq__item">
+      <button class="faq__question" aria-expanded="false" onclick="this.setAttribute('aria-expanded', this.getAttribute('aria-expanded') === 'true' ? 'false' : 'true'); this.parentElement.classList.toggle('open');">
+        What devices and browsers are supported?
+        <span class="faq__icon" aria-hidden="true"></span>
+      </button>
+      <div class="faq__answer">
+        <p>MAD Training Studio works on all modern browsers including Chrome, Firefox, Safari, and Edge. It is fully responsive on desktop, tablet, and mobile devices.</p>
+      </div>
+    </div>
   </div>
 </section>
 
 <!-- ════════════════════════════════════════════════════════════
      CTA
      ════════════════════════════════════════════════════════════ -->
-<section class="cta-section" id="cta" aria-labelledby="cta-heading">
-  <div class="cta-section__inner">
-    <h2 id="cta-heading">Ready to Master Interpretation?</h2>
-    <p>Join thousands of interpreters training smarter with AI. Start your free journey today.</p>
-    <form class="cta-form" action="/app" method="get" aria-label="Email signup form">
-      <label for="cta-email" class="sr-only">Email address</label>
-      <input type="email" id="cta-email" name="email" class="form-input" placeholder="Enter your email" required autocomplete="email">
-      <button type="submit" class="btn btn-primary btn-large">Get Started</button>
-    </form>
+<section class="cta" id="cta" aria-labelledby="cta-heading">
+  <h2 class="cta__title" id="cta-heading">Ready to Master <span>Interpretation</span>?</h2>
+  <p class="cta__desc">Join thousands of interpreters training smarter with AI. Start your free journey today.</p>
+  <div class="hero__actions" style="justify-content: center; margin-top: var(--space-8);">
+    <a href="/app" class="btn btn-gold btn-large">Start Training Now</a>
+    <a href="/app" class="btn btn-primary btn-large">Explore the Studio</a>
   </div>
 </section>
 
@@ -362,13 +450,13 @@
      ════════════════════════════════════════════════════════════ -->
 <footer class="footer" role="contentinfo">
   <div class="footer__grid">
-    <div class="footer__col">
-      <p class="footer__brand">MAD Training Studio</p>
+    <div class="footer__brand-col">
+      <p class="footer__brand">MAD<span>Studio</span></p>
       <p class="footer__tagline">AI-powered training for professional interpreters. Master every mode.</p>
     </div>
     <div class="footer__col">
-      <h4>Product</h4>
-      <ul>
+      <h4 class="footer__col-title">Product</h4>
+      <ul class="footer__links">
         <li><a href="#features">Features</a></li>
         <li><a href="#modes">Modes</a></li>
         <li><a href="#pricing">Pricing</a></li>
@@ -376,8 +464,8 @@
       </ul>
     </div>
     <div class="footer__col">
-      <h4>Resources</h4>
-      <ul>
+      <h4 class="footer__col-title">Resources</h4>
+      <ul class="footer__links">
         <li><a href="#faq">FAQ</a></li>
         <li><a href="#testimonials">Testimonials</a></li>
         <li><a href="/blog">Blog</a></li>
@@ -385,8 +473,8 @@
       </ul>
     </div>
     <div class="footer__col">
-      <h4>Company</h4>
-      <ul>
+      <h4 class="footer__col-title">Company</h4>
+      <ul class="footer__links">
         <li><a href="/about">About</a></li>
         <li><a href="/careers">Careers</a></li>
         <li><a href="/contact">Contact</a></li>
@@ -404,6 +492,29 @@
     </div>
   </div>
 </footer>
+
+<script>
+  // Navbar scroll effect
+  const nav = document.getElementById('landing-nav');
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 20) {
+      nav.classList.add('scrolled');
+    } else {
+      nav.classList.remove('scrolled');
+    }
+  });
+
+  // Scroll reveal observer
+  const revealObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+
+  document.querySelectorAll('.scroll-reveal').forEach(el => revealObserver.observe(el));
+</script>
 
 </body>
 </html>
