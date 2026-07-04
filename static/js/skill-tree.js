@@ -55,19 +55,6 @@
       gridCols: 3,
     },
     {
-      id: 'sight',
-      name: 'Sight Translation',
-      mode: 'sight',
-      level: 'Intermediate-Advanced',
-      levelClass: 'badge-intermediate',
-      description:
-        'Written-input, oral-output interpreting. Read a document on screen and deliver an oral rendition at a sustained pace.',
-      color: 'sight',
-      row: 2,
-      col: 1,
-      gridCols: 3,
-    },
-    {
       id: 'liaison',
       name: 'Liaison / Escort',
       mode: 'escort',
@@ -94,6 +81,19 @@
       gridCols: 3,
     },
     {
+      id: 'sight',
+      name: 'Sight Translation',
+      mode: 'sight',
+      level: 'Intermediate-Advanced',
+      levelClass: 'badge-intermediate',
+      description:
+        'Written-input, oral-output interpreting. Read a document on screen and deliver an oral rendition at a sustained pace.',
+      color: 'sight',
+      row: 3,
+      col: 1,
+      gridCols: 3,
+    },
+    {
       id: 'legal',
       name: 'Legal Verbatim',
       mode: 'legal',
@@ -102,7 +102,7 @@
       description:
         'Word-for-word legal interpretation — depositions, court statements, and sworn testimony. Exact reproduction required, no summarization.',
       color: 'legal',
-      row: 3,
+      row: 4,
       col: 0,
       gridCols: 3,
     },
@@ -115,7 +115,7 @@
       description:
         'Over-the-Phone & Video Remote Interpreting. Triadic communication between two simulated parties.',
       color: 'opi',
-      row: 3,
+      row: 4,
       col: 1,
       gridCols: 3,
     },
@@ -124,11 +124,11 @@
   const CONNECTIONS = [
     { from: 'shadowing', to: 'consecutive', type: 'branch' },
     { from: 'shadowing', to: 'simultaneous', type: 'branch' },
-    { from: 'shadowing', to: 'sight', type: 'branch' },
-    { from: 'consecutive', to: 'legal', type: 'branch' },
+    { from: 'consecutive', to: 'liaison', type: 'branch' },
     { from: 'simultaneous', to: 'chuchotage', type: 'branch' },
-    { from: 'liaison', to: 'consecutive', type: 'bridge' },
-    { from: 'liaison', to: 'simultaneous', type: 'bridge' },
+    { from: 'liaison', to: 'sight', type: 'branch' },
+    { from: 'chuchotage', to: 'sight', type: 'branch' },
+    { from: 'sight', to: 'legal', type: 'branch' },
     { from: 'legal', to: 'vri-opi', type: 'branch' },
   ];
 
@@ -137,9 +137,9 @@
     shadowing: 'Always available — your starting point.',
     consecutive: 'Complete Shadowing practice or finish Module 5.',
     simultaneous: 'Complete both Shadowing and Consecutive modules.',
-    sight: 'Complete Consecutive practice or finish Module 16.',
     liaison: 'Complete Consecutive practice or finish Module 11.',
     chuchotage: 'Complete Simultaneous practice or finish Module 24.',
+    sight: 'Complete Liaison or Chuchotage practice.',
     legal: 'Complete Sight Translation practice.',
     'vri-opi': 'Complete Legal Verbatim to unlock the expert track.',
   };
@@ -268,22 +268,22 @@
         completed: completed('simultaneous'),
       };
 
-      // Sight Translation
-      s.sight = {
-        locked: !(practiced('consecutive') || mod(16)),
-        completed: completed('sight'),
-      };
-
-      // Liaison / Escort
+      // Liaison / Escort — unlocked after CI practice
       s.liaison = {
         locked: !(practiced('consecutive') || mod(11)),
         completed: practiced('escort') || practiced('liaison'),
       };
 
-      // Chuchotage
+      // Chuchotage — unlocked after SI practice
       s.chuchotage = {
         locked: !(practiced('simultaneous') || mod(24)),
         completed: completed('chuchotage'),
+      };
+
+      // Sight Translation — bridges Liaison and Chuchotage
+      s.sight = {
+        locked: !(practiced('liaison') || practiced('chuchotage') || mod(16)),
+        completed: completed('sight'),
       };
 
       // Legal Verbatim
@@ -334,9 +334,9 @@
         'shadowing',
         'consecutive',
         'simultaneous',
-        'sight',
         'liaison',
         'chuchotage',
+        'sight',
         'legal',
         'vri-opi',
       ];
