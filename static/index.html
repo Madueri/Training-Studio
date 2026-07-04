@@ -9,6 +9,7 @@
 <link rel="stylesheet" href="/static/css/onboarding.css">
 <link rel="stylesheet" href="/static/css/progress.css">
 <link rel="stylesheet" href="/static/css/dashboard.css">
+<link rel="stylesheet" href="/static/css/skill-tree.css">
 <link rel="stylesheet" href="/static/css/components.css">
 </head>
 <body>
@@ -360,87 +361,101 @@
  <div class="mode-home-title">Interpretation Practice</div>
  <div class="mode-home-sub">Choose a mode to begin your session</div>
  </div>
- <div class="mode-grid">
- <div class="mode-card-v2 shadowing" onclick="enterPractice('shadowing')">
- <div class="mc-icon"></div>
- <div class="mc-title">Shadowing</div>
- <div class="mc-desc">Repeat the speaker simultaneously in the same language. Builds listening, rhythm, and spoken fluency at broadcast pace.</div>
- <div class="mc-tags">
- <span class="mc-tag badge-beginner">Beginner</span>
- <span class="mc-tag" style="background:var(--bg3);color:var(--dim);border:1px solid var(--border)">Same language</span>
+ <!-- Skill Tree -->
+ <div id="skill-tree-container" style="padding:20px 0">
+  <div style="text-align:center;margin-bottom:24px">
+   <h2 style="font-size:22px;font-weight:800;margin-bottom:8px">Your Interpretation Journey</h2>
+   <p style="color:var(--dim);font-size:14px">Master each level to unlock the next. Start with Shadowing.</p>
+  </div>
+  <div style="text-align:right;margin-bottom:12px">
+   <button class="btn btn-ghost btn-sm" onclick="toggleModeView()" id="mode-view-toggle">View as Grid</button>
+  </div>
+  <div id="skill-tree"></div>
  </div>
- <div style="margin-top:14px;font-size:11px;color:var(--dim)">Watch → Shadow simultaneously → Get fluency score</div>
- </div>
- <div class="mode-card-v2 consecutive" onclick="enterPractice('consecutive')">
- <div class="mc-icon"></div>
- <div class="mc-title">Consecutive</div>
- <div class="mc-desc">Listen to segments, take notes, then deliver your interpretation during the pause. Core conference skill.</div>
- <div class="mc-tags">
- <span class="mc-tag badge-intermediate">Intermediate</span>
- <span class="mc-tag" style="background:var(--bg3);color:var(--dim);border:1px solid var(--border)">Cross-language</span>
- </div>
- <div style="margin-top:14px;font-size:11px;color:var(--dim)">Watch segment → Pause → Interpret → Score</div>
- </div>
- <div class="mode-card-v2 escort" onclick="enterPractice('escort')">
- <div class="mc-icon"></div>
- <div class="mc-title">Escort/Liaison</div>
- <div class="mc-desc">Informal, bidirectional interpreting for business, social, or administrative settings. Emphasizes natural conversation and cultural mediation.</div>
- <div class="mc-tags">
- <span class="mc-tag badge-intermediate">Intermediate</span>
- <span class="mc-tag" style="background:var(--bg3);color:var(--dim);border:1px solid var(--border)">Bidirectional, informal</span>
- </div>
- <div style="margin-top:14px;font-size:11px;color:var(--dim)">Converse both ways → Score on cultural mediation &amp; naturalness</div>
- </div>
- <div class="mode-card-v2 legal" onclick="enterPractice('legal')">
- <div class="mc-icon"></div>
- <div class="mc-title">Legal Verbatim</div>
- <div class="mc-desc">Word-for-word legal interpretation — depositions, court statements, and sworn testimony. Exact reproduction required, no summarization.</div>
- <div class="mc-tags">
- <span class="mc-tag badge-advanced">Advanced</span>
- <span class="mc-tag" style="background:var(--bg3);color:var(--dim);border:1px solid var(--border)">Legal register</span>
- </div>
- <div style="margin-top:14px;font-size:11px;color:var(--dim)">Exact wording → No paraphrasing → Legal precision scoring</div>
- </div>
- <div class="mode-card-v2 simultaneous" onclick="enterPractice('simultaneous')">
- <div class="mc-icon"></div>
- <div class="mc-title">Simultaneous</div>
- <div class="mc-desc">Interpret in real-time while the speaker talks. Maximum cognitive challenge — full conference booth standard.</div>
- <div class="mc-tags">
- <span class="mc-tag badge-advanced">Advanced</span>
- <span class="mc-tag" style="background:var(--bg3);color:var(--dim);border:1px solid var(--border)">Real-time</span>
- </div>
- <div style="margin-top:14px;font-size:11px;color:var(--dim)">Watch + Interpret simultaneously → Analyze accuracy</div>
- </div>
- <div class="mode-card-v2 chuchotage" onclick="enterPractice('chuchotage')">
- <div class="mc-icon"></div>
- <div class="mc-title">Chuchotage</div>
- <div class="mc-desc">Whispered simultaneous, no booth or equipment, delivered at close proximity to 1-2 listeners. Adds volume discipline and noise resilience.</div>
- <div class="mc-tags">
- <span class="mc-tag badge-advanced">Advanced</span>
- <span class="mc-tag" style="background:var(--bg3);color:var(--dim);border:1px solid var(--border)">Real-time, whispered</span>
- </div>
- <div style="margin-top:14px;font-size:11px;color:var(--dim)">Watch + Whisper-interpret live → Score on volume &amp; noise control</div>
- </div>
- <div class="mode-card-v2 sight" onclick="enterPractice('sight')">
- <div class="mc-icon"></div>
- <div class="mc-title">Sight Translation</div>
- <div class="mc-desc">Written-input, oral-output interpreting. Read a document on screen and deliver an oral rendition at a sustained pace.</div>
- <div class="mc-tags">
- <span class="mc-tag badge-advanced">Advanced</span>
- <span class="mc-tag" style="background:var(--bg3);color:var(--dim);border:1px solid var(--border)">Written → Oral</span>
- </div>
- <div style="margin-top:14px;font-size:11px;color:var(--dim)">Read document → Speak rendition → Score on register &amp; WPM throughput</div>
- </div>
- <div class="mode-card-v2 opi" onclick="enterPractice('opi')">
- <div class="mc-icon"></div>
- <div class="mc-title">OPI / VRI</div>
- <div class="mc-desc">Over-the-Phone &amp; Video Remote Interpreting. Triadic communication between two simulated parties — toggle video on for the VRI visual channel.</div>
- <div class="mc-tags">
- <span class="mc-tag badge-premium">Professional</span>
- <span class="mc-tag" style="background:var(--bg3);color:var(--dim);border:1px solid var(--border)">Triadic</span>
- </div>
- <div style="margin-top:14px;font-size:11px;color:var(--dim)">Listen to call scenario → Interpret both parties → Toggle video for VRI</div>
- </div>
+ <!-- Fallback mode cards (hidden by default) -->
+ <div id="mode-cards-grid" style="display:none">
+  <div class="mode-grid">
+   <div class="mode-card-v2 shadowing" onclick="enterPractice('shadowing')">
+    <div class="mc-icon"></div>
+    <div class="mc-title">Shadowing</div>
+    <div class="mc-desc">Repeat the speaker simultaneously in the same language. Builds listening, rhythm, and spoken fluency at broadcast pace.</div>
+    <div class="mc-tags">
+     <span class="mc-tag badge-beginner">Beginner</span>
+     <span class="mc-tag" style="background:var(--bg3);color:var(--dim);border:1px solid var(--border)">Same language</span>
+    </div>
+    <div style="margin-top:14px;font-size:11px;color:var(--dim)">Watch → Shadow simultaneously → Get fluency score</div>
+   </div>
+   <div class="mode-card-v2 consecutive" onclick="enterPractice('consecutive')">
+    <div class="mc-icon"></div>
+    <div class="mc-title">Consecutive</div>
+    <div class="mc-desc">Listen to segments, take notes, then deliver your interpretation during the pause. Core conference skill.</div>
+    <div class="mc-tags">
+     <span class="mc-tag badge-intermediate">Intermediate</span>
+     <span class="mc-tag" style="background:var(--bg3);color:var(--dim);border:1px solid var(--border)">Cross-language</span>
+    </div>
+    <div style="margin-top:14px;font-size:11px;color:var(--dim)">Watch segment → Pause → Interpret → Score</div>
+   </div>
+   <div class="mode-card-v2 escort" onclick="enterPractice('escort')">
+    <div class="mc-icon"></div>
+    <div class="mc-title">Escort/Liaison</div>
+    <div class="mc-desc">Informal, bidirectional interpreting for business, social, or administrative settings. Emphasizes natural conversation and cultural mediation.</div>
+    <div class="mc-tags">
+     <span class="mc-tag badge-intermediate">Intermediate</span>
+     <span class="mc-tag" style="background:var(--bg3);color:var(--dim);border:1px solid var(--border)">Bidirectional, informal</span>
+    </div>
+    <div style="margin-top:14px;font-size:11px;color:var(--dim)">Converse both ways → Score on cultural mediation &amp; naturalness</div>
+   </div>
+   <div class="mode-card-v2 legal" onclick="enterPractice('legal')">
+    <div class="mc-icon"></div>
+    <div class="mc-title">Legal Verbatim</div>
+    <div class="mc-desc">Word-for-word legal interpretation — depositions, court statements, and sworn testimony. Exact reproduction required, no summarization.</div>
+    <div class="mc-tags">
+     <span class="mc-tag badge-advanced">Advanced</span>
+     <span class="mc-tag" style="background:var(--bg3);color:var(--dim);border:1px solid var(--border)">Legal register</span>
+    </div>
+    <div style="margin-top:14px;font-size:11px;color:var(--dim)">Exact wording → No paraphrasing → Legal precision scoring</div>
+   </div>
+   <div class="mode-card-v2 simultaneous" onclick="enterPractice('simultaneous')">
+    <div class="mc-icon"></div>
+    <div class="mc-title">Simultaneous</div>
+    <div class="mc-desc">Interpret in real-time while the speaker talks. Maximum cognitive challenge — full conference booth standard.</div>
+    <div class="mc-tags">
+     <span class="mc-tag badge-advanced">Advanced</span>
+     <span class="mc-tag" style="background:var(--bg3);color:var(--dim);border:1px solid var(--border)">Real-time</span>
+    </div>
+    <div style="margin-top:14px;font-size:11px;color:var(--dim)">Watch + Interpret simultaneously → Analyze accuracy</div>
+   </div>
+   <div class="mode-card-v2 chuchotage" onclick="enterPractice('chuchotage')">
+    <div class="mc-icon"></div>
+    <div class="mc-title">Chuchotage</div>
+    <div class="mc-desc">Whispered simultaneous, no booth or equipment, delivered at close proximity to 1-2 listeners. Adds volume discipline and noise resilience.</div>
+    <div class="mc-tags">
+     <span class="mc-tag badge-advanced">Advanced</span>
+     <span class="mc-tag" style="background:var(--bg3);color:var(--dim);border:1px solid var(--border)">Real-time, whispered</span>
+    </div>
+    <div style="margin-top:14px;font-size:11px;color:var(--dim)">Watch + Whisper-interpret live → Score on volume &amp; noise control</div>
+   </div>
+   <div class="mode-card-v2 sight" onclick="enterPractice('sight')">
+    <div class="mc-icon"></div>
+    <div class="mc-title">Sight Translation</div>
+    <div class="mc-desc">Written-input, oral-output interpreting. Read a document on screen and deliver an oral rendition at a sustained pace.</div>
+    <div class="mc-tags">
+     <span class="mc-tag badge-advanced">Advanced</span>
+     <span class="mc-tag" style="background:var(--bg3);color:var(--dim);border:1px solid var(--border)">Written → Oral</span>
+    </div>
+    <div style="margin-top:14px;font-size:11px;color:var(--dim)">Read document → Speak rendition → Score on register &amp; WPM throughput</div>
+   </div>
+   <div class="mode-card-v2 opi" onclick="enterPractice('opi')">
+    <div class="mc-icon"></div>
+    <div class="mc-title">OPI / VRI</div>
+    <div class="mc-desc">Over-the-Phone &amp; Video Remote Interpreting. Triadic communication between two simulated parties — toggle video on for the VRI visual channel.</div>
+    <div class="mc-tags">
+     <span class="mc-tag badge-premium">Professional</span>
+     <span class="mc-tag" style="background:var(--bg3);color:var(--dim);border:1px solid var(--border)">Triadic</span>
+    </div>
+    <div style="margin-top:14px;font-size:11px;color:var(--dim)">Listen to call scenario → Interpret both parties → Toggle video for VRI</div>
+   </div>
+  </div>
  </div>
  </div>
 
@@ -5582,6 +5597,51 @@ async function loadProgress() {
  }
 }
 
+// ── Skill Tree ─────────────────────────────────────────────────
+function initSkillTree() {
+  if (typeof SkillTreeRenderer === 'undefined') {
+    console.warn('[SkillTree] SkillTreeRenderer not loaded');
+    return;
+  }
+  const container = document.getElementById('skill-tree');
+  if (!container) return;
+  // Gather progress from localStorage
+  const getBool = k => !!localStorage.getItem(k);
+  const getArr  = k => { try { return JSON.parse(localStorage.getItem(k) || '[]'); } catch(e) { return []; } };
+  const getNum  = k => { const v = localStorage.getItem(k); return v ? parseInt(v,10) : 0; };
+  const completedModules = getArr('completed-modules');
+  const currentModule = getNum('current-module');
+  const progress = {
+    shadowing:   { practiced: getBool('shadowing-practiced'), sessions: getArr('shadowing-sessions').length, score: getNum('shadowing-best-score') },
+    consecutive: { practiced: getArr('ci-sessions').length > 0, sessions: getArr('ci-sessions').length, score: getNum('ci-best-score') },
+    simultaneous:{ practiced: getArr('si-sessions').length > 0, sessions: getArr('si-sessions').length, score: getNum('si-best-score') },
+    sight:       { practiced: getBool('sight-translation-practiced'), sessions: getArr('sight-sessions').length, score: getNum('sight-best-score') },
+    chuchotage:  { practiced: getBool('chuchotage-practiced'), sessions: getArr('chuchotage-sessions').length, score: getNum('chuchotage-best-score') },
+    legal:       { practiced: getBool('legal-practiced'), sessions: getArr('legal-sessions').length, score: getNum('legal-best-score') },
+    escort:      { practiced: getBool('escort-practiced') || getBool('liaison-practiced'), sessions: getArr('escort-sessions').length, score: getNum('escort-best-score') },
+    opi:         { practiced: getArr('opi-sessions').length > 0 || getBool('vri-practiced'), sessions: getArr('opi-sessions').length, score: getNum('opi-best-score') },
+    module: currentModule,
+    currentModule: currentModule,
+    completedModules: completedModules
+  };
+  window._skillTree = new SkillTreeRenderer(container, progress);
+  window._skillTree.render();
+}
+function toggleModeView() {
+  const tree = document.getElementById('skill-tree-container');
+  const grid = document.getElementById('mode-cards-grid');
+  const btn = document.getElementById('mode-view-toggle');
+  if (!tree || !grid) return;
+  const showingTree = tree.style.display !== 'none';
+  tree.style.display = showingTree ? 'none' : 'block';
+  grid.style.display = showingTree ? 'block' : 'none';
+  if (btn) btn.textContent = showingTree ? 'View as Tree' : 'View as Grid';
+}
+// Auto-init when DOM ready
+document.addEventListener('DOMContentLoaded', () => {
+  initSkillTree();
+});
+
 // ── Practice Page Navigation ────────────────────────────────────
 const MODE_META = {
  shadowing: { name:'Shadowing', sub:'Real-time fluency training', instructions:'① Select a field and choose a video from the library\n② Press Start Recording — your mic activates immediately\n③ Play the video and shadow the speaker in the same language, matching their rhythm and pacing\n④ Press Finish when done — your delivery will be analyzed for fluency, pacing, and naturalness' },
@@ -8836,6 +8896,7 @@ function opiNewCall() {
 <script src="/static/js/onboarding.js"></script>
 
 <script src="/static/js/dashboard.js"></script>
+<script src="/static/js/skill-tree.js"></script>
 
 </body>
 </html>
