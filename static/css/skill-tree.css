@@ -1,6 +1,7 @@
 /* ============================================================
-   MAD Training Studio — Vertical Skill Tree
+   MAD Training Studio — Layered Skill Tree
    Deep Focus design system, dark-mode default
+   4 horizontal layers with offset side-mission nodes
    ============================================================ */
 
 /* ── Container ─────────────────────────────────────────────── */
@@ -10,7 +11,7 @@
   max-width: 900px;
   margin: 0 auto;
   padding: var(--space-8) var(--space-4);
-  min-height: 600px;
+  min-height: 700px;
 }
 
 .skill-tree-svg {
@@ -50,27 +51,83 @@
   to { stroke-dashoffset: -14; }
 }
 
-/* ── Rows ─────────────────────────────────────────────────── */
-.skill-tree-rows {
+/* ── Layers ───────────────────────────────────────────────── */
+.skill-tree-layers {
   position: relative;
   z-index: 1;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: var(--space-12);
+  gap: var(--space-16);
 }
 
-.skill-tree-row {
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
-  gap: var(--space-8);
+.skill-tree-layer {
+  position: relative;
   width: 100%;
+  min-height: 180px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: var(--space-4) 0;
+}
+
+/* Subtle background band per layer */
+.skill-tree-layer-bg {
+  position: absolute;
+  inset: 0;
+  border-radius: var(--radius-lg);
+  z-index: 0;
+  opacity: 0.04;
+}
+
+.skill-tree-layer[data-layer="0"] .skill-tree-layer-bg {
+  background: rgba(20, 184, 166, 0.08);
+}
+
+.skill-tree-layer[data-layer="1"] .skill-tree-layer-bg {
+  background: rgba(91, 155, 213, 0.08);
+}
+
+.skill-tree-layer[data-layer="2"] .skill-tree-layer-bg {
+  background: rgba(168, 85, 247, 0.08);
+}
+
+.skill-tree-layer[data-layer="3"] .skill-tree-layer-bg {
+  background: rgba(232, 197, 71, 0.08);
+}
+
+/* Layer label (Beginner / Intermediate / Advanced / Expert) */
+.skill-tree-layer-label {
+  position: absolute;
+  left: var(--space-4);
+  top: var(--space-3);
+  font-size: var(--text-overline);
+  font-weight: var(--weight-bold);
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
+  color: var(--text-muted);
+  z-index: 1;
+  opacity: 0.7;
+}
+
+.skill-tree-layer[data-layer="0"] .skill-tree-layer-label { color: var(--mode-shadowing); }
+.skill-tree-layer[data-layer="1"] .skill-tree-layer-label { color: var(--primary); }
+.skill-tree-layer[data-layer="2"] .skill-tree-layer-label { color: var(--mode-si); }
+.skill-tree-layer[data-layer="3"] .skill-tree-layer-label { color: var(--accent); }
+
+/* Nodes positioning container */
+.skill-tree-layer-nodes {
+  position: relative;
+  width: 100%;
+  max-width: 800px;
+  min-height: 160px;
+  z-index: 1;
 }
 
 /* ── Node Card ────────────────────────────────────────────── */
 .skill-tree-node {
-  position: relative;
+  position: absolute;
+  top: 20px;
+  left: 50%;
   width: 220px;
   background: var(--bg-elevated);
   border: 2px solid var(--border);
@@ -79,18 +136,18 @@
   text-align: center;
   cursor: default;
   transition: all var(--duration-normal) var(--ease-smooth);
-  overflow: hidden;
+  overflow: visible;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: var(--space-2);
   opacity: 0;
-  transform: translateY(20px);
+  transform: translateX(-50%) translateY(20px);
 }
 
 .skill-tree-node.is-visible {
   opacity: 1;
-  transform: translateY(0);
+  transform: translateX(-50%) translateY(0);
 }
 
 /* Bottom accent bar (matches mode-card-v2) */
@@ -102,6 +159,7 @@
   right: 0;
   height: 3px;
   background: var(--border);
+  border-radius: 0 0 var(--radius-xl) var(--radius-xl);
   transition: background var(--duration-normal) var(--ease-smooth);
 }
 
@@ -111,9 +169,61 @@
 .skill-tree-node[data-mode="simultaneous"]::after { background: linear-gradient(90deg, var(--mode-si), var(--primary)); }
 .skill-tree-node[data-mode="chuchotage"]::after   { background: linear-gradient(90deg, var(--mode-chuchotage), var(--accent)); }
 .skill-tree-node[data-mode="escort"]::after       { background: linear-gradient(90deg, var(--accent), var(--mode-escort)); }
-.skill-tree-node[data-mode="legal"]::after        { background: linear-gradient(90deg, var(--mode-legal), var(--border-strong)); }
 .skill-tree-node[data-mode="sight"]::after        { background: linear-gradient(90deg, var(--mode-sight), var(--mode-shadowing)); }
 .skill-tree-node[data-mode="opi"]::after          { background: linear-gradient(90deg, var(--mode-opi), var(--error)); }
+
+/* ── Node Positioning ─────────────────────────────────────── */
+.stn-pos-left        { left: 16%; }
+.stn-pos-center      { left: 50%; }
+.stn-pos-right       { left: 84%; }
+.stn-pos-center-right { left: 60%; }
+
+/* ── Offset / Side Mission Nodes ──────────────────────────── */
+.skill-tree-node.is-offset {
+  top: 80px;
+  width: 180px;
+  border-style: dashed;
+  border-color: var(--border-strong);
+  opacity: 0.9;
+}
+
+.skill-tree-node.is-offset.is-visible {
+  opacity: 0.9;
+}
+
+.skill-tree-node.is-offset .stn-icon {
+  width: 34px;
+  height: 34px;
+}
+
+.skill-tree-node.is-offset .stn-icon svg {
+  width: 17px;
+  height: 17px;
+}
+
+.skill-tree-node.is-offset .stn-name {
+  font-size: var(--text-body-small);
+}
+
+/* Side mission badge */
+.stn-side-badge {
+  position: absolute;
+  top: -11px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 9px;
+  font-weight: var(--weight-bold);
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  padding: 2px 10px;
+  border-radius: var(--radius-full);
+  background: var(--accent-subtle);
+  color: var(--accent);
+  border: 1px solid var(--accent);
+  z-index: 2;
+  white-space: nowrap;
+  line-height: 1;
+}
 
 /* ── Node Icon ────────────────────────────────────────────── */
 .stn-icon {
@@ -144,7 +254,6 @@
 .skill-tree-node[data-mode="simultaneous"] .stn-icon { color: var(--mode-si); }
 .skill-tree-node[data-mode="chuchotage"]   .stn-icon { color: var(--mode-chuchotage); }
 .skill-tree-node[data-mode="escort"]       .stn-icon { color: var(--accent); }
-.skill-tree-node[data-mode="legal"]        .stn-icon { color: var(--mode-legal); }
 .skill-tree-node[data-mode="sight"]        .stn-icon { color: var(--mode-sight); }
 .skill-tree-node[data-mode="opi"]          .stn-icon { color: var(--mode-opi); }
 
@@ -173,10 +282,14 @@
 }
 
 .skill-tree-node.unlocked:hover {
-  transform: translateY(-4px);
+  transform: translateX(-50%) translateY(-4px);
   border-color: var(--accent);
   background: var(--bg-overlay);
   box-shadow: 0 12px 32px rgba(0, 0, 0, 0.4);
+}
+
+.skill-tree-node.is-offset.unlocked:hover {
+  transform: translateX(-50%) translateY(calc(-4px + 0));
 }
 
 .skill-tree-node.unlocked:hover::after {
@@ -197,13 +310,17 @@
 
 /* ── State: Locked ────────────────────────────────────────── */
 .skill-tree-node.locked {
-  opacity: 0.5;
+  opacity: 0.45;
   filter: grayscale(1);
   pointer-events: none;
 }
 
 .skill-tree-node.locked .stn-icon {
   opacity: 0.5;
+}
+
+.skill-tree-node.locked .stn-side-badge {
+  opacity: 0.4;
 }
 
 /* Lock overlay */
@@ -356,26 +473,89 @@
   left: 10px;
 }
 
+[dir="rtl"] .skill-tree-layer-label {
+  left: auto;
+  right: var(--space-4);
+}
+
 /* ── Responsive: Mobile (< 768px) ─────────────────────────── */
 @media (max-width: 767px) {
   .skill-tree-container {
     padding: var(--space-6) var(--space-3);
     max-width: 100%;
+    min-height: auto;
   }
 
-  .skill-tree-rows {
-    gap: var(--space-8);
+  .skill-tree-layers {
+    gap: var(--space-10);
   }
 
-  .skill-tree-row {
+  .skill-tree-layer {
+    min-height: auto;
+    padding: var(--space-4) 0;
+  }
+
+  .skill-tree-layer-nodes {
+    display: flex;
     flex-direction: column;
     align-items: center;
-    gap: var(--space-6);
+    gap: var(--space-4);
+    min-height: auto;
   }
 
-  .skill-tree-node {
+  .skill-tree-node,
+  .skill-tree-node.is-offset {
+    position: relative;
+    top: auto;
+    left: auto;
+    transform: none;
     width: 100%;
     max-width: 280px;
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  .skill-tree-node.is-visible,
+  .skill-tree-node.is-offset.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .skill-tree-node.is-offset {
+    width: 92%;
+    max-width: 260px;
+    top: auto;
+    border-style: dashed;
+  }
+
+  .skill-tree-node.is-offset .stn-icon {
+    width: 36px;
+    height: 36px;
+  }
+
+  .skill-tree-node.is-offset .stn-name {
+    font-size: var(--text-body);
+  }
+
+  .skill-tree-node.unlocked:hover {
+    transform: translateY(-4px);
+  }
+
+  .skill-tree-node.is-offset.unlocked:hover {
+    transform: translateY(-4px);
+  }
+
+  .skill-tree-layer-label {
+    position: relative;
+    left: auto;
+    top: auto;
+    text-align: center;
+    margin-bottom: var(--space-3);
+    font-size: var(--text-caption);
+  }
+
+  .skill-tree-layer-bg {
+    inset: -8px -12px;
   }
 
   .skill-tree-line-flow {
@@ -409,12 +589,21 @@
   background: var(--bg-overlay);
 }
 
+[data-theme="light"] .skill-tree-layer-bg {
+  opacity: 0.06;
+}
+
 /* ── Reduced motion ───────────────────────────────────────── */
 @media (prefers-reduced-motion: reduce) {
   .skill-tree-node {
     transition: none;
     opacity: 1;
-    transform: none;
+    transform: translateX(-50%) translateY(0);
+  }
+
+  .skill-tree-node.is-visible {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
   }
 
   .skill-tree-line-flow {

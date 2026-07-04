@@ -720,21 +720,7 @@
   </div>
  </div>
 
- <!-- Legal Verbatim Simulation card — word-for-word legal mode, reuses the CI overlay with mode='legal' -->
- <div id="legal-ai-launch-card" style="display:none;margin-top:20px;background:var(--bg2);border:1px solid rgba(167,139,250,.3);border-radius:12px;padding:20px">
-  <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap">
-   <div>
-    <div style="font-size:13px;font-weight:800;color:var(--purple);margin-bottom:5px">AI Legal Verbatim Simulation</div>
-    <div style="font-size:12px;color:var(--dim);line-height:1.5;max-width:480px">AI delivers formal legal speech — depositions, court statements, and sworn testimony. You interpret word-for-word with exact reproduction. No summarization or paraphrasing allowed. Scored on verbatim accuracy, legal register preservation, and Fusha compliance.</div>
-    <div style="display:flex;gap:6px;margin-top:8px">
-     <span style="font-size:11px;background:rgba(167,139,250,.08);border:1px solid rgba(167,139,250,.25);color:var(--purple);padding:2px 9px;border-radius:20px">Exact wording</span>
-     <span style="font-size:11px;background:rgba(72,120,240,.08);border:1px solid rgba(72,120,240,.25);color:var(--blue);padding:2px 9px;border-radius:20px">Legal register</span>
-     <span style="font-size:11px;background:rgba(232,151,30,.08);border:1px solid rgba(232,151,30,.25);color:var(--gold);padding:2px 9px;border-radius:20px">Fusha compliance</span>
-    </div>
-   </div>
-   <button onclick="showCISim('legal')" style="background:var(--purple);color:#fff;padding:13px 26px;border-radius:9px;border:none;cursor:pointer;font-size:14px;font-weight:800;white-space:nowrap;flex-shrink:0;transition:opacity .2s" onmouseover="this.style.opacity='.85'" onmouseout="this.style.opacity='1'">Start Simulation</button>
-  </div>
- </div>
+
 
  <!-- Sight Translation Simulation card — written-input, oral-output mode, reuses the CI overlay with mode='sight' -->
  <div id="sight-ai-launch-card" style="display:none;margin-top:20px;background:var(--bg2);border:1px solid rgba(251,146,60,.3);border-radius:12px;padding:20px">
@@ -5616,7 +5602,6 @@ function initSkillTree() {
     simultaneous:{ practiced: getArr('si-sessions').length > 0, sessions: getArr('si-sessions').length, score: getNum('si-best-score') },
     sight:       { practiced: getBool('sight-translation-practiced'), sessions: getArr('sight-sessions').length, score: getNum('sight-best-score') },
     chuchotage:  { practiced: getBool('chuchotage-practiced'), sessions: getArr('chuchotage-sessions').length, score: getNum('chuchotage-best-score') },
-    legal:       { practiced: getBool('legal-practiced'), sessions: getArr('legal-sessions').length, score: getNum('legal-best-score') },
     escort:      { practiced: getBool('escort-practiced') || getBool('liaison-practiced'), sessions: getArr('escort-sessions').length, score: getNum('escort-best-score') },
     opi:         { practiced: getArr('opi-sessions').length > 0 || getBool('vri-practiced'), sessions: getArr('opi-sessions').length, score: getNum('opi-best-score') },
     module: currentModule,

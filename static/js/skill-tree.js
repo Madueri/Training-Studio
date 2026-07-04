@@ -1,6 +1,8 @@
 /**
- * MAD Training Studio — Vertical Skill Tree Renderer
+ * MAD Training Studio — Layered Skill Tree Renderer
  * Renders an interactive skill-progression tree into a container div.
+ * 4 horizontal layers (Beginner → Intermediate → Advanced → Expert)
+ * with offset "side mission" nodes for Liaison and Chuchotage.
  *
  * Usage:
  *   const tree = new SkillTreeRenderer('#skill-tree', userProgress);
@@ -11,7 +13,7 @@
   'use strict';
 
   /* ═══════════════════════════════════════════════════════════════
-     Tree Data
+     Tree Data — Layered Layout
      ═══════════════════════════════════════════════════════════════ */
 
   const TREE_NODES = [
@@ -24,9 +26,9 @@
       description:
         'Repeat the speaker simultaneously in the same language. Builds listening, rhythm, and spoken fluency at broadcast pace.',
       color: 'shadowing',
-      row: 0,
-      col: 1,
-      gridCols: 3,
+      layer: 0,
+      position: 'center',
+      isOffset: false,
     },
     {
       id: 'consecutive',
@@ -37,22 +39,9 @@
       description:
         'Listen to segments, take notes, then deliver your interpretation during the pause. Core conference skill.',
       color: 'consecutive',
-      row: 1,
-      col: 0,
-      gridCols: 3,
-    },
-    {
-      id: 'simultaneous',
-      name: 'Simultaneous',
-      mode: 'simultaneous',
-      level: 'Advanced',
-      levelClass: 'badge-advanced',
-      description:
-        'Interpret in real-time while the speaker talks. Maximum cognitive challenge — full conference booth standard.',
-      color: 'simultaneous',
-      row: 1,
-      col: 2,
-      gridCols: 3,
+      layer: 1,
+      position: 'left',
+      isOffset: false,
     },
     {
       id: 'liaison',
@@ -63,9 +52,35 @@
       description:
         'Informal, bidirectional interpreting for business, social, or administrative settings. Emphasizes natural conversation and cultural mediation.',
       color: 'escort',
-      row: 2,
-      col: 0,
-      gridCols: 3,
+      layer: 1,
+      position: 'center',
+      isOffset: true,
+    },
+    {
+      id: 'sight',
+      name: 'Sight Translation',
+      mode: 'sight',
+      level: 'Advanced',
+      levelClass: 'badge-advanced',
+      description:
+        'Written-input, oral-output interpreting. Read a document on screen and deliver an oral rendition at a sustained pace.',
+      color: 'sight',
+      layer: 2,
+      position: 'center',
+      isOffset: false,
+    },
+    {
+      id: 'simultaneous',
+      name: 'Simultaneous',
+      mode: 'simultaneous',
+      level: 'Advanced',
+      levelClass: 'badge-advanced',
+      description:
+        'Interpret in real-time while the speaker talks. Maximum cognitive challenge — full conference booth standard.',
+      color: 'simultaneous',
+      layer: 2,
+      position: 'right',
+      isOffset: false,
     },
     {
       id: 'chuchotage',
@@ -76,35 +91,9 @@
       description:
         'Whispered simultaneous, no booth or equipment, delivered at close proximity to 1–2 listeners. Adds volume discipline and noise resilience.',
       color: 'chuchotage',
-      row: 2,
-      col: 2,
-      gridCols: 3,
-    },
-    {
-      id: 'sight',
-      name: 'Sight Translation',
-      mode: 'sight',
-      level: 'Intermediate-Advanced',
-      levelClass: 'badge-intermediate',
-      description:
-        'Written-input, oral-output interpreting. Read a document on screen and deliver an oral rendition at a sustained pace.',
-      color: 'sight',
-      row: 3,
-      col: 1,
-      gridCols: 3,
-    },
-    {
-      id: 'legal',
-      name: 'Legal Verbatim',
-      mode: 'legal',
-      level: 'Advanced',
-      levelClass: 'badge-advanced',
-      description:
-        'Word-for-word legal interpretation — depositions, court statements, and sworn testimony. Exact reproduction required, no summarization.',
-      color: 'legal',
-      row: 4,
-      col: 0,
-      gridCols: 3,
+      layer: 2,
+      position: 'center-right',
+      isOffset: true,
     },
     {
       id: 'vri-opi',
@@ -115,33 +104,32 @@
       description:
         'Over-the-Phone & Video Remote Interpreting. Triadic communication between two simulated parties.',
       color: 'opi',
-      row: 4,
-      col: 1,
-      gridCols: 3,
+      layer: 3,
+      position: 'left',
+      isOffset: false,
     },
   ];
 
   const CONNECTIONS = [
     { from: 'shadowing', to: 'consecutive', type: 'branch' },
+    { from: 'shadowing', to: 'liaison', type: 'branch' },
     { from: 'shadowing', to: 'simultaneous', type: 'branch' },
-    { from: 'consecutive', to: 'liaison', type: 'branch' },
-    { from: 'simultaneous', to: 'chuchotage', type: 'branch' },
+    { from: 'consecutive', to: 'sight', type: 'branch' },
     { from: 'liaison', to: 'sight', type: 'branch' },
+    { from: 'simultaneous', to: 'chuchotage', type: 'branch' },
     { from: 'chuchotage', to: 'sight', type: 'branch' },
-    { from: 'sight', to: 'legal', type: 'branch' },
-    { from: 'legal', to: 'vri-opi', type: 'branch' },
+    { from: 'sight', to: 'vri-opi', type: 'branch' },
   ];
 
   /* Unlock requirement strings shown in tooltips */
   const UNLOCK_REQ_TEXT = {
     shadowing: 'Always available — your starting point.',
     consecutive: 'Complete Shadowing practice or finish Module 5.',
-    simultaneous: 'Complete both Shadowing and Consecutive modules.',
-    liaison: 'Complete Consecutive practice or finish Module 11.',
-    chuchotage: 'Complete Simultaneous practice or finish Module 24.',
-    sight: 'Complete Liaison or Chuchotage practice.',
-    legal: 'Complete Sight Translation practice.',
-    'vri-opi': 'Complete Legal Verbatim to unlock the expert track.',
+    liaison: 'Complete Shadowing practice to unlock this side mission.',
+    simultaneous: 'Complete Shadowing practice or finish Module 12.',
+    sight: 'Complete Consecutive, Liaison, or Chuchotage practice.',
+    chuchotage: 'Complete Simultaneous practice or finish Module 20.',
+    'vri-opi': 'Complete Sight Translation to unlock the expert track.',
   };
 
   /* ═══════════════════════════════════════════════════════════════
@@ -159,8 +147,6 @@
       '<svg viewBox="0 0 24 24"><path d="M3 18v-6a9 9 0 0 1 18 0v6"/><path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"/></svg>',
     sight:
       '<svg viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>',
-    legal:
-      '<svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg>',
     escort:
       '<svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>',
     opi:
@@ -251,50 +237,49 @@
       // Helper
       const practiced = (k) => !!(p[k]?.practiced || p[k]?.sessions > 0);
       const completed = (k) => !!(p[k]?.completed || p[k]?.score >= 80);
-      const mod = (n) => (p.module >= n || p.currentModule >= n);
+      const mod = (n) => p.module >= n || p.currentModule >= n;
 
       // Shadowing — always unlocked
       s.shadowing = { locked: false, completed: practiced('shadowing') };
 
-      // Consecutive
+      // Consecutive (CI) — unlocked after Shadowing
       s.consecutive = {
         locked: !(practiced('shadowing') || mod(5)),
         completed: completed('consecutive'),
       };
 
-      // Simultaneous
-      s.simultaneous = {
-        locked: !(completed('shadowing') && completed('consecutive')),
-        completed: completed('simultaneous'),
-      };
-
-      // Liaison / Escort — unlocked after CI practice
+      // Liaison / Escort — side mission, unlocked after Shadowing
       s.liaison = {
-        locked: !(practiced('consecutive') || mod(11)),
+        locked: !(practiced('shadowing') || mod(7)),
         completed: practiced('escort') || practiced('liaison'),
       };
 
-      // Chuchotage — unlocked after SI practice
+      // Simultaneous (SI) — unlocked after Shadowing
+      s.simultaneous = {
+        locked: !(practiced('shadowing') || mod(12)),
+        completed: completed('simultaneous'),
+      };
+
+      // Chuchotage — side mission, unlocked after Simultaneous
       s.chuchotage = {
-        locked: !(practiced('simultaneous') || mod(24)),
+        locked: !(practiced('simultaneous') || mod(20)),
         completed: completed('chuchotage'),
       };
 
-      // Sight Translation — bridges Liaison and Chuchotage
+      // Sight Translation — convergence point ( bridges CI, Liaison, Chuchotage )
       s.sight = {
-        locked: !(practiced('liaison') || practiced('chuchotage') || mod(16)),
+        locked: !(
+          practiced('consecutive') ||
+          practiced('liaison') ||
+          practiced('chuchotage') ||
+          mod(16)
+        ),
         completed: completed('sight'),
       };
 
-      // Legal Verbatim
-      s.legal = {
-        locked: !practiced('sight'),
-        completed: completed('legal'),
-      };
-
-      // VRI / OPI — unlocked via Legal Verbatim
+      // VRI / OPI — unlocked via Sight Translation
       s['vri-opi'] = {
-        locked: !completed('legal'),
+        locked: !practiced('sight'),
         completed: completed('opi') || completed('vri'),
       };
 
@@ -337,7 +322,6 @@
         'liaison',
         'chuchotage',
         'sight',
-        'legal',
         'vri-opi',
       ];
       const idx = order.indexOf(nodeId);
@@ -371,58 +355,61 @@
       this.svg = svg;
       this.container.appendChild(svg);
 
-      // Rows container
-      const rowsWrap = document.createElement('div');
-      rowsWrap.className = 'skill-tree-rows';
+      // Layers container
+      const layersWrap = document.createElement('div');
+      layersWrap.className = 'skill-tree-layers';
 
-      // Group nodes by row
-      const rowMap = new Map();
+      const LAYER_NAMES = ['Beginner', 'Intermediate', 'Advanced', 'Expert'];
+
+      // Group nodes by layer
+      const layerMap = new Map();
       TREE_NODES.forEach((node) => {
-        if (!rowMap.has(node.row)) rowMap.set(node.row, []);
-        rowMap.get(node.row).push(node);
+        if (!layerMap.has(node.layer)) layerMap.set(node.layer, []);
+        layerMap.get(node.layer).push(node);
       });
 
-      // Sort rows
-      const sortedRows = Array.from(rowMap.keys()).sort((a, b) => a - b);
+      for (let layerIdx = 0; layerIdx < 4; layerIdx++) {
+        const layerNodes = layerMap.get(layerIdx) || [];
+        const layerEl = document.createElement('div');
+        layerEl.className = 'skill-tree-layer';
+        layerEl.dataset.layer = layerIdx;
 
-      sortedRows.forEach((rowIdx) => {
-        const rowNodes = rowMap.get(rowIdx);
-        const rowEl = document.createElement('div');
-        rowEl.className = 'skill-tree-row';
-        rowEl.dataset.row = rowIdx;
+        // Background band
+        const bg = document.createElement('div');
+        bg.className = 'skill-tree-layer-bg';
+        layerEl.appendChild(bg);
 
-        // Sort by col
-        rowNodes.sort((a, b) => a.col - b.col);
+        // Layer label
+        const label = document.createElement('div');
+        label.className = 'skill-tree-layer-label';
+        label.textContent = LAYER_NAMES[layerIdx];
+        layerEl.appendChild(label);
 
-        // For rows that are sparse, we insert spacers so flex centers items correctly
-        const cols = rowNodes[0].gridCols || 3;
-        for (let c = 0; c < cols; c++) {
-          const node = rowNodes.find((n) => n.col === c);
-          if (node) {
-            const el = this._buildNode(node);
-            this.nodes.set(node.id, el);
-            rowEl.appendChild(el);
-          } else {
-            const spacer = document.createElement('div');
-            spacer.style.cssText = 'width:220px;flex-shrink:0;pointer-events:none;';
-            spacer.setAttribute('aria-hidden', 'true');
-            rowEl.appendChild(spacer);
-          }
-        }
+        // Nodes container
+        const nodesWrap = document.createElement('div');
+        nodesWrap.className = 'skill-tree-layer-nodes';
 
-        rowsWrap.appendChild(rowEl);
-      });
+        layerNodes.forEach((node) => {
+          const el = this._buildNode(node);
+          this.nodes.set(node.id, el);
+          nodesWrap.appendChild(el);
+        });
 
-      this.container.appendChild(rowsWrap);
+        layerEl.appendChild(nodesWrap);
+        layersWrap.appendChild(layerEl);
+      }
+
+      this.container.appendChild(layersWrap);
     }
 
     _buildNode(node) {
       const el = document.createElement('div');
       el.className = 'skill-tree-node';
+      if (node.isOffset) el.classList.add('is-offset');
+      if (node.position) el.classList.add(`stn-pos-${node.position}`);
       el.dataset.id = node.id;
       el.dataset.mode = node.mode || '';
-      el.dataset.row = node.row;
-      el.dataset.col = node.col;
+      el.dataset.layer = node.layer;
 
       // Icon
       const iconWrap = document.createElement('div');
@@ -441,6 +428,14 @@
       badge.className = `stn-level ${node.levelClass}`;
       badge.textContent = node.level;
       el.appendChild(badge);
+
+      // Side mission badge (for offset nodes)
+      if (node.isOffset) {
+        const sideBadge = document.createElement('div');
+        sideBadge.className = 'stn-side-badge';
+        sideBadge.textContent = 'Side Mission';
+        el.appendChild(sideBadge);
+      }
 
       // Lock overlay
       const lockOverlay = document.createElement('div');
