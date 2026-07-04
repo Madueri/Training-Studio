@@ -1,7 +1,7 @@
 /**
  * MAD Training Studio — Layered Skill Tree Renderer
  * 4 horizontal layers (Beginner → Intermediate → Advanced → Expert)
- * Offset nodes for Liaison and Chuchotage.
+ * New layout: Shadowing → CI/Liaison → Sight/Chuchotage/SI → VRI-OPI/Relay
  */
 
 (function (global) {
@@ -41,31 +41,19 @@
       name: 'Liaison',
       mode: 'escort',
       layer: 1,
-      position: 'center',
-      offset: true,
+      position: 'right',
+      offset: false,
       level: 'Intermediate',
       levelClass: 'badge-intermediate',
       description:
         'Informal, bidirectional interpreting for business, social, or administrative settings. Emphasizes natural conversation and cultural mediation.',
     },
     {
-      id: 'simultaneous',
-      name: 'SI',
-      mode: 'simultaneous',
-      layer: 1,
-      position: 'right',
-      offset: false,
-      level: 'Intermediate',
-      levelClass: 'badge-intermediate',
-      description:
-        'Interpret in real-time while the speaker talks. Maximum cognitive challenge — full conference booth standard.',
-    },
-    {
       id: 'sight',
       name: 'Sight Translation',
       mode: 'sight',
       layer: 2,
-      position: 'center',
+      position: 'left',
       offset: false,
       level: 'Advanced',
       levelClass: 'badge-advanced',
@@ -77,12 +65,24 @@
       name: 'Chuchotage',
       mode: 'chuchotage',
       layer: 2,
-      position: 'right',
-      offset: true,
+      position: 'center',
+      offset: false,
       level: 'Advanced',
       levelClass: 'badge-advanced',
       description:
         'Whispered simultaneous, no booth or equipment, delivered at close proximity to 1–2 listeners. Adds volume discipline and noise resilience.',
+    },
+    {
+      id: 'simultaneous',
+      name: 'SI',
+      mode: 'simultaneous',
+      layer: 2,
+      position: 'right',
+      offset: false,
+      level: 'Advanced',
+      levelClass: 'badge-advanced',
+      description:
+        'Interpret in real-time while the speaker talks. Maximum cognitive challenge — full conference booth standard.',
     },
     {
       id: 'vri-opi',
@@ -96,27 +96,42 @@
       description:
         'Over-the-Phone & Video Remote Interpreting. Triadic communication between two simulated parties.',
     },
+    {
+      id: 'relay',
+      name: 'Relay',
+      mode: 'relay',
+      layer: 3,
+      position: 'right',
+      offset: false,
+      level: 'Expert',
+      levelClass: 'badge-premium',
+      description:
+        'Relay interpreting — pass through a pivot language between two interpreters who do not share a common language. Coming soon.',
+      comingSoon: true,
+    },
   ];
 
   const CONNECTIONS = [
     { from: 'shadowing', to: 'consecutive' },
     { from: 'shadowing', to: 'liaison' },
-    { from: 'shadowing', to: 'simultaneous' },
+    { from: 'consecutive', to: 'liaison' },
     { from: 'consecutive', to: 'sight' },
-    { from: 'liaison', to: 'sight' },
-    { from: 'simultaneous', to: 'chuchotage' },
-    { from: 'chuchotage', to: 'sight' },
-    { from: 'sight', to: 'vri-opi' },
+    { from: 'consecutive', to: 'vri-opi' },
+    { from: 'sight', to: 'chuchotage' },
+    { from: 'chuchotage', to: 'simultaneous' },
+    { from: 'liaison', to: 'simultaneous' },
+    { from: 'simultaneous', to: 'relay' },
   ];
 
   const UNLOCK_REQ_TEXT = {
     shadowing: 'Always available — your starting point.',
     consecutive: 'Complete Shadowing practice to unlock.',
     liaison: 'Complete Shadowing practice to unlock.',
-    simultaneous: 'Complete Shadowing + CI practice to unlock.',
-    sight: 'Complete CI or Liaison practice to unlock.',
-    chuchotage: 'Complete SI practice to unlock.',
-    'vri-opi': 'Complete Sight Translation + Chuchotage to unlock the expert track.',
+    sight: 'Complete CI practice to unlock.',
+    chuchotage: 'Complete Sight Translation practice to unlock.',
+    simultaneous: 'Complete Liaison or Chuchotage practice to unlock.',
+    'vri-opi': 'Complete CI + Sight Translation to unlock the expert track.',
+    relay: 'Complete SI practice to unlock. Coming soon.',
   };
 
   const ICONS = {
@@ -134,6 +149,8 @@
       '<svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>',
     opi:
       '<svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>',
+    relay:
+      '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2v4M12 18v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M2 12h4M18 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/><line x1="12" y1="12" x2="12" y2="12"/></svg>',
   };
 
   const LOCK_ICON =
@@ -159,6 +176,7 @@
         {
           staggerDelay: 200,
           onNodeClick: null,
+          devMode: true, // Default TRUE for developers — all modes unlocked
         },
         options
       );
@@ -210,43 +228,28 @@
 
     _computeStates() {
       const p = this.progress || {};
-
       const practiced = (k) => !!(p[k]?.practiced || p[k]?.sessions > 0);
       const completed = (k) => !!(p[k]?.completed || p[k]?.score >= 80);
-
       const s = {};
 
+      // DEV MODE: all modes unlocked for testing
+      if (this.options.devMode) {
+        TREE_DATA.forEach((node) => {
+          s[node.id] = { locked: false, completed: completed(node.id) };
+        });
+        this._computed = s;
+        return s;
+      }
+
+      // Production unlock logic
       s.shadowing = { locked: false, completed: practiced('shadowing') };
-
-      s.consecutive = {
-        locked: !practiced('shadowing'),
-        completed: completed('consecutive'),
-      };
-
-      s.liaison = {
-        locked: !practiced('shadowing'),
-        completed: practiced('escort') || practiced('liaison'),
-      };
-
-      s.simultaneous = {
-        locked: !(practiced('shadowing') && practiced('consecutive')),
-        completed: completed('simultaneous'),
-      };
-
-      s.sight = {
-        locked: !(practiced('consecutive') || practiced('liaison')),
-        completed: completed('sight'),
-      };
-
-      s.chuchotage = {
-        locked: !practiced('simultaneous'),
-        completed: completed('chuchotage'),
-      };
-
-      s['vri-opi'] = {
-        locked: !(practiced('sight') && practiced('chuchotage')),
-        completed: completed('opi') || completed('vri'),
-      };
+      s.consecutive = { locked: !practiced('shadowing'), completed: completed('consecutive') };
+      s.liaison = { locked: !practiced('shadowing'), completed: practiced('escort') || practiced('liaison') };
+      s.sight = { locked: !practiced('consecutive'), completed: completed('sight') };
+      s.chuchotage = { locked: !practiced('sight'), completed: completed('chuchotage') };
+      s.simultaneous = { locked: !practiced('liaison') && !practiced('chuchotage'), completed: completed('simultaneous') };
+      s['vri-opi'] = { locked: !(practiced('consecutive') && practiced('sight')), completed: completed('opi') || completed('vri') };
+      s.relay = { locked: !practiced('simultaneous'), completed: false };
 
       this._computed = s;
       return s;
@@ -259,7 +262,12 @@
         if (!el) return;
         const st = s[node.id] || { locked: true, completed: false };
 
-        el.classList.remove('locked', 'unlocked', 'active', 'completed');
+        el.classList.remove('locked', 'unlocked', 'active', 'completed', 'coming-soon');
+
+        if (node.comingSoon) {
+          el.classList.add('coming-soon');
+          return;
+        }
 
         if (st.completed) {
           el.classList.add('completed', 'unlocked');
@@ -278,11 +286,12 @@
       const order = [
         'shadowing',
         'consecutive',
-        'simultaneous',
         'liaison',
-        'chuchotage',
         'sight',
+        'chuchotage',
+        'simultaneous',
         'vri-opi',
+        'relay',
       ];
       const idx = order.indexOf(nodeId);
       if (idx === -1) return false;
@@ -379,6 +388,13 @@
       badge.textContent = node.level;
       el.appendChild(badge);
 
+      if (node.comingSoon) {
+        const csBadge = document.createElement('div');
+        csBadge.className = 'coming-soon-badge';
+        csBadge.textContent = 'Coming Soon';
+        el.appendChild(csBadge);
+      }
+
       const lockOverlay = document.createElement('div');
       lockOverlay.className = 'skill-node-lock';
       lockOverlay.innerHTML = LOCK_ICON;
@@ -402,7 +418,7 @@
       `;
       el.appendChild(tooltip);
 
-      if (node.mode) {
+      if (node.mode && !node.comingSoon) {
         el.addEventListener('click', () => this._onClick(node));
       }
 
@@ -464,6 +480,8 @@
     }
 
     _onClick(node) {
+      if (node.comingSoon) return;
+
       const state = this._computed[node.id];
       if (state && state.locked) return;
 
