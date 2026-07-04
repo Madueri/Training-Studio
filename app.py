@@ -1,13 +1,12 @@
 #!/usr/bin/env python3
 """
 MAD Training Studio — Backend
-FastAPI server powering the 3-tab training platform:
+FastAPI server powering the training platform:
   Tab 1: Interpretation (Consecutive, Simultaneous, Shadowing, OPI)
   Tab 2: Voice-Over (Teleprompter, LUFS analysis, Coaching curriculum)
-  Tab 3: IELTS (All 4 modules, AI examiner, Band score feedback)
 Runs on: http://localhost:5555
 
-Routes are split across routers/ (interpretation.py, voiceover.py, ielts.py).
+Routes are split across routers/ (interpretation.py, voiceover.py).
 Shared config/clients/helpers live in shared.py. This file only keeps the
 root route, the cross-tab /api/sessions route, app setup, and the launcher.
 """
@@ -21,7 +20,7 @@ from fastapi.responses import HTMLResponse, JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
 
 from shared import SESSIONS_PATH
-from routers import interpretation, voiceover, ielts, progress
+from routers import interpretation, voiceover, progress
 
 # ── App ───────────────────────────────────────────────────────────────────────
 app = FastAPI(title="MAD Training Studio")
@@ -32,7 +31,6 @@ app.mount("/static", StaticFiles(directory=str(STATIC_DIR)), name="static")
 
 app.include_router(interpretation.router)
 app.include_router(voiceover.router)
-app.include_router(ielts.router)
 app.include_router(progress.router)
 
 # ── Root ──────────────────────────────────────────────────────────────────────

@@ -343,7 +343,6 @@
  <!-- Practice sub-tab bar -->
  <div class="prac-subtabs">
   <button class="prac-tab active" data-tab="interpretation" onclick="goPracticeTab('interpretation')">Interpretation</button>
-  <button class="prac-tab" data-tab="ielts" onclick="goPracticeTab('ielts')">IELTS Preparation</button>
   <button class="prac-tab" data-tab="voiceover" onclick="goPracticeTab('voiceover')">Voice-Over Studio</button>
  </div>
  <!-- Sub-tab content wrappers -->
@@ -937,16 +936,6 @@
  </div><!-- end tab-interp -->
  </div><!-- end prac-interpretation -->
 
- <!-- IELTS sub-tab content -->
- <div id="prac-ielts" class="prac-content">
-  <div id="tab-ielts-inner">
-<!--
- TAB 3 — IELTS (moved here for sub-tab structure)
- -->
-<!-- placeholder — actual content below, reordered -->
-  </div>
- </div>
-
  <!-- Voice-Over sub-tab content -->
  <div id="prac-voiceover" class="prac-content">
   <div id="tab-vo-inner">
@@ -1135,124 +1124,6 @@
 <!-- TAB 4 PROGRESS content lives here — rendered by loadProgress() -->
 <div id="tab-progress" class="panel active" style="display:block">
 <div id="dashboard-v2-container"></div>
-<!--
- IELTS content (moved into Practice > IELTS sub-tab via JS on load)
- -->
-<div id="tab-ielts">
- <div class="sub-tabs">
- <button class="sub-tab active" onclick=\"switchIELTS('speaking', event)\" title="Practice IELTS Speaking"> Speaking</button>
- <button class="sub-tab" onclick=\"switchIELTS('writing', event)\" title="Practice IELTS Writing Task 2"> Writing</button>
- <button class="sub-tab" onclick=\"switchIELTS('reading', event)\" title="Practice IELTS Reading"> Reading</button>
- <button class="sub-tab" onclick=\"switchIELTS('listening', event)\" title="Practice IELTS Listening"> Listening</button>
- </div>
-
- <div class="two-col">
- <div>
- <div class="card">
- <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
- <h3 id="ielts-module-title">Speaking — Band 8 Practice</h3>
- <div style="display:flex;gap:8px;align-items:center">
- <div class="field" style="flex-direction:row;align-items:center;gap:6px">
- <label style="font-size:11px">Target Band</label>
- <select id="ielts-band" style="min-width:80px">
- <option value="7">7.0</option><option value="8" selected>8.0</option><option value="9">9.0</option>
- </select>
- </div>
- <button class="btn btn-primary" onclick="generateQuestion()" title="Generate a new IELTS practice question"> New Question</button>
- </div>
- </div>
-
- <div id="ielts-question-display" class="summary-box" style="min-height:80px;color:var(--dim);font-style:italic">
- Press "New Question" to generate a practice task.
- </div>
-
- <div id="ielts-speaking-controls" style="margin-top:14px">
- <div class="record-zone" id="rec-zone-ielts">
- <div id="rec-idle-ielts">
- <div style="font-size:32px;margin-bottom:8px"></div>
- <div style="color:var(--dim);font-size:13px;margin-bottom:12px">Record your spoken answer</div>
- <button class="btn btn-red" onclick="startRecording('ielts')" title="Start recording your answer">⏺ Record Answer</button>
- </div>
- <div id="rec-active-ielts" style="display:none">
- <div><span class="rec-indicator"></span><strong>Recording answer...</strong></div>
- <div class="timer" id="timer-ielts">0:00</div>
- <div class="waveform" id="wave-ielts"></div>
- <button class="btn btn-ghost" onclick="stopRecording('ielts')" title="Stop recording">⏹ Stop</button>
- </div>
- </div>
- </div>
-
- <div id="ielts-writing-controls" style="margin-top:14px;display:none">
- <div class="field">
- <label>Your Written Response</label>
- <textarea id="ielts-writing-input" rows="8" placeholder="Write your IELTS response here (minimum 250 words)..."></textarea>
- </div>
- <div style="display:flex;align-items:center;justify-content:space-between;margin-top:8px">
- <span id="word-count" style="font-size:12px;color:var(--dim)">0 words</span>
- <button class="btn btn-gold" onclick="submitIELTS()" title="Submit your answer for AI grading"> Get Band Score</button>
- </div>
- </div>
-
- <div id="ielts-reading-controls" style="margin-top:14px;display:none">
- <div id="ielts-reading-questions"></div>
- <button class="btn btn-gold" onclick="submitIELTS()" style="margin-top:10px" title="Submit your answer for AI grading"> Check Answers</button>
- </div>
-
- <div id="ielts-listening-controls" style="margin-top:14px;display:none">
- <div id="ielts-audio-player" style="margin-bottom:12px"></div>
- <div id="ielts-listening-questions"></div>
- <button class="btn btn-gold" onclick="submitIELTS()" style="margin-top:10px" title="Submit your answer for AI grading"> Check Answers</button>
- </div>
-
- <div id="ielts-transcript-area" style="display:none;margin-top:10px">
- <div class="field"><label>Transcribed Answer</label>
- <textarea id="ielts-transcript" rows="4"></textarea>
- </div>
- <button class="btn btn-gold" onclick="submitIELTS()" style="margin-top:8px" title="Submit your answer for AI grading"> Get Band Score</button>
- </div>
- </div>
- </div>
-
- <!-- IELTS Results -->
- <div>
- <div class="card" id="ielts-results" style="display:none">
- <h3>Band Score Assessment</h3>
- <div style="display:flex;align-items:center;gap:16px;margin-bottom:14px">
- <div>
- <div style="font-size:12px;color:var(--dim);margin-bottom:4px">Overall Band</div>
- <div class="band-badge" id="ielts-band-display" style="background:var(--bg3);border:2px solid var(--gold);color:var(--gold)">—</div>
- </div>
- <div id="ielts-sub-scores" style="flex:1"></div>
- </div>
- <div id="ielts-justification" class="summary-box" style="display:none"></div>
- <div id="ielts-detail"></div>
- </div>
-
- <!-- Band Descriptors Reference -->
- <div class="card">
- <h3>Band 8 Descriptors</h3>
- <div style="font-size:13px;line-height:1.8;color:var(--dim)">
- <div style="margin-bottom:10px"><strong style="color:var(--gold)">Speaking:</strong> Fluent with rare self-correction. Well-structured ideas. Full natural intonation. Band 8 vocabulary used accurately and flexibly.</div>
- <div style="margin-bottom:10px"><strong style="color:var(--gold)">Writing:</strong> Covers all task requirements. Well-organized with clear progression. Wide range of vocabulary including uncommon items. Few minor errors.</div>
- <div style="margin-bottom:10px"><strong style="color:var(--gold)">Reading:</strong> 35–36 correct answers out of 40. Near-perfect accuracy required.</div>
- <div><strong style="color:var(--gold)">Listening:</strong> 35–36 correct answers out of 40. Handles all accents confidently.</div>
- </div>
- </div>
-
- <!-- Tips -->
- <div class="card">
- <h3>Quick Strategy Tips</h3>
- <div id="ielts-tips" style="font-size:13px;color:var(--dim);line-height:1.8">
- <div style="margin-bottom:6px"><strong style="color:var(--text)">Speaking:</strong> Link ideas with discourse markers. Avoid repetition. Use complex grammar confidently.</div>
- <div style="margin-bottom:6px"><strong style="color:var(--text)">Writing:</strong> Plan 5 min, write 35 min. Topic sentence + evidence + analysis per paragraph.</div>
- <div style="margin-bottom:6px"><strong style="color:var(--text)">Reading:</strong> Skim for structure first. Scan for keywords. Never leave blanks.</div>
- <div><strong style="color:var(--text)">Listening:</strong> Predict answers before audio. Write as you hear. Check spelling.</div>
- </div>
- </div>
- </div>
- </div>
-</div>
-
 <!-- (TAB 4 — PROGRESS content is inside page-progress above) -->
 
  <!-- Top Stat Cards -->
@@ -2127,7 +1998,6 @@ function getLangPair() {
  const tgt = document.getElementById('lang-target')?.value || 'Arabic';
  return `${src} → ${tgt}`;
 }
-let currentIELTSModule = 'speaking';
 let currentQuestion = null;
 let mediaRecorder = null;
 let audioChunks = [];
@@ -2142,7 +2012,6 @@ let analyserNode = null;
 let voBlob = null;
 let voTranscript = '';
 let interpBlob = null;
-let ieltsBlob = null;
 
 // ── Page navigation ─────────────────────────────────────────────
 let currentPage = 'dashboard';
@@ -2563,7 +2432,6 @@ function goCommunityTab(tab, btn) {
  if (btn) btn.classList.add('active');
 }
 
-// Kept for backward compat with IELTS sub-tabs
 function switchTab(name, e) {
  // No-op in new structure — use goPage/goPracticeTab
 }
@@ -2770,7 +2638,7 @@ async function loadDashboard() {
    if (prevEl) {
      if (sessions.length) {
        const last = sessions[0];
-       const typeNames = { interp:'Interpretation', vo:'Voice-Over', ielts:'IELTS', opi_sim:'OPI Call' };
+       const typeNames = { interp:'Interpretation', vo:'Voice-Over', opi_sim:'OPI Call' };
        prevEl.innerHTML = `<strong style="color:var(--text)">${typeNames[last.type]||last.type||'Session'}</strong> — Score: <strong style="color:var(--gold)">${last.score||'—'}</strong>`;
      } else { prevEl.textContent = 'No recordings yet.'; }
    }
@@ -2923,7 +2791,7 @@ async function loadDashboard() {
    }
 
    // Recommended next
-   const typeMap = { interp:'Consecutive', vo:'Voice-Over', ielts:'IELTS', opi_sim:'OPI' };
+   const typeMap = { interp:'Consecutive', vo:'Voice-Over', opi_sim:'OPI' };
    const fieldGuess = sessions.length ? (sessions[0].type === 'opi_sim' ? 'OPI' : 'Medical Consecutive') : 'Medical Consecutive';
    const recTitle = document.getElementById('dash-rec-title');
    const recWhy = document.getElementById('dash-rec-why');
@@ -2935,12 +2803,12 @@ async function loadDashboard() {
    // Recent practice list
    const recentEl = document.getElementById('dash-recent-list');
    if (recentEl) {
-     const typeNames = { interp:'Interpretation', vo:'Voice-Over', ielts:'IELTS', opi_sim:'OPI Call' };
-     const typeColors = { interp:'var(--gold)', vo:'var(--green)', ielts:'var(--blue)', opi_sim:'var(--purple)' };
+     const typeNames = { interp:'Interpretation', vo:'Voice-Over', opi_sim:'OPI Call' };
+     const typeColors = { interp:'var(--gold)', vo:'var(--green)', opi_sim:'var(--purple)' };
      const recent = sessions.slice(0,5);
      if (recent.length) {
        recentEl.innerHTML = recent.map(s => {
-         const score = s.type==='ielts' ? `Band ${s.score}` : (s.score ? `${s.score}/100` : '—');
+         const score = s.score ? `${s.score}/100` : '—';
          const scoreColor = parseFloat(s.score)>=80?'var(--green)':parseFloat(s.score)>=60?'var(--gold)':'var(--amber)';
          const typeColor = typeColors[s.type] || 'var(--dim)';
          const dateStr = s.file?.match(/_(\d{8})_(\d{6})/)?.[1]?.replace(/(\d{4})(\d{2})(\d{2})/,'$1-$2-$3') || '';
@@ -2965,23 +2833,6 @@ async function loadDashboard() {
  } catch(e) {
    console.warn('Dashboard load error:', e);
  }
-}
-
-function switchIELTS(module, e) {
- currentIELTSModule = module;
- document.querySelectorAll('.sub-tab').forEach(b => b.classList.remove('active'));
- const subSrc = e?.target || e;
- const subBtn = subSrc?.closest?.('.sub-tab') || subSrc;
- if (subBtn?.classList) subBtn.classList.add('active');
- document.getElementById('ielts-module-title').textContent =
- module.charAt(0).toUpperCase() + module.slice(1) + ' — Band ' + document.getElementById('ielts-band').value + ' Practice';
- ['speaking','writing','reading','listening'].forEach(m => {
- document.getElementById('ielts-' + m + '-controls').style.display = m === module ? 'block' : 'none';
- });
- document.getElementById('ielts-transcript-area').style.display = 'none';
- document.getElementById('ielts-results').style.display = 'none';
- currentQuestion = null;
- document.getElementById('ielts-question-display').innerHTML = '<em style="color:var(--dim)">Press "New Question" to generate a practice task.</em>';
 }
 
 // ── Mode selection ─────────────────────────────────────────────
@@ -3010,7 +2861,6 @@ async function startRecording(target) {
  const blob = new Blob(audioChunks, { type: 'audio/webm' });
  if (target === 'interp') { interpBlob = blob; onInterpRecordingDone(); }
  if (target === 'vo') { voBlob = blob; onVORecordingDone(); }
- if (target === 'ielts') { ieltsBlob = blob; onIELTSRecordingDone(); }
  };
  mediaRecorder.start(100);
 
@@ -3298,105 +3148,6 @@ function resetPrompter() {
  if (btn) btn.textContent = '▶ Start';
 }
 
-// ── IELTS ──────────────────────────────────────────────────────
-async function generateQuestion() {
- const btn = event.target; btn.disabled = true; btn.textContent = '⏳ Generating...';
- const fd = new FormData();
- fd.append('module', currentIELTSModule);
- fd.append('difficulty', document.getElementById('ielts-band').value);
- try {
- const r = await fetch('/api/ielts-question', { method: 'POST', body: fd });
- const d = await r.json();
- currentQuestion = d;
- renderIELTSQuestion(d);
- } catch(e) {}
- finally { btn.disabled = false; btn.textContent = 'New Question'; }
-}
-
-function renderIELTSQuestion(d) {
- const box = document.getElementById('ielts-question-display');
- if (currentIELTSModule === 'speaking') {
- box.innerHTML = `<div style="margin-bottom:10px"><strong style="color:var(--gold)">Part 1 (Warm-up):</strong><br>${d.part1||''}</div>
- <div style="margin-bottom:10px"><strong style="color:var(--gold)">Part 2 (Cue Card):</strong><br>${d.part2?.topic||''}<ul style="margin-top:6px;padding-left:18px">${(d.part2?.bullets||[]).map(b=>`<li>${b}</li>`).join('')}</ul></div>
- <div><strong style="color:var(--gold)">Part 3 (Discussion):</strong><br>${d.part3||''}</div>`;
- } else if (currentIELTSModule === 'writing') {
- box.innerHTML = `<div style="margin-bottom:8px"><strong style="color:var(--gold)">Task 2 — ${d.type||'Essay'}</strong></div><div>${d.task||''}</div><div style="margin-top:8px;font-size:12px;color:var(--dim)">Min ${d.word_limit||250} words • ${d.time_limit||40} minutes</div>`;
- } else if (currentIELTSModule === 'reading') {
- let html = `<div style="margin-bottom:12px;font-size:13px;line-height:1.7">${d.passage||''}</div><div style="font-size:12px;font-weight:700;color:var(--gold);margin-bottom:8px">QUESTIONS</div>`;
- const qHtml = (d.questions||[]).map((q,i) => `<div style="margin-bottom:8px;font-size:13px"><strong>${i+1}. ${q.question}</strong><input type="text" id="ans-${i}" placeholder="Your answer..." style="margin-left:10px;width:200px"></div>`).join('');
- box.innerHTML = html + qHtml;
- document.getElementById('ielts-reading-controls').innerHTML = document.getElementById('ielts-reading-controls').innerHTML;
- } else if (currentIELTSModule === 'listening') {
- box.innerHTML = `<div style="font-size:12px;color:var(--dim);margin-bottom:8px">Scenario: ${d.scenario||''}</div><div style="background:var(--bg3);padding:12px;border-radius:8px;margin-bottom:12px;font-size:13px;line-height:1.7;color:var(--dim)"><em>${d.transcript||''}</em></div>`;
- let qHtml = (d.questions||[]).map((q,i) => `<div style="margin-bottom:8px;font-size:13px"><strong>${i+1}. ${q.question}</strong><input type="text" id="listening-ans-${i}" placeholder="Your answer..." style="margin-left:10px;width:200px"></div>`).join('');
- document.getElementById('ielts-listening-questions').innerHTML = qHtml;
- }
- document.getElementById('ielts-results').style.display = 'none';
-}
-
-async function onIELTSRecordingDone() {
- const fd = new FormData(); fd.append('audio', ieltsBlob, 'rec.webm'); fd.append('language', 'en');
- document.getElementById('ielts-transcript-area').style.display = 'block';
- try {
- const r = await fetch('/api/transcribe', { method: 'POST', body: fd });
- const d = await r.json();
- document.getElementById('ielts-transcript').value = d.transcript || '';
- } catch(e) {}
-}
-
-async function submitIELTS() {
- if (!currentQuestion) { alert('Generate a question first.'); return; }
- const btn = event.target; btn.disabled = true; btn.textContent = '⏳ Grading...';
- let responseText = '';
- if (currentIELTSModule === 'speaking') {
- responseText = document.getElementById('ielts-transcript').value;
- } else if (currentIELTSModule === 'writing') {
- responseText = document.getElementById('ielts-writing-input').value;
- } else {
- responseText = 'User submitted answers for checking.';
- }
- if (!responseText.trim()) { btn.disabled = false; btn.textContent = ' Get Band Score'; alert('Please provide an answer first.'); return; }
- const fd = new FormData();
- fd.append('module', currentIELTSModule);
- fd.append('question', JSON.stringify(currentQuestion));
- fd.append('response_text', responseText);
- try {
- const r = await fetch('/api/ielts-feedback', { method: 'POST', body: fd });
- const d = await r.json();
- renderIELTSFeedback(d);
- } catch(e) {}
- finally { btn.disabled = false; btn.textContent = ' Get Band Score'; }
-}
-
-function renderIELTSFeedback(d) {
- document.getElementById('ielts-results').style.display = 'block';
- const band = d.overall_band || '—';
- document.getElementById('ielts-band-display').textContent = band;
- const bandNum = parseFloat(band);
- const bandEl = document.getElementById('ielts-band-display');
- if (bandNum >= 8) { bandEl.style.borderColor = 'var(--green)'; bandEl.style.color = 'var(--green)'; }
- else if (bandNum >= 7) { bandEl.style.borderColor = 'var(--gold)'; bandEl.style.color = 'var(--gold)'; }
- else if (bandNum >= 6) { bandEl.style.borderColor = 'var(--amber)'; bandEl.style.color = 'var(--amber)'; }
- else { bandEl.style.borderColor = 'var(--red)'; bandEl.style.color = 'var(--red)'; }
-
- const sub = d.sub_scores || {};
- document.getElementById('ielts-sub-scores').innerHTML = Object.entries(sub).map(([k,v]) =>
- `<div style="font-size:12px;margin-bottom:3px;color:var(--dim)"><span style="color:var(--text);font-weight:600">${k}:</span> ${v}</div>`).join('');
-
- if (d.band_justification) {
- document.getElementById('ielts-justification').textContent = d.band_justification;
- document.getElementById('ielts-justification').style.display = 'block';
- }
-
- let det = '';
- if (d.strengths?.length) det += `<div style="margin-top:12px"><div style="font-size:12px;font-weight:700;color:var(--green);margin-bottom:6px">✦ STRENGTHS</div><div class="tag-list">${d.strengths.map(s=>`<span class="tag tag-green">${s}</span>`).join('')}</div></div>`;
- if (d.weaknesses?.length) det += `<div style="margin-top:12px"><div style="font-size:12px;font-weight:700;color:var(--amber);margin-bottom:6px">▲ TO IMPROVE</div><div class="tag-list">${d.weaknesses.map(s=>`<span class="tag tag-amber">${s}</span>`).join('')}</div></div>`;
- if (d.key_vocabulary?.length) det += `<div style="margin-top:12px"><div style="font-size:12px;font-weight:700;color:var(--blue);margin-bottom:6px">BAND 8 VOCABULARY</div><div class="tag-list">${d.key_vocabulary.map(v=>`<span class="tag tag-blue">${v}</span>`).join('')}</div></div>`;
- if (d.next_step) det += `<div style="margin-top:12px;background:var(--bg3);border:1px solid var(--border);padding:12px;border-radius:8px;font-size:13px"><span style="color:var(--gold);font-weight:700">Next Step: </span>${d.next_step}</div>`;
- document.getElementById('ielts-detail').innerHTML = det;
-}
-
-// Word count for writing
 
 // ── Dashboard + Progress sim tab switchers ────────────────────────────────
 function dashSimTab(tab) {
@@ -5272,15 +5023,6 @@ function ciReset() {
 // ══════════════════════════════════════════════════════════════════════════════
 
 
-document.addEventListener('DOMContentLoaded', () => {
- const w = document.getElementById('ielts-writing-input');
- if (w) w.addEventListener('input', () => {
- const words = w.value.trim().split(/\s+/).filter(Boolean).length;
- document.getElementById('word-count').textContent = words + ' words';
- document.getElementById('word-count').style.color = words >= 250 ? 'var(--green)' : 'var(--amber)';
- });
-});
-
 // ── Gamification engine ────────────────────────────────────────
 const XP_LEVEL_THRESHOLDS = [0,200,500,1000,2000,3500,5500,8000,11000,15000];
 const LEVEL_NAMES = ['Novice','Apprentice','Practitioner','Interpreter','Professional','Expert','Senior Expert','Master','Grand Master','Legend'];
@@ -5299,7 +5041,6 @@ function sessionXP(s) {
  const score = parseFloat(s.score) || 0;
  if (s.type === 'interp') return Math.round(50 + score * 0.5);
  if (s.type === 'vo') return Math.round(40 + score * 0.4);
- if (s.type === 'ielts') return Math.round(60 + score * 10); // band * 10
  return 30;
 }
 
@@ -5340,7 +5081,6 @@ function renderAchievements(sessions) {
  const total = sessions.length;
  const interpCount = sessions.filter(s=>s.type==='interp').length;
  const voCount = sessions.filter(s=>s.type==='vo').length;
- const ieltsCount = sessions.filter(s=>s.type==='ielts').length;
  const estimatedHrs = (total * 15) / 60;
 
  // Week range
@@ -5356,8 +5096,7 @@ function renderAchievements(sessions) {
  { id:'dedicated', name:'Dedicated Learner', desc:'Accumulate 10 hours of practice', unlocked: estimatedHrs>=10, progress: Math.min(estimatedHrs,10).toFixed(1), max:10, unit:'h' },
  { id:'week_warrior', name:'Week Warrior', desc:'5 sessions in one week', unlocked: thisWeek.length>=5, progress: Math.min(thisWeek.length,5), max:5 },
  { id:'polyglot', name:'Bilingual Voice', desc:'Practice both language directions', unlocked: interpCount>=2, progress: Math.min(interpCount,1)+Math.min(voCount,1), max:2 },
- { id:'scholar', name:'IELTS Scholar', desc:'Complete 3 IELTS sessions', unlocked: ieltsCount>=3, progress: Math.min(ieltsCount,3), max:3 },
- { id:'explorer', name:'Category Explorer', desc:'Use all 3 training modules', unlocked: (interpCount>0&&voCount>0&&ieltsCount>0), progress: (interpCount>0?1:0)+(voCount>0?1:0)+(ieltsCount>0?1:0), max:3 },
+ { id:'explorer', name:'Category Explorer', desc:'Use both training modules', unlocked: (interpCount>0&&voCount>0), progress: (interpCount>0?1:0)+(voCount>0?1:0), max:2 },
  { id:'centurion', name:'Centurion', desc:'Complete 100 sessions', unlocked: total>=100, progress: Math.min(total,100), max:100 }
  ];
 
@@ -5420,12 +5159,11 @@ function renderPerfChart(sessions) {
    return db - da;
  });
  const last10 = _all.slice(0, 10).reverse();
- const colors = { interp:'var(--gold)', vo:'var(--green)', ielts:'var(--blue)', opi:'var(--purple)', opi_sim:'var(--purple)', ci:'var(--teal)' };
- const labels = { interp:'Consec', vo:'VO', ielts:'IELTS', opi:'OPI', opi_sim:'OPI', ci:'CI' };
+ const colors = { interp:'var(--gold)', vo:'var(--green)', opi:'var(--purple)', opi_sim:'var(--purple)', ci:'var(--teal)' };
+ const labels = { interp:'Consec', vo:'VO', opi:'OPI', opi_sim:'OPI', ci:'CI' };
  document.getElementById('perf-chart').innerHTML = last10.map(s => {
    const score = parseFloat(s.score || s.overall_score) || 0;
-   const pct = s.type === 'ielts' ? (score / 9) * 100 : score;
-   const h = Math.max(8, pct);
+   const h = Math.max(8, score);
    const col = colors[s.type] || 'var(--dim)';
    const lbl = labels[s.type] || s.type;
    return `<div class="perf-bar-wrap" title="${lbl}: ${Math.round(score)}${s.grade?' ('+s.grade+')':''}">
@@ -5590,11 +5328,11 @@ async function loadProgress() {
  }
 
  // ── Session List ─────────────────────────────────────────
- const typeNamesP = { interp:'Interpretation', vo:'Voice-Over', ielts:'IELTS', opi_sim:'OPI Call' };
- const typeColorsP = { interp:'var(--gold)', vo:'var(--green)', ielts:'var(--blue)', opi_sim:'var(--purple)' };
+ const typeNamesP = { interp:'Interpretation', vo:'Voice-Over', opi_sim:'OPI Call' };
+ const typeColorsP = { interp:'var(--gold)', vo:'var(--green)', opi_sim:'var(--purple)' };
  document.getElementById('progress-list').innerHTML = sessions.map(s => {
  const xp = sessionXP(s);
- const scoreDisplay = s.type === 'ielts' ? `Band ${s.score}` : (s.score ? `${s.score}/100` : '—');
+ const scoreDisplay = s.score ? `${s.score}/100` : '—';
  const ts = s.file.match(/_(\d{8})_(\d{6})/);
  let dateStr = s.timestamp || '';
  if (ts) { const d=ts[1],t=ts[2]; dateStr = `${d.slice(0,4)}-${d.slice(4,6)}-${d.slice(6,8)} ${t.slice(0,2)}:${t.slice(2,4)}`; }
@@ -5617,13 +5355,12 @@ async function loadProgress() {
  // ── Quick Stats ──────────────────────────────────────────
  const scored = sessions.filter(s=>s.score && parseFloat(s.score)>0);
  const avg = scored.length ? (scored.reduce((a,s)=>a+parseFloat(s.score),0)/scored.length).toFixed(1) : '—';
- const types = { interp: sessions.filter(s=>s.type==='interp').length, vo: sessions.filter(s=>s.type==='vo').length, ielts: sessions.filter(s=>s.type==='ielts').length };
+ const types = { interp: sessions.filter(s=>s.type==='interp').length, vo: sessions.filter(s=>s.type==='vo').length };
  document.getElementById('stats-display').innerHTML = `
  <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:12px;font-size:12px">
  <span style="color:var(--dim)">Avg score:</span><strong style="color:var(--gold)">${avg}</strong>
  <span style="color:var(--dim)">Interp:</span><strong>${types.interp}</strong>
  <span style="color:var(--dim)">Voice-Over:</span><strong>${types.vo}</strong>
- <span style="color:var(--dim)">IELTS:</span><strong>${types.ielts}</strong>
  </div>`;
 
  } catch(e) {
@@ -6762,18 +6499,13 @@ function toggleLesson(i) {
 // ── Init ───────────────────────────────────────────────────────
 window.addEventListener('DOMContentLoaded', () => {
  initCoachingLessons();
- switchIELTS('speaking');
- renderVoiceProfile('commercial');
+
  // Apply saved theme + sync nav icons
  const savedTheme = localStorage.getItem('mad-theme') || 'dark';
  if (savedTheme !== 'dark') applyTheme(savedTheme, null);
  _updateThemeIcon(savedTheme);
  _initLangPicker();
- // Move IELTS content into Practice > IELTS sub-tab
- const ieltsInner = document.getElementById('tab-ielts-inner');
- const ieltsPanel = document.getElementById('tab-ielts');
- if (ieltsInner && ieltsPanel) ieltsInner.appendChild(ieltsPanel);
- // Start on dashboard, then check onboarding
+ 
  goPage('dashboard');
  initUserPath();
  recomputeProgressState();

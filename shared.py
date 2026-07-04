@@ -2,7 +2,7 @@
 """
 MAD Training Studio — Shared module
 Config, clients, and small helper functions used by app.py and every router
-(routers/interpretation.py, routers/voiceover.py, routers/ielts.py).
+(routers/interpretation.py, routers/voiceover.py).
 
 This module must NEVER import from app.py or from routers/ — app.py and the
 routers import FROM here, never the other way around (no circular imports).
