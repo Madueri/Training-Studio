@@ -44,7 +44,15 @@
   padding: 16px 0;
 }
 
-/* Subtle background band per layer */
+/* Subtle background band per layer — DISABLED (transparent) */
+.skill-layer::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 12px;
+  z-index: 0;
+  opacity: 0;
+}
 .skill-layer::before {
   content: '';
   position: absolute;
@@ -152,7 +160,10 @@
   transform: translateY(36px) scale(0.95);
 }
 
-/* Side mission badge */
+/* Side mission badge — DISABLED */
+.skill-node-side-badge {
+  display: none !important;
+}
 .skill-node-side-badge {
   position: absolute;
   top: -10px;
@@ -267,6 +278,8 @@
 }
 
 .skill-node.locked .skill-node-icon {
+  opacity: 0.5;
+}
   opacity: 0.5;
 }
 

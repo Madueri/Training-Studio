@@ -1,18 +1,14 @@
 /**
- * MAD Training Studio — Clean Layered Skill Tree Renderer
+ * MAD Training Studio — Layered Skill Tree Renderer
  * 4 horizontal layers (Beginner → Intermediate → Advanced → Expert)
- * with offset "side mission" nodes for Liaison and Chuchotage.
- *
- * Usage:
- *   const tree = new SkillTreeRenderer('#skill-tree', userProgress);
- *   tree.render();
+ * Offset nodes for Liaison and Chuchotage.
  */
 
 (function (global) {
   'use strict';
 
   /* ═══════════════════════════════════════════════════════════════
-     Tree Data — Layered Layout (layer, position, offset)
+     Tree Data
      ═══════════════════════════════════════════════════════════════ */
 
   const TREE_DATA = [
@@ -42,7 +38,7 @@
     },
     {
       id: 'liaison',
-      name: 'Liaison☆',
+      name: 'Liaison',
       mode: 'escort',
       layer: 1,
       position: 'center',
@@ -78,7 +74,7 @@
     },
     {
       id: 'chuchotage',
-      name: 'Chuchotage☆',
+      name: 'Chuchotage',
       mode: 'chuchotage',
       layer: 2,
       position: 'right',
@@ -116,16 +112,12 @@
   const UNLOCK_REQ_TEXT = {
     shadowing: 'Always available — your starting point.',
     consecutive: 'Complete Shadowing practice to unlock.',
-    liaison: 'Complete Shadowing practice to unlock this side mission.',
+    liaison: 'Complete Shadowing practice to unlock.',
     simultaneous: 'Complete Shadowing + CI practice to unlock.',
     sight: 'Complete CI or Liaison practice to unlock.',
     chuchotage: 'Complete SI practice to unlock.',
     'vri-opi': 'Complete Sight Translation + Chuchotage to unlock the expert track.',
   };
-
-  /* ═══════════════════════════════════════════════════════════════
-     SVG Icons
-     ═══════════════════════════════════════════════════════════════ */
 
   const ICONS = {
     shadowing:
@@ -170,12 +162,10 @@
         },
         options
       );
-      this.nodes = new Map(); // id -> DOM element
+      this.nodes = new Map();
       this.svg = null;
       this.resizeHandler = null;
     }
-
-    /* ── Public API ─────────────────────────────────────────── */
 
     render() {
       if (!this.container) {
@@ -190,13 +180,11 @@
       this._computeStates();
       this._applyStates();
 
-      // Draw lines after DOM layout is complete
       requestAnimationFrame(() => {
         this._drawLines();
         this._animateEntrance();
       });
 
-      // Re-draw on resize
       this.resizeHandler = () => this._drawLines();
       window.addEventListener('resize', this.resizeHandler);
     }
@@ -220,8 +208,6 @@
       this._drawLines();
     }
 
-    /* ── State Engine ───────────────────────────────────────── */
-
     _computeStates() {
       const p = this.progress || {};
 
@@ -230,40 +216,33 @@
 
       const s = {};
 
-      // Shadowing — always unlocked
       s.shadowing = { locked: false, completed: practiced('shadowing') };
 
-      // CI — unlocked after Shadowing
       s.consecutive = {
         locked: !practiced('shadowing'),
         completed: completed('consecutive'),
       };
 
-      // Liaison — side mission, unlocked after Shadowing
       s.liaison = {
         locked: !practiced('shadowing'),
         completed: practiced('escort') || practiced('liaison'),
       };
 
-      // SI — unlocked after Shadowing + CI
       s.simultaneous = {
         locked: !(practiced('shadowing') && practiced('consecutive')),
         completed: completed('simultaneous'),
       };
 
-      // Sight Translation — unlocked after CI OR Liaison
       s.sight = {
         locked: !(practiced('consecutive') || practiced('liaison')),
         completed: completed('sight'),
       };
 
-      // Chuchotage — side mission, unlocked after SI
       s.chuchotage = {
         locked: !practiced('simultaneous'),
         completed: completed('chuchotage'),
       };
 
-      // VRI / OPI — unlocked after Sight Translation + Chuchotage
       s['vri-opi'] = {
         locked: !(practiced('sight') && practiced('chuchotage')),
         completed: completed('opi') || completed('vri'),
@@ -295,10 +274,6 @@
       });
     }
 
-    /**
-     * A node is "current/active" if it is unlocked, not completed,
-     * and no ancestor that is also unlocked+incomplete comes before it.
-     */
     _isCurrentNode(nodeId) {
       const order = [
         'shadowing',
@@ -321,10 +296,7 @@
       return myState && !myState.locked && !myState.completed;
     }
 
-    /* ── DOM Builder ────────────────────────────────────────── */
-
     _buildDOM() {
-      // SVG layer (appended first so it sits behind nodes)
       const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
       svg.classList.add('skill-tree-svg');
       svg.setAttribute('aria-hidden', 'true');
@@ -339,11 +311,9 @@
       this.svg = svg;
       this.container.appendChild(svg);
 
-      // Layers container
       const layersWrap = document.createElement('div');
       layersWrap.className = 'skill-tree-layers';
 
-      // Group nodes by layer
       const layerMap = new Map();
       TREE_DATA.forEach((node) => {
         if (!layerMap.has(node.layer)) layerMap.set(node.layer, []);
@@ -356,13 +326,11 @@
         layerEl.className = 'skill-layer';
         layerEl.dataset.layer = layerIdx;
 
-        // Layer label
         const label = document.createElement('div');
         label.className = 'skill-layer-label';
         label.textContent = LAYER_NAMES[layerIdx];
         layerEl.appendChild(label);
 
-        // Nodes container — always 3 slots (left, center, right)
         const nodesWrap = document.createElement('div');
         nodesWrap.className = 'skill-layer-nodes';
 
@@ -396,45 +364,31 @@
       el.dataset.id = node.id;
       el.dataset.mode = node.mode || '';
 
-      // Icon
       const iconWrap = document.createElement('div');
       iconWrap.className = 'skill-node-icon';
       iconWrap.innerHTML = ICONS[node.mode] || ICONS.opi;
       el.appendChild(iconWrap);
 
-      // Name
       const name = document.createElement('div');
       name.className = 'skill-node-name';
       name.textContent = node.name;
       el.appendChild(name);
 
-      // Level badge
       const badge = document.createElement('span');
       badge.className = `skill-node-level ${node.levelClass}`;
       badge.textContent = node.level;
       el.appendChild(badge);
 
-      // Side mission badge
-      if (node.offset) {
-        const sideBadge = document.createElement('div');
-        sideBadge.className = 'skill-node-side-badge';
-        sideBadge.textContent = 'Side Mission';
-        el.appendChild(sideBadge);
-      }
-
-      // Lock overlay
       const lockOverlay = document.createElement('div');
       lockOverlay.className = 'skill-node-lock';
       lockOverlay.innerHTML = LOCK_ICON;
       el.appendChild(lockOverlay);
 
-      // Completed check
       const checkBadge = document.createElement('div');
       checkBadge.className = 'skill-node-check';
       checkBadge.innerHTML = CHECK_ICON;
       el.appendChild(checkBadge);
 
-      // Tooltip
       const tooltip = document.createElement('div');
       tooltip.className = 'skill-tree-tooltip';
       tooltip.innerHTML = `
@@ -448,7 +402,6 @@
       `;
       el.appendChild(tooltip);
 
-      // Click handler
       if (node.mode) {
         el.addEventListener('click', () => this._onClick(node));
       }
@@ -457,12 +410,9 @@
       return el;
     }
 
-    /* ── SVG Line Drawing ───────────────────────────────────── */
-
     _drawLines() {
       if (!this.svg) return;
 
-      // Remove old paths (keep defs)
       const oldPaths = this.svg.querySelectorAll('.st-line, .st-line-bg');
       oldPaths.forEach((p) => p.remove());
 
@@ -476,15 +426,12 @@
         const r1 = fromEl.getBoundingClientRect();
         const r2 = toEl.getBoundingClientRect();
 
-        // Center-to-center, relative to container
         const x1 = r1.left + r1.width / 2 - containerRect.left;
         const y1 = r1.top + r1.height / 2 - containerRect.top;
         const x2 = r2.left + r2.width / 2 - containerRect.left;
         const y2 = r2.top + r2.height / 2 - containerRect.top;
 
         const dy = y2 - y1;
-
-        // Cubic bezier control points — smooth S-curve
         const cp1x = x1;
         const cp1y = y1 + dy * 0.5;
         const cp2x = x2;
@@ -492,23 +439,17 @@
 
         const d = `M ${x1} ${y1} C ${cp1x} ${cp1y}, ${cp2x} ${cp2y}, ${x2} ${y2}`;
 
-        // Background track
         const bg = document.createElementNS('http://www.w3.org/2000/svg', 'path');
         bg.setAttribute('d', d);
-        bg.classList.add('st-line-bg');
-        bg.classList.add('skill-tree-line-bg');
+        bg.classList.add('st-line-bg', 'skill-tree-line-bg');
         this.svg.appendChild(bg);
 
-        // Flow line
         const flow = document.createElementNS('http://www.w3.org/2000/svg', 'path');
         flow.setAttribute('d', d);
-        flow.classList.add('st-line');
-        flow.classList.add('skill-tree-line');
+        flow.classList.add('st-line', 'skill-tree-line');
         this.svg.appendChild(flow);
       });
     }
-
-    /* ── Entrance Animation ─────────────────────────────────── */
 
     _animateEntrance() {
       const layers = this.container.querySelectorAll('.skill-layer');
@@ -521,8 +462,6 @@
         });
       });
     }
-
-    /* ── Click Handler ──────────────────────────────────────── */
 
     _onClick(node) {
       const state = this._computed[node.id];
@@ -545,8 +484,6 @@
       }
     }
 
-    /* ── Utilities ──────────────────────────────────────────── */
-
     _escapeHtml(str) {
       if (!str) return '';
       const div = document.createElement('div');
@@ -555,13 +492,8 @@
     }
   }
 
-  /* ═══════════════════════════════════════════════════════════════
-     Expose
-     ═══════════════════════════════════════════════════════════════ */
-
   global.SkillTreeRenderer = SkillTreeRenderer;
 
-  // Auto-initialize if a container exists with data-init
   document.addEventListener('DOMContentLoaded', () => {
     const autoEl = document.querySelector('[data-skill-tree-auto]');
     if (autoEl) {
