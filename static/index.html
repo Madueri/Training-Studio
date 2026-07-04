@@ -4106,8 +4106,26 @@ function ciPlaySegment(audio_b64, seg_text, seg_num) {
     document.getElementById('ci-sight-doc-text').textContent      = seg_text;
     const metaEl = document.getElementById('ci-sight-doc-meta');
     if (metaEl) metaEl.textContent = `~${seg_text.split(/\s+/).length} words`;
-    ciReadStartTs = Date.now(); // WPM throughput measurement start — reuses decalage_sec on submit
-    ciSetState('rendering');
+
+    const isChunked = ciSightMode === 'chunked';
+    const chunkedStart = document.getElementById('ci-sight-chunked-start');
+    if (chunkedStart) chunkedStart.style.display = isChunked ? '' : 'none';
+
+    if (isChunked) {
+      // Chunked: hide render zone until user presses Start Rendering
+      document.getElementById('ci-render-zone').style.display = 'none';
+      ciSetState('listening');
+    } else {
+      // Continuous: show render zone immediately, auto-start recording
+      document.getElementById('ci-render-zone').style.display = '';
+      ciReadStartTs = Date.now();
+      ciSetState('rendering');
+      // Auto-start camera recording if camera is enabled but not yet recording
+      const sessCamBtn = document.getElementById('ci-cam-btn');
+      if (sessCamBtn && ciCameraStream && (!ciMediaRecorder || ciMediaRecorder.state === 'inactive')) {
+        ciToggleCamera(sessCamBtn);
+      }
+    }
     return;
   }
 
@@ -4167,21 +4185,12 @@ function ciOnSegmentEnd() {
   if (ciDecalageTimer) { clearInterval(ciDecalageTimer); ciDecalageTimer = null; }
 
   if (isSI) {
-    // SI/Chuchotage: go straight to Between (rendering already happened live)
+    // SI/Chuchotage: state becomes Between (rendering happened live during listening)
+    // but keep the render zone visible so the user can still submit their rendition
     ciAutoStopRecording();
     ciSetState('between');
-    document.getElementById('ci-between-zone').style.display = '';
     document.getElementById('ci-listening-zone').style.display = 'none';
-    const isLast = ciSegNum >= ciMaxSegs;
-    document.getElementById('ci-between-msg').textContent = isLast
-      ? 'All segments complete!'
-      : `Segment ${ciSegNum} complete`;
-    document.getElementById('ci-between-sub').textContent = isLast
-      ? `${ciMaxSegs} segments completed — ready for full evaluation.`
-      : `${ciMaxSegs - ciSegNum} segment${ciMaxSegs - ciSegNum !== 1 ? 's' : ''} remaining`;
-    document.getElementById('ci-next-btn').style.display = isLast ? 'none' : '';
-    document.getElementById('ci-finish-btn').style.display = isLast ? '' : 'none';
-    ciRenderPips();
+    // Don't show the between-zone UI yet — wait for submission
   } else {
     ciSetState('rendering');
     document.getElementById('ci-render-zone').style.display = '';
@@ -4282,16 +4291,56 @@ async function ciNextSegment() {
     const d = await r.json();
     if (d.done) { ciEndSession(); return; }
     if (d.error) { alert('Error: ' + d.error); return; }
-    ciPlaySegment(d.audio_b64, d.segment_text, d.segment_num);
+    ciPlaySegment(d.audio_b64, d.document_text || d.segment_text, d.segment_num);
   } catch(e) {
     console.error('CI get-segment failed:', e);
   }
+}
+
+// ── Sight Translation mode helpers ────────────────────────────────────────────
+function ciSetSightMode(mode) {
+  ciSightMode = mode;
+  const contBtn = document.getElementById('ci-sight-mode-continuous');
+  const chunkBtn = document.getElementById('ci-sight-mode-chunked');
+  if (!contBtn || !chunkBtn) return;
+  if (mode === 'continuous') {
+    contBtn.style.background = 'var(--amber)';
+    contBtn.style.color = '#fff';
+    contBtn.style.borderColor = 'var(--amber)';
+    chunkBtn.style.background = 'transparent';
+    chunkBtn.style.color = 'var(--dim)';
+    chunkBtn.style.borderColor = 'var(--border)';
+  } else {
+    chunkBtn.style.background = 'var(--amber)';
+    chunkBtn.style.color = '#fff';
+    chunkBtn.style.borderColor = 'var(--amber)';
+    contBtn.style.background = 'transparent';
+    contBtn.style.color = 'var(--dim)';
+    contBtn.style.borderColor = 'var(--border)';
+  }
+}
+
+function ciStartSightRendering() {
+  // Chunked mode: user has read the text and is now ready to render
+  document.getElementById('ci-sight-chunked-start').style.display = 'none';
+  document.getElementById('ci-render-zone').style.display = '';
+  ciReadStartTs = Date.now();
+  ciSetState('rendering');
+  // Start camera recording if camera is enabled but not yet recording
+  const sessCamBtn = document.getElementById('ci-cam-btn');
+  if (sessCamBtn && ciCameraStream && (!ciMediaRecorder || ciMediaRecorder.state === 'inactive')) {
+    ciToggleCamera(sessCamBtn);
+  }
+  document.getElementById('ci-rendition').focus();
 }
 
 // ── End Session + Evaluation ─────────────────────────────────────────────────
 async function ciEndSession() {
   ciStopSessionTimer();
   if (ciAudioEl) { try { ciAudioEl.pause(); } catch(e){} }
+  // Clear SI state
+  if (ciDecalageTimer) { clearInterval(ciDecalageTimer); ciDecalageTimer = null; }
+  ciAutoStopRecording();
   ciSwitchView('ci-loading-view');
   ciSetState('evaluating');
 
@@ -4453,7 +4502,7 @@ function ciSetState(state) {
   const labels = {
     setup:'Setup', loading:'Loading...', listening:'Listening',
     rendering:'Render Now', submitting:'Submitting...', evaluating:'Evaluating...',
-    between:'Submitted', done:'Complete'
+    between: ciIsLiveRender() ? 'Between' : 'Submitted', done:'Complete'
   };
   badge.textContent = labels[state] || state;
   badge.className = 'ci-status-badge';
@@ -5126,6 +5175,10 @@ function ciReset() {
   if (ciCameraStream) { ciCameraStream.getTracks().forEach(t=>t.stop()); ciCameraStream = null; }
   if (ciMediaRecorder && ciMediaRecorder.state !== 'inactive') { try{ciMediaRecorder.stop();}catch(e){} }
   ciMediaRecorder = null; ciRecordChunks = [];
+  // Clear SI state
+  if (ciDecalageTimer) { clearInterval(ciDecalageTimer); ciDecalageTimer = null; }
+  ciSegStartTs = 0; ciRecStartTs = 0;
+  document.getElementById('ci-decalage-indicator')?.style && (document.getElementById('ci-decalage-indicator').style.display = 'none');
   document.querySelector('.ci-rec-dot')?.remove();
   // Reset prep camera UI
   const prepVideo = document.getElementById('ci-prep-camera-video');

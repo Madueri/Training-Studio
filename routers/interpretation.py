@@ -8,9 +8,10 @@ Routes: transcribe, generate-speech, get-key-terms, analyze-interpretation,
         CI  (new-session/get-segment/submit-turn/end-session)
 """
 
-import os, json, re, tempfile, urllib.request, base64, uuid, random
+import os, json, re, tempfile, urllib.request, base64, uuid, random, math
 from datetime import datetime
 from concurrent.futures import ThreadPoolExecutor, as_completed
+from pathlib import Path
 
 from fastapi import APIRouter, UploadFile, File, Form, HTTPException
 from fastapi.responses import JSONResponse, StreamingResponse
@@ -20,7 +21,410 @@ from shared import (
     STUDIO_ROOT, ELEVENLABS_API_KEY, ELEVENLABS_VOICE_ID,
 )
 
+import numpy as np
+
+try:
+    import librosa
+    HAS_LIBROSA = True
+except Exception:
+    HAS_LIBROSA = False
+
 router = APIRouter()
+
+# ── Audio Analysis Helpers ────────────────────────────────────────────────────
+
+def _load_audio(path: str, target_sr: int = 16000) -> tuple:
+    """Load audio file using PyAV (av), resample to target_sr, return (y, sr)."""
+    try:
+        import av as pyav
+        container = pyav.open(path)
+        stream = container.streams.audio[0]
+        samples = []
+        for frame in container.decode(stream):
+            arr = frame.to_ndarray().astype(np.float32)
+            if arr.ndim > 1:
+                arr = arr.mean(axis=0)
+            samples.append(arr)
+        audio = np.concatenate(samples)
+        # Normalize to [-1, 1] based on bit depth
+        if audio.max() > 1.0:
+            audio = audio / 32768.0
+        sr = stream.sample_rate
+        if sr != target_sr:
+            audio = librosa.resample(audio, orig_sr=sr, target_sr=target_sr)
+            sr = target_sr
+        return audio, sr
+    except Exception as e:
+        raise RuntimeError(f"Audio load failed: {e}")
+
+
+def _extract_wpm_from_segments(segments) -> tuple:
+    """Return (wpm, word_count, speech_duration_sec) from whisper segments."""
+    if not segments:
+        return 0, 0, 0.0
+    words = []
+    for seg in segments:
+        text = getattr(seg, "text", seg.get("text", "")) if isinstance(seg, dict) else getattr(seg, "text", "")
+        words.extend(re.findall(r"[a-zA-Z؀-ۿ]+(?:[''][a-zA-Z]+)?", text))
+    word_count = len(words)
+    starts = [getattr(s, "start", s.get("start", 0)) for s in segments]
+    ends = [getattr(s, "end", s.get("end", 0)) for s in segments]
+    if not starts or not ends:
+        return 0, 0, 0.0
+    speech_duration = max(ends) - min(starts)
+    if speech_duration <= 0:
+        speech_duration = 1.0
+    wpm = int(word_count / (speech_duration / 60))
+    return wpm, word_count, speech_duration
+
+
+def _extract_pauses_from_segments(segments, min_gap: float = 0.5) -> list:
+    """Extract pauses (gaps between segments) from whisper segments."""
+    pauses = []
+    if not segments or len(segments) < 2:
+        return pauses
+    for i in range(1, len(segments)):
+        prev_end = getattr(segments[i - 1], "end", segments[i - 1].get("end", 0))
+        curr_start = getattr(segments[i], "start", segments[i].get("start", 0))
+        gap = curr_start - prev_end
+        if gap >= min_gap:
+            pauses.append({"start": round(prev_end, 2), "end": round(curr_start, 2), "duration": round(gap, 2)})
+    return pauses
+
+
+def _extract_pauses_from_energy(audio: np.ndarray, sr: int, threshold_db: float = -40, min_dur: float = 0.3) -> list:
+    """Extract pauses from audio energy envelope (silence detection)."""
+    hop = int(sr * 0.01)  # 10ms hop
+    frames = librosa.util.frame(audio, frame_length=hop, hop_length=hop)
+    energy = librosa.feature.rms(y=audio, frame_length=hop, hop_length=hop)[0]
+    # Convert to dB relative to max
+    max_e = energy.max() if energy.max() > 0 else 1e-10
+    db = 20 * np.log10(energy / max_e + 1e-10)
+    is_silent = db < threshold_db
+    pauses = []
+    in_pause = False
+    start_frame = 0
+    for i, silent in enumerate(is_silent):
+        if silent and not in_pause:
+            in_pause = True
+            start_frame = i
+        elif not silent and in_pause:
+            in_pause = False
+            dur = (i - start_frame) * 0.01
+            if dur >= min_dur:
+                pauses.append({"start": round(start_frame * 0.01, 2), "end": round(i * 0.01, 2), "duration": round(dur, 2)})
+    if in_pause:
+        dur = (len(is_silent) - start_frame) * 0.01
+        if dur >= min_dur:
+            pauses.append({"start": round(start_frame * 0.01, 2), "end": round(len(is_silent) * 0.01, 2), "duration": round(dur, 2)})
+    return pauses
+
+
+def _extract_pitch_contour(audio_path: str, sr: int = 16000) -> np.ndarray:
+    """Extract a simplified pitch contour using librosa."""
+    y, sr = _load_audio(audio_path, target_sr=sr)
+    # Use librosa piptrack for pitch extraction
+    pitches, magnitudes = librosa.piptrack(y=y, sr=sr, n_fft=2048, hop_length=512)
+    # Take the pitch with highest magnitude at each frame
+    pitch_contour = []
+    for t in range(pitches.shape[1]):
+        mag = magnitudes[:, t]
+        if mag.max() > 0:
+            idx = mag.argmax()
+            pitch = pitches[idx, t]
+            if pitch > 0:
+                pitch_contour.append(pitch)
+            else:
+                pitch_contour.append(np.nan)
+        else:
+            pitch_contour.append(np.nan)
+    contour = np.array(pitch_contour, dtype=np.float32)
+    # Interpolate NaNs
+    nan_mask = np.isnan(contour)
+    if nan_mask.any() and not nan_mask.all():
+        indices = np.arange(len(contour))
+        contour[nan_mask] = np.interp(indices[nan_mask], indices[~nan_mask], contour[~nan_mask])
+    # Smooth with median filter
+    contour = librosa.util.normalize(contour) if not np.allclose(contour, 0) else contour
+    return contour
+
+
+def _compare_pitch_contours(user_pitch: np.ndarray, source_pitch: np.ndarray) -> float:
+    """Compare two pitch contours and return similarity score (0-100)."""
+    # Normalize lengths
+    min_len = min(len(user_pitch), len(source_pitch))
+    if min_len < 10:
+        return 50.0
+    u = user_pitch[:min_len]
+    s = source_pitch[:min_len]
+    # Normalize
+    u = (u - np.mean(u)) / (np.std(u) + 1e-10)
+    s = (s - np.mean(s)) / (np.std(s) + 1e-10)
+    # Pearson correlation
+    corr = np.corrcoef(u, s)[0, 1]
+    if np.isnan(corr):
+        return 50.0
+    # Map correlation to 0-100 score
+    score = (corr + 1) / 2 * 100  # -1 -> 0, +1 -> 100
+    return max(0.0, min(100.0, score))
+
+
+def _compare_word_sequences(user_words: list, source_words: list) -> float:
+    """Simple phonemic overlap: compare word sequences using longest common subsequence ratio."""
+    if not source_words:
+        return 0.0
+    if not user_words:
+        return 0.0
+    # Normalize to lowercase
+    u = [w.lower() for w in user_words]
+    s = [w.lower() for w in source_words]
+    # LCS length
+    m, n = len(u), len(s)
+    dp = [[0] * (n + 1) for _ in range(m + 1)]
+    for i in range(1, m + 1):
+        for j in range(1, n + 1):
+            if u[i - 1] == s[j - 1]:
+                dp[i][j] = dp[i - 1][j - 1] + 1
+            else:
+                dp[i][j] = max(dp[i - 1][j], dp[i][j - 1])
+    lcs_len = dp[m][n]
+    # Score: LCS / max(len(u), len(s))
+    score = lcs_len / max(m, n) * 100
+    return score
+
+
+def _compute_wpm_score(user_wpm: int, source_wpm: int) -> float:
+    """WPM match score: ±10% tolerance = good (100), linear decay beyond."""
+    if source_wpm <= 0:
+        return 50.0
+    diff_pct = abs(user_wpm - source_wpm) / source_wpm * 100
+    if diff_pct <= 10:
+        return 100.0
+    score = max(0.0, 100.0 - (diff_pct - 10) * 5)
+    return score
+
+
+def _compute_pause_score(user_pauses: list, source_pauses: list) -> float:
+    """Pause pattern similarity: compare total pause count and total pause duration."""
+    if not source_pauses:
+        return 50.0 if not user_pauses else 30.0
+    if not user_pauses:
+        return 0.0
+    user_count = len(user_pauses)
+    source_count = len(source_pauses)
+    user_total_dur = sum(p["duration"] for p in user_pauses)
+    source_total_dur = sum(p["duration"] for p in source_pauses)
+    count_diff = abs(user_count - source_count) / max(source_count, 1)
+    dur_diff = abs(user_total_dur - source_total_dur) / max(source_total_dur, 1)
+    # Score: penalize deviation in count and duration
+    score = 100 - (count_diff * 30 + dur_diff * 40)
+    return max(0.0, min(100.0, score))
+
+
+def _get_source_wpm_from_video(video_id: str) -> int | None:
+    """Try to get WPM from YouTube captions using existing measure_wpm_from_captions logic."""
+    try:
+        import yt_dlp
+        opts = {"quiet": True, "no_warnings": True, "skip_download": True}
+        with yt_dlp.YoutubeDL(opts) as ydl:
+            info = ydl.extract_info(f"https://www.youtube.com/watch?v={video_id}", download=False)
+        duration_sec = info.get("duration", 0) or 0
+        if duration_sec <= 0:
+            return None
+        auto = info.get("automatic_captions") or {}
+        manual = info.get("subtitles") or {}
+        caps = manual.get("en") or auto.get("en") or []
+        if not caps:
+            return None
+        cap_url = next((c["url"] for c in caps if c.get("ext") == "json3"), None)
+        if not cap_url:
+            cap_url = caps[0].get("url", "") if caps else None
+        if not cap_url:
+            return None
+        with urllib.request.urlopen(cap_url, timeout=7) as resp:
+            raw = resp.read().decode("utf-8", errors="ignore")
+        try:
+            data = json.loads(raw)
+            events = data.get("events", [])
+            texts = []
+            for ev in events:
+                for seg in (ev.get("segs") or []):
+                    t = (seg.get("utf8") or "").strip()
+                    if t and t != "\n":
+                        texts.append(t)
+            full_text = " ".join(texts)
+        except Exception:
+            full_text = re.sub(r"<[^>]+>", " ", raw)
+            full_text = re.sub(r"\d{2}:\d{2}:\d{2}[.,]\d{3} --> .*", "", full_text)
+        words = re.findall(r"[a-zA-Z؀-ۿ]+(?:[''][a-zA-Z]+)?", full_text)
+        if len(words) < 30:
+            return None
+        wpm = int(len(words) / (duration_sec / 60))
+        return wpm
+    except Exception:
+        return None
+
+
+def _get_source_pauses_from_captions(video_id: str) -> list:
+    """Extract pauses from YouTube caption timestamps."""
+    try:
+        import yt_dlp
+        opts = {"quiet": True, "no_warnings": True, "skip_download": True}
+        with yt_dlp.YoutubeDL(opts) as ydl:
+            info = ydl.extract_info(f"https://www.youtube.com/watch?v={video_id}", download=False)
+        auto = info.get("automatic_captions") or {}
+        manual = info.get("subtitles") or {}
+        caps = manual.get("en") or auto.get("en") or []
+        if not caps:
+            return []
+        cap_url = next((c["url"] for c in caps if c.get("ext") == "json3"), None)
+        if not cap_url:
+            cap_url = caps[0].get("url", "") if caps else None
+        if not cap_url:
+            return []
+        with urllib.request.urlopen(cap_url, timeout=7) as resp:
+            raw = resp.read().decode("utf-8", errors="ignore")
+        data = json.loads(raw)
+        events = data.get("events", [])
+        timed_lines = []
+        for ev in events:
+            t_sec = ev.get("tStartMs", 0) / 1000
+            text = "".join(s.get("utf8", "") for s in (ev.get("segs") or [])).strip()
+            if text and text != "\n":
+                timed_lines.append({"t": t_sec, "text": text})
+        pauses = []
+        for i in range(1, len(timed_lines)):
+            gap = timed_lines[i]["t"] - timed_lines[i - 1]["t"]
+            if gap >= 0.5:
+                pauses.append({"start": round(timed_lines[i - 1]["t"], 2), "end": round(timed_lines[i]["t"], 2), "duration": round(gap, 2)})
+        return pauses
+    except Exception:
+        return []
+
+
+def _download_source_audio(video_id: str) -> str | None:
+    """Download YouTube audio to cache, return path or None."""
+    cache_dir = Path(tempfile.gettempdir()) / "training_studio_audio_cache"
+    cache_dir.mkdir(parents=True, exist_ok=True)
+    cached = cache_dir / f"{video_id}.webm"
+    if cached.exists() and cached.stat().st_size > 10000:
+        return str(cached)
+    try:
+        import yt_dlp
+        opts = {
+            "quiet": True,
+            "no_warnings": True,
+            "format": "bestaudio/best",
+            "outtmpl": str(cache_dir / f"{video_id}.%(ext)s"),
+        }
+        with yt_dlp.YoutubeDL(opts) as ydl:
+            ydl.download([f"https://www.youtube.com/watch?v={video_id}"])
+        # Find the downloaded file
+        for ext in ("webm", "m4a", "mp4", "ogg"):
+            f = cache_dir / f"{video_id}.{ext}"
+            if f.exists() and f.stat().st_size > 10000:
+                return str(f)
+        return None
+    except Exception:
+        return None
+
+
+def _evaluate_shadowing_acoustic(user_audio_path: str, source_audio_path: str | None, source_text: str, source_wpm: int | None, source_video_id: str | None) -> dict:
+    """
+    Evaluate shadowing performance using acoustic metrics.
+    Returns dict with wpm_score, pause_score, phonemic_score, intonation_score, overall_score.
+    """
+    # Transcribe user audio with timestamps
+    user_segs, _ = whisper.transcribe(user_audio_path, beam_size=1)
+    user_words = []
+    for seg in user_segs:
+        user_words.extend(re.findall(r"[a-zA-Z؀-ۿ]+(?:[''][a-zA-Z]+)?", seg.text))
+
+    # ── WPM ──
+    user_wpm, user_word_count, user_dur = _extract_wpm_from_segments(user_segs)
+    if not source_wpm and source_video_id:
+        source_wpm = _get_source_wpm_from_video(source_video_id)
+    if not source_wpm:
+        # Estimate from source_text word count and typical speech duration (assume ~130 wpm if no other info)
+        source_words = re.findall(r"[a-zA-Z؀-ۿ]+(?:[''][a-zA-Z]+)?", source_text)
+        estimated_dur = max(len(source_words) / 130 * 60, user_dur)
+        source_wpm = int(len(source_words) / (estimated_dur / 60)) if estimated_dur > 0 else 130
+    wpm_score = _compute_wpm_score(user_wpm, source_wpm)
+
+    # ── Pauses ──
+    user_pauses = _extract_pauses_from_segments(user_segs, min_gap=0.5)
+    # Also add energy-based pauses for richer detection
+    try:
+        y, sr = _load_audio(user_audio_path)
+        energy_pauses = _extract_pauses_from_energy(y, sr, threshold_db=-40, min_dur=0.3)
+        # Merge: keep unique pauses by start time
+        seen = {p["start"] for p in user_pauses}
+        for p in energy_pauses:
+            if p["start"] not in seen:
+                user_pauses.append(p)
+        user_pauses.sort(key=lambda x: x["start"])
+    except Exception:
+        pass
+    source_pauses = []
+    if source_video_id:
+        source_pauses = _get_source_pauses_from_captions(source_video_id)
+    if not source_pauses and source_text:
+        # Rough heuristic: estimate pauses from punctuation in source text
+        # (1 pause per ~20 words or at sentence boundaries)
+        source_words_list = re.findall(r"[a-zA-Z؀-ۿ]+(?:[''][a-zA-Z]+)?", source_text)
+        est_pause_count = max(1, len(source_words_list) // 20)
+        est_total_pause = est_pause_count * 1.0  # ~1 sec per pause heuristic
+        source_pauses = [{"start": 0, "end": 0, "duration": est_total_pause / est_pause_count} for _ in range(est_pause_count)]
+    pause_score = _compute_pause_score(user_pauses, source_pauses)
+
+    # ── Phonemic overlap ──
+    source_words = re.findall(r"[a-zA-Z؀-ۿ]+(?:[''][a-zA-Z]+)?", source_text)
+    phonemic_score = _compare_word_sequences(user_words, source_words)
+
+    # ── Intonation ──
+    intonation_score = 50.0
+    if HAS_LIBROSA:
+        try:
+            user_pitch = _extract_pitch_contour(user_audio_path)
+            if source_audio_path:
+                source_pitch = _extract_pitch_contour(source_audio_path)
+                intonation_score = _compare_pitch_contours(user_pitch, source_pitch)
+            else:
+                # No source audio: score based on natural pitch variance
+                if len(user_pitch) > 10:
+                    std = np.std(user_pitch)
+                    # Natural speech has some variance; too flat (<0.1) or too erratic (>1.0) are bad
+                    if std < 0.1:
+                        intonation_score = 30.0
+                    elif std < 0.3:
+                        intonation_score = 60.0
+                    elif std < 0.6:
+                        intonation_score = 85.0
+                    else:
+                        intonation_score = 70.0
+        except Exception:
+            intonation_score = 50.0
+
+    # ── Overall ──
+    overall_score = round(
+        wpm_score * 0.25 + pause_score * 0.25 + phonemic_score * 0.25 + intonation_score * 0.25,
+        1,
+    )
+
+    return {
+        "wpm_score": round(wpm_score, 1),
+        "pause_score": round(pause_score, 1),
+        "phonemic_score": round(phonemic_score, 1),
+        "intonation_score": round(intonation_score, 1),
+        "overall_score": overall_score,
+        "user_wpm": user_wpm,
+        "source_wpm": source_wpm,
+        "user_pauses": user_pauses,
+        "source_pauses": source_pauses,
+        "user_word_count": user_word_count,
+        "source_word_count": len(source_words),
+    }
+
 
 # ── Transcription ─────────────────────────────────────────────────────────────
 
@@ -123,11 +527,131 @@ async def analyze_interpretation(
     specialization:str = Form("general"),
     direction:     str = Form("English → Arabic"),
     topic:         str = Form(""),
-    difficulty:    str = Form("moderate")
+    difficulty:    str = Form("moderate"),
+    user_audio:    UploadFile = File(None),
+    source_video_id: str = Form(""),
+    source_wpm:    str = Form(""),
 ):
     try:
         is_shadowing = mode == "shadowing" and source_text.startswith("[Shadowing")
 
+        # ── Shadowing acoustic evaluation ─────────────────────────────
+        if is_shadowing and user_audio:
+            try:
+                # Save user audio to temp file
+                user_audio_data = await user_audio.read()
+                with tempfile.NamedTemporaryFile(suffix=".webm", delete=False) as f:
+                    f.write(user_audio_data)
+                    user_audio_path = f.name
+
+                # Get source audio if video_id provided
+                source_audio_path = None
+                if source_video_id:
+                    source_audio_path = _download_source_audio(source_video_id)
+
+                # Parse source_wpm
+                source_wpm_val = None
+                try:
+                    source_wpm_val = int(float(source_wpm)) if source_wpm.strip() else None
+                except (ValueError, TypeError):
+                    source_wpm_val = None
+
+                # Run acoustic evaluation
+                acoustic = _evaluate_shadowing_acoustic(
+                    user_audio_path=user_audio_path,
+                    source_audio_path=source_audio_path,
+                    source_text=source_text,
+                    source_wpm=source_wpm_val,
+                    source_video_id=source_video_id if source_video_id else None,
+                )
+
+                # Cleanup temp file
+                try:
+                    os.unlink(user_audio_path)
+                except Exception:
+                    pass
+
+                # Build grade from overall score
+                overall = acoustic["overall_score"]
+                if overall >= 90:
+                    grade = "A"
+                elif overall >= 80:
+                    grade = "B"
+                elif overall >= 70:
+                    grade = "C"
+                elif overall >= 60:
+                    grade = "D"
+                else:
+                    grade = "F"
+
+                # Build coaching summary based on scores
+                strengths = []
+                coaching_tips = []
+                if acoustic["wpm_score"] >= 80:
+                    strengths.append(f"Pacing matches source well (~{acoustic['user_wpm']} WPM vs ~{acoustic['source_wpm']} WPM)")
+                else:
+                    coaching_tips.append(f"Work on pacing: your WPM was {acoustic['user_wpm']} vs source {acoustic['source_wpm']}. Aim for ±10% of the source speed.")
+                if acoustic["phonemic_score"] >= 80:
+                    strengths.append("Good word sequence alignment with source")
+                else:
+                    coaching_tips.append("Practice listening more carefully to catch every word in the source")
+                if acoustic["pause_score"] >= 80:
+                    strengths.append("Pause patterns mirror the source naturally")
+                else:
+                    coaching_tips.append("Pay attention to where the speaker pauses — shadowing includes matching breath and phrase breaks")
+                if acoustic["intonation_score"] >= 80:
+                    strengths.append("Intonation contour closely matches the source")
+                else:
+                    coaching_tips.append("Record yourself and compare pitch variation to the source — shadowing is about acoustic fidelity, not just words")
+
+                if not strengths:
+                    strengths.append("Attempted shadowing practice")
+                if not coaching_tips:
+                    coaching_tips.append("Continue daily shadowing with varied source material to build acoustic muscle memory")
+
+                # Return acoustic result with backward-compatible fields
+                result = {
+                    "overall_score": acoustic["overall_score"],
+                    "accuracy": round(acoustic["wpm_score"], 1),
+                    "completeness": round(acoustic["phonemic_score"], 1),
+                    "terminology": round(acoustic["intonation_score"], 1),
+                    "fluency": round(acoustic["pause_score"], 1),
+                    "register_preservation": None,
+                    "professional_protocol": None,
+                    "grade": grade,
+                    "ideal_interpretation": "Shadowing: match the source speaker's acoustic delivery — WPM, pauses, intonation, and word sequence.",
+                    "omissions": [],
+                    "additions": [],
+                    "term_errors": [],
+                    "tone_analysis": {
+                        "register": "natural",
+                        "emotion_match": "natural",
+                        "pace_assessment": "appropriate" if acoustic["wpm_score"] >= 80 else ("too fast" if acoustic["user_wpm"] > acoustic["source_wpm"] * 1.1 else "too slow"),
+                        "confidence": "high" if overall >= 80 else ("medium" if overall >= 60 else "low"),
+                        "tone_notes": f"WPM: {acoustic['user_wpm']} vs {acoustic['source_wpm']} | Pauses: {len(acoustic['user_pauses'])} vs {len(acoustic['source_pauses'])} | Words: {acoustic['user_word_count']} vs {acoustic['source_word_count']}"
+                    },
+                    "strengths": strengths,
+                    "coaching_tips": coaching_tips,
+                    "next_drill": "Shadow a 60-second news broadcast segment, focusing on matching the speaker's pause rhythm exactly.",
+                    "summary": f"Acoustic shadowing analysis: overall {acoustic['overall_score']}/100. WPM match {acoustic['wpm_score']:.0f}, pause match {acoustic['pause_score']:.0f}, phonemic overlap {acoustic['phonemic_score']:.0f}, intonation similarity {acoustic['intonation_score']:.0f}.",
+                    # New acoustic fields (for frontend v2)
+                    "wpm_score": acoustic["wpm_score"],
+                    "pause_score": acoustic["pause_score"],
+                    "phonemic_score": acoustic["phonemic_score"],
+                    "intonation_score": acoustic["intonation_score"],
+                    "user_wpm": acoustic["user_wpm"],
+                    "source_wpm": acoustic["source_wpm"],
+                    "evaluation_method": "acoustic",
+                }
+
+                save_session("interp", {"mode": mode, "specialization": specialization, "direction": direction,
+                                        "source": source_text[:300], "rendition": rendition_text[:300], "scores": result})
+                return JSONResponse(result)
+            except Exception as e:
+                # Audio analysis failed — fall through to text-based fallback
+                print(f"[Shadowing] Acoustic evaluation failed: {e}. Falling back to text-based LLM.")
+
+        # ── Text-based LLM evaluation (fallback for shadowing or default for other modes) ──
         if is_shadowing:
             prompt = f"""You are a professional broadcast voice coach assessing a SHADOWING practice.
 
