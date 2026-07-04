@@ -405,16 +405,6 @@
     </div>
     <div style="margin-top:14px;font-size:11px;color:var(--dim)">Converse both ways → Score on cultural mediation &amp; naturalness</div>
    </div>
-   <div class="mode-card-v2 legal" onclick="enterPractice('legal')">
-    <div class="mc-icon"></div>
-    <div class="mc-title">Legal Verbatim</div>
-    <div class="mc-desc">Word-for-word legal interpretation — depositions, court statements, and sworn testimony. Exact reproduction required, no summarization.</div>
-    <div class="mc-tags">
-     <span class="mc-tag badge-advanced">Advanced</span>
-     <span class="mc-tag" style="background:var(--bg3);color:var(--dim);border:1px solid var(--border)">Legal register</span>
-    </div>
-    <div style="margin-top:14px;font-size:11px;color:var(--dim)">Exact wording → No paraphrasing → Legal precision scoring</div>
-   </div>
    <div class="mode-card-v2 simultaneous" onclick="enterPractice('simultaneous')">
     <div class="mc-icon"></div>
     <div class="mc-title">Simultaneous</div>
@@ -3261,6 +3251,7 @@ let ciNoiseLevel   = 'quiet';       // Chuchotage only: 'quiet' | 'moderate' | '
 let ciListenerCount = 1;            // Chuchotage only: 1 | 2
 let ciScenarioType = 'business';    // Escort only: 'business' | 'social' | 'administrative'
 let ciDocumentType = 'letter';      // Sight Translation only: 'letter' | 'form' | 'contract-excerpt' | 'news'
+let ciVerbatim     = false;         // Legal Verbatim toggle — when ON, evaluation shifts to exact word matching
 let ciReadStartTs  = 0;             // Sight Translation only: timestamp when document text was shown, for WPM capture
 let ciEvsTargetSec = 3.0;           // SI/Chuchotage only: Ear-Voice-Span target for this pace/difficulty
 let ciSegStartTs   = 0;             // SI/Chuchotage only: timestamp when current segment audio started, for décalage capture
@@ -3276,7 +3267,7 @@ let ciSessionTimer = null;
 
 // ── CI Overlay Controls ──────────────────────────────────────────────────────
 function showCISim(modeKind) {
-  ciModeKind = ['simultaneous','chuchotage','escort','sight','legal'].includes(modeKind) ? modeKind : 'consecutive';
+  ciModeKind = ['simultaneous','chuchotage','escort','sight'].includes(modeKind) ? modeKind : 'consecutive';
   ciRotationShown = false;
   const ov = document.getElementById('ci-sim-overlay');
   if (ov) ov.style.display = 'flex';
@@ -3405,7 +3396,6 @@ function ciApplyModeKindUI() {
     chuchotage:   {title: 'Chuchotage Simulation', badge: 'CHUCHOTAGE', color: 'var(--teal)', bg: 'rgba(45,212,191,.08)', border: 'rgba(45,212,191,.2)'},
     escort:       {title: 'Escort/Liaison Simulation', badge: 'ESCORT/LIAISON', color: 'var(--gold)', bg: 'rgba(232,151,30,.08)', border: 'rgba(232,151,30,.2)'},
     sight:        {title: 'Sight Translation Simulation', badge: 'SIGHT TRANSLATION', color: 'var(--amber)', bg: 'rgba(245,158,11,.08)', border: 'rgba(245,158,11,.2)'},
-    legal:        {title: 'Legal Verbatim Simulation', badge: 'LEGAL VERBATIM', color: 'var(--purple)', bg: 'rgba(167,139,250,.08)', border: 'rgba(167,139,250,.2)'},
   };
   const meta = MODE_META[ciModeKind] || MODE_META.consecutive;
   const titleEl = document.querySelector('.ci-ov-hdr span[style*="font-weight:800"]');
@@ -3427,6 +3417,10 @@ function ciApplyModeKindUI() {
   if (scenarioWrap) scenarioWrap.style.display = isEscort ? '' : 'none';
   const doctypeWrap = document.getElementById('ci-doctype-wrap');
   if (doctypeWrap) doctypeWrap.style.display = isSight ? '' : 'none';
+  const verbatimWrap = document.getElementById('ci-verbatim-wrap');
+  const verbatimDivider = document.getElementById('ci-verbatim-divider');
+  if (verbatimWrap) verbatimWrap.style.display = (isSI || ciModeKind === 'consecutive') ? 'flex' : 'none';
+  if (verbatimDivider) verbatimDivider.style.display = (isSI || ciModeKind === 'consecutive') ? 'block' : 'none';
   const replayZone = document.getElementById('ci-replay-zone');
   if (replayZone) replayZone.style.display = isLiveRender ? 'none' : '';
 
@@ -3934,6 +3928,7 @@ async function ciStartSession() {
   fd.append('participants', ciParticipants);
   fd.append('one_way', ciOneWay ? '1' : '0');
   fd.append('mode', ciModeKind);
+  fd.append('verbatim', ciVerbatim ? '1' : '0');
   fd.append('atmosphere', ciModeKind === 'simultaneous' ? ciAtmosphere : 'booth');
   if (ciModeKind === 'chuchotage') {
     fd.append('listener_count', ciListenerCount);
@@ -4740,9 +4735,10 @@ function ciConfirmAndStart() {
   const dur      = parseInt(document.getElementById('ci-duration-sel')?.value || 10);
   const pace     = parseInt(document.getElementById('ci-pace-slider')?.value || 2);
   const oneWay   = document.getElementById('ci-oneway')?.checked   || false;
+  const verbatim = document.getElementById('ci-verbatim')?.checked || false;
   ciActiveField = field; ciFieldType = fieldType;
   ciSrcLang = srcLang;  ciTgtLang = tgtLang;
-  ciDifficulty = diff;  ciDuration = dur; ciPace = pace; ciOneWay = oneWay;
+  ciDifficulty = diff;  ciDuration = dur; ciPace = pace; ciOneWay = oneWay; ciVerbatim = verbatim;
   ciLang = srcLang + ' → ' + tgtLang;
   ciMaxSegs = Math.max(2, Math.round(ciDuration / 2.5));
   ciStartSession();
@@ -5650,7 +5646,6 @@ const MODE_META = {
  opi: { name:'OPI / VRI', sub:'Over-the-Phone & Video Remote Interpreting', instructions:'① Select a field — call scenarios match real OPI/VRI call types\n② Toggle "Video call (VRI)" if you want the visual channel — a camera panel activates with non-verbal cues to read\n③ Go online and accept the incoming call, interpreting both parties\n④ End the call — you will be assessed on accuracy, turn-taking, professional register, and (in VRI mode) visual-cue handling' },
  chuchotage: { name:'Chuchotage', sub:'Whispered simultaneous interpreting', instructions:'① Set your language pair and field, plus ambient noise and listener count\n② Press Start Recording first, then play the video\n③ Whisper your interpretation live, in real-time, with no booth or equipment — no replay is allowed\n④ Press Finish when the segment ends — you will be scored on décalage control and volume & noise discipline' },
  escort: { name:'Escort/Liaison', sub:'Informal bidirectional interpreting', instructions:'① Choose a scenario — business, social, or administrative — and a field\n② Watch each short exchange, then press Start Recording and interpret it naturally in either direction\n③ Keep the register conversational — contractions and informality are expected\n④ Press Finish — you will be scored on cultural mediation and conversational naturalness' },
- legal: { name:'Legal Verbatim', sub:'Word-for-word legal interpretation', instructions:'① Choose a legal field — depositions, court statements, or sworn testimony\n② AI delivers formal legal speech segment by segment\n③ Interpret word-for-word with exact reproduction — no summarization, no paraphrasing\n④ Press Finish — scored on verbatim accuracy, legal register preservation, Fusha compliance, and strict impartiality' },
  sight: { name:'Sight Translation', sub:'Written-input, oral-output interpreting', instructions:'① Choose a document type — letter, form, contract excerpt, or news clipping — and a field\n② Press Start — the document appears on screen and stays visible the whole time (no audio, no replay needed)\n③ Read ahead silently while speaking your oral rendition aloud, at a sustained pace\n④ Press Finish — you will be scored on register fidelity, completeness, WPM throughput, and public-speaking delivery' }
 };
 
@@ -5669,14 +5664,12 @@ async function enterPractice(mode) {
  const siCard   = document.getElementById('si-ai-launch-card');
  const chuchotageCard = document.getElementById('chuchotage-ai-launch-card');
  const escortCard     = document.getElementById('escort-ai-launch-card');
- const legalCard      = document.getElementById('legal-ai-launch-card');
  const sightCard      = document.getElementById('sight-ai-launch-card');
  if (opiCard) opiCard.style.display  = mode === 'opi'         ? 'block' : 'none';
  if (ciCard)  ciCard.style.display   = mode === 'consecutive' ? 'block' : 'none';
  if (siCard)  siCard.style.display   = mode === 'simultaneous' ? 'block' : 'none';
  if (chuchotageCard) chuchotageCard.style.display = mode === 'chuchotage' ? 'block' : 'none';
  if (escortCard)     escortCard.style.display     = mode === 'escort'     ? 'block' : 'none';
- if (legalCard)      legalCard.style.display      = mode === 'legal'      ? 'block' : 'none';
  if (sightCard)      sightCard.style.display      = mode === 'sight'      ? 'block' : 'none';
 
  // Show correct language UI. Every block below has an explicit grid-column
@@ -6942,6 +6935,17 @@ window.addEventListener('DOMContentLoaded', () => {
       </label>
       <span style="font-size:11px;color:var(--dim)">One-way</span>
       <div style="width:1px;height:18px;background:var(--border);margin:0 2px"></div>
+      <div id="ci-verbatim-wrap" style="display:none;align-items:center;gap:8px">
+        <label class="ci-toggle-wrap" style="margin:0">
+          <input type="checkbox" class="ci-toggle-input" id="ci-verbatim" onchange="ciVerbatim=this.checked">
+          <div class="ci-toggle-track"><div class="ci-toggle-thumb"></div></div>
+        </label>
+        <div style="display:flex;flex-direction:column">
+          <span style="font-size:11px;color:var(--dim)">Legal Verbatim Mode</span>
+          <span style="font-size:9px;color:var(--dim);opacity:.7">Exact word-for-word reproduction</span>
+        </div>
+      </div>
+      <div id="ci-verbatim-divider" style="display:none;width:1px;height:18px;background:var(--border);margin:0 2px"></div>
       <div id="ci-part-section" style="display:flex;align-items:center;gap:6px;transition:opacity .2s">
         <span class="ci-ov-plbl" style="margin-bottom:0">Add. Participants</span>
         <button class="ci-part-btn" id="ci-part-minus" onclick="ciAdjustPart(-1)" disabled>−</button>

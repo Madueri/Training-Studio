@@ -26,13 +26,62 @@ const MODULE_UNLOCK_RULES = {
 };
 
 const MODE_UNLOCK_MAP = {
-  shadowing:    { practice: { always: true },      sim: null               },
-  sight:        { practice: { assignModule: 16 },   sim: { passModule: 16 } },
-  chuchotage:   { practice: { assignModule: 15 },   sim: { passModule: 15 } },
-  consecutive:  { practice: { assignModule: 7  },   sim: { passModule: 9  } },
-  escort:       { practice: { assignModule: 10 },   sim: { passModule: 10 } },
-  simultaneous: { practice: { assignModule: 14 },   sim: { passModule: 17 } },
-  opi:          { practice: { assignModule: 19 },   sim: { passModule: 21 } },
+  shadowing: {
+    practice: { always: true },
+    sim: null,
+    moduleId: 1,
+    label: 'Shadowing',
+    description: 'Echo the speaker in real-time to build ear-voice span and fluency.',
+  },
+  consecutive: {
+    practice: { requiresModes: ['shadowing'] },
+    sim: { passModule: 15 },
+    moduleId: 9,
+    label: 'Consecutive Interpreting (CI)',
+    description: 'Listen, take notes, then render the message after the speaker pauses.',
+  },
+  simultaneous: {
+    practice: { requiresModes: ['shadowing'], requiresModulesPassed: [9,10,11,12,13,14,15] },
+    sim: { passModule: 22 },
+    moduleId: 17,
+    label: 'Simultaneous Interpreting (SI)',
+    description: 'Interpret in real-time while the speaker continues, using the booth.',
+  },
+  sight_translation: {
+    practice: { requiresModesAny: ['consecutive', 'simultaneous'] },
+    sim: { passModule: 16 },
+    moduleId: 16,
+    label: 'Sight Translation',
+    description: 'Translate a written text aloud into the target language.',
+  },
+  liaison: {
+    practice: { requiresModes: ['consecutive'] },
+    sim: { passModule: 25 },
+    moduleId: 25,
+    label: 'Liaison / Escort Interpreting',
+    description: 'Accompany clients and interpret in informal, mobile settings.',
+  },
+  chuchotage: {
+    practice: { requiresModes: ['simultaneous'] },
+    sim: { passModule: 22 },
+    moduleId: 22,
+    label: 'Chuchotage (Whispered SI)',
+    description: 'Whisper simultaneous interpretation directly to one or two listeners.',
+  },
+  vri: {
+    practice: { requiresModes: ['simultaneous', 'chuchotage'] },
+    sim: null,
+    moduleId: null,
+    label: 'Video Remote Interpreting (VRI)',
+    description: 'Remote interpreting via video conference for healthcare, legal, and business settings.',
+  },
+  opi: {
+    practice: { requiresModes: ['consecutive'], requiresModulesPassed: [12, 14] },
+    sim: { passModule: 29 },
+    moduleId: 23,
+    label: 'Over-the-Phone Interpreting (OPI)',
+    description: 'Remote interpreting over telephone or video link.',
+  },
 };
 
 const FIELD_UNLOCK_MAP = {
@@ -260,14 +309,42 @@ class ProgressClient {
       for (let n = 2; n <= MODULE_TOTAL; n++) { if (done[n-1]) rules[n] = true; }
     }
 
+    const passed = (id) => !!done[id];
+    const unlocked = (id) => !!rules[id];
+
     const modeProgress = {};
-    for (const [mode, rule] of Object.entries(MODE_UNLOCK_MAP)) {
-      const practiceUnlocked = !!(rule.practice.always || rules[rule.practice.assignModule]);
-      const simUnlocked = rule.sim ? !!done[rule.sim.passModule] : false;
+
+    // Helper: check if a practice rule is satisfied
+    const isPracticeUnlocked = (rule) => {
+      if (rule.always) return true;
+      if (rule.assignModule) return unlocked(rule.assignModule);
+      if (rule.requiresModes) {
+        for (const req of rule.requiresModes) {
+          if (!modeProgress[req]?.practiceUnlocked) return false;
+        }
+      }
+      if (rule.requiresModesAny) {
+        const any = rule.requiresModesAny.some(req => modeProgress[req]?.practiceUnlocked);
+        if (!any) return false;
+      }
+      if (rule.requiresModulesPassed) {
+        for (const mid of rule.requiresModulesPassed) {
+          if (!passed(mid)) return false;
+        }
+      }
+      return true;
+    };
+
+    // Compute modes in dependency order (topological)
+    const modeOrder = ['shadowing', 'consecutive', 'simultaneous', 'sight_translation', 'liaison', 'chuchotage', 'vri', 'opi'];
+    for (const mode of modeOrder) {
+      const rule = MODE_UNLOCK_MAP[mode];
+      const practiceUnlocked = isPracticeUnlocked(rule.practice);
+      const simUnlocked = rule.sim ? passed(rule.sim.passModule) : false;
       modeProgress[mode] = {
         practiceUnlocked,
         simUnlocked,
-        moduleId: rule.practice.assignModule || null,
+        moduleId: rule.moduleId || null,
         simModuleId: rule.sim ? rule.sim.passModule : null,
       };
     }

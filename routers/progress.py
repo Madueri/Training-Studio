@@ -72,7 +72,7 @@ PHASES = {
     4: {"title": "Specialization Tracks", "module_ids": [f"M{i:03d}" for i in range(23, 30)]},
 }
 
-# ── Mode Unlock System (7 modes) ──────────────────────────────────────────────
+# ── Mode Unlock System (8 modes) ──────────────────────────────────────────────
 
 MODES = {
     "shadowing": {
@@ -82,13 +82,13 @@ MODES = {
         "description": "Echo the speaker in real-time to build ear-voice span and fluency."
     },
     "consecutive": {
-        "label": "Consecutive Interpreting",
+        "label": "Consecutive Interpreting (CI)",
         "practice_unlock_at": "M009",
         "sim_unlock_at": "M015",
         "description": "Listen, take notes, then render the message after the speaker pauses."
     },
     "simultaneous": {
-        "label": "Simultaneous Interpreting",
+        "label": "Simultaneous Interpreting (SI)",
         "practice_unlock_at": "M017",
         "sim_unlock_at": "M022",
         "description": "Interpret in real-time while the speaker continues, using the booth."
@@ -105,17 +105,23 @@ MODES = {
         "sim_unlock_at": "M022",
         "description": "Whisper simultaneous interpretation directly to one or two listeners."
     },
+    "liaison": {
+        "label": "Liaison / Escort Interpreting",
+        "practice_unlock_at": "M025",
+        "sim_unlock_at": "M025",
+        "description": "Accompany clients and interpret in informal, mobile settings."
+    },
+    "vri": {
+        "label": "Video Remote Interpreting (VRI)",
+        "practice_unlock_at": None,
+        "sim_unlock_at": None,
+        "description": "Remote interpreting via video conference for healthcare, legal, and business settings."
+    },
     "opi": {
         "label": "Over-the-Phone Interpreting (OPI)",
         "practice_unlock_at": "M023",
         "sim_unlock_at": "M029",
         "description": "Remote interpreting over telephone or video link."
-    },
-    "escort": {
-        "label": "Escort / Liaison Interpreting",
-        "practice_unlock_at": "M025",
-        "sim_unlock_at": "M025",
-        "description": "Accompany clients and interpret in informal, mobile settings."
     },
 }
 
@@ -142,8 +148,9 @@ ACHIEVEMENTS = {
     "in_the_booth":      {"title": "In the Booth", "description": "Unlock Simultaneous Interpreting simulation.", "icon": "🎧"},
     "on_sight":          {"title": "On Sight", "description": "Complete a Sight Translation module.", "icon": "👁️"},
     "whisper_network":   {"title": "Whisper Network", "description": "Complete the Chuchotage module.", "icon": "🤫"},
-    "cultural_bridge":   {"title": "Cultural Bridge", "description": "Complete the Escort & Liaison module.", "icon": "🌉"},
+    "cultural_bridge":   {"title": "Cultural Bridge", "description": "Complete the Liaison & Escort module.", "icon": "🌉"},
     "answer_the_call":   {"title": "Answer the Call", "description": "Complete the OPI Certification Prep module.", "icon": "📞"},
+    "vri_ready":         {"title": "VRI Ready", "description": "Unlock Video Remote Interpreting practice.", "icon": "🖥️"},
     "field_specialist":  {"title": "Field Specialist", "description": "Unlock all 9 interpreting domains.", "icon": "🌍"},
     "fast_tracked":      {"title": "Fast-Tracked", "description": "Place above Phase 1 via the placement test.", "icon": "⚡"},
     "certified_pro":     {"title": "Certified Pro", "description": "Complete Category C onboarding and calibration.", "icon": "🏆"},
@@ -248,6 +255,13 @@ def load_progress(user_id: str) -> dict:
             for mid in MODULES:
                 if mid not in data.get("module_status", {}):
                     data["module_status"][mid] = {"status": "locked", "score": 0.0, "attempts": 0, "passed_at": None}
+            # Ensure all mode keys exist (migration for renamed/added modes)
+            for mode in MODES:
+                if mode not in data.get("mode_progress", {}):
+                    data["mode_progress"][mode] = {"practice_unlocked": False, "sim_unlocked": False, "module_id": None}
+            # Migrate old "escort" key to "liaison"
+            if "escort" in data.get("mode_progress", {}) and "liaison" in MODES:
+                data["mode_progress"]["liaison"] = data["mode_progress"].pop("escort")
             return data
         except Exception:
             pass
@@ -265,26 +279,64 @@ def save_progress(data: dict):
 
 
 def _update_mode_progress(progress: dict):
-    """Recompute mode unlocks based on current module_status."""
+    """Recompute mode unlocks based on the new skill tree."""
     module_status = progress["module_status"]
-    for mode, cfg in MODES.items():
-        mp = progress["mode_progress"][mode]
-        # Practice unlock
-        practice_gate = cfg["practice_unlock_at"]
-        if practice_gate:
-            status = module_status.get(practice_gate, {}).get("status", "locked")
-            mp["practice_unlocked"] = status in ("unlocked", "in_progress", "passed")
-            mp["module_id"] = practice_gate
-        else:
-            mp["practice_unlocked"] = True
+    mp = progress["mode_progress"]
 
-        # Sim unlock
-        sim_gate = cfg["sim_unlock_at"]
-        if sim_gate:
-            status = module_status.get(sim_gate, {}).get("status", "locked")
-            mp["sim_unlocked"] = status == "passed"
-        else:
-            mp["sim_unlocked"] = False
+    def passed(mid):
+        return module_status.get(mid, {}).get("status") == "passed"
+
+    def any_ci_passed():
+        return any(passed(m) for m in ["M009", "M010", "M011", "M012", "M013", "M014", "M015"])
+
+    # Shadowing: always unlocked
+    mp["shadowing"]["practice_unlocked"] = True
+    mp["shadowing"]["sim_unlocked"] = False
+    mp["shadowing"]["module_id"] = "M001"
+
+    # CI: unlocks after Shadowing practice
+    ci_unlocked = mp["shadowing"]["practice_unlocked"]
+    mp["consecutive"]["practice_unlocked"] = ci_unlocked
+    mp["consecutive"]["sim_unlocked"] = passed("M015")
+    mp["consecutive"]["module_id"] = "M009"
+
+    # SI: unlocks after Shadowing + CI module completion
+    si_unlocked = ci_unlocked and any_ci_passed()
+    mp["simultaneous"]["practice_unlocked"] = si_unlocked
+    mp["simultaneous"]["sim_unlocked"] = passed("M022")
+    mp["simultaneous"]["module_id"] = "M017"
+
+    # Sight Translation: unlocks after CI practice OR SI practice
+    sight_unlocked = ci_unlocked or si_unlocked
+    mp["sight_translation"]["practice_unlocked"] = sight_unlocked
+    mp["sight_translation"]["sim_unlocked"] = passed("M016")
+    mp["sight_translation"]["module_id"] = "M016"
+
+    # Liaison: unlocks after CI practice
+    liaison_unlocked = ci_unlocked
+    mp["liaison"]["practice_unlocked"] = liaison_unlocked
+    mp["liaison"]["sim_unlocked"] = passed("M025")
+    mp["liaison"]["module_id"] = "M025"
+
+    # Chuchotage: unlocks after SI practice
+    chuchotage_unlocked = si_unlocked
+    mp["chuchotage"]["practice_unlocked"] = chuchotage_unlocked
+    mp["chuchotage"]["sim_unlocked"] = passed("M022")
+    mp["chuchotage"]["module_id"] = "M022"
+
+    # VRI: unlocks after SI + Chuchotage
+    vri_unlocked = si_unlocked and chuchotage_unlocked
+    mp["vri"]["practice_unlocked"] = vri_unlocked
+    mp["vri"]["sim_unlocked"] = False
+    mp["vri"]["module_id"] = None
+
+    # OPI: unlocks after CI + Legal Verbatim
+    # Legal Verbatim is a CI specialization (not a standalone mode)
+    legal_verbatim_unlocked = ci_unlocked and (passed("M012") or passed("M014"))
+    opi_unlocked = ci_unlocked and legal_verbatim_unlocked
+    mp["opi"]["practice_unlocked"] = opi_unlocked
+    mp["opi"]["sim_unlocked"] = passed("M029")
+    mp["opi"]["module_id"] = "M023"
 
 
 def _update_field_unlocks(progress: dict):
@@ -307,16 +359,18 @@ def _check_achievements(progress: dict) -> list[str]:
     streak = progress.get("streak_days", 0)
     level = progress.get("level", 1)
     fields = set(progress.get("field_unlocks", []))
+    mode_progress = progress["mode_progress"]
 
     checks = {
         "first_steps": total_sessions >= 1,
         "shadow_walker": "M001" in passed,
-        "note_taker": progress["mode_progress"]["consecutive"]["practice_unlocked"],
-        "in_the_booth": progress["mode_progress"]["simultaneous"]["sim_unlocked"],
+        "note_taker": mode_progress["consecutive"]["practice_unlocked"],
+        "in_the_booth": mode_progress["simultaneous"]["sim_unlocked"],
         "on_sight": "M016" in passed,
         "whisper_network": "M022" in passed,
         "cultural_bridge": "M025" in passed,
         "answer_the_call": "M029" in passed,
+        "vri_ready": mode_progress["vri"]["practice_unlocked"],
         "field_specialist": len(fields) >= 9,
         "fast_tracked": progress.get("placement_test") is not None,
         "certified_pro": progress.get("category") == "C" and progress.get("calibration_session") is not None,
@@ -818,15 +872,24 @@ def _get_next_unlock(progress: dict) -> Optional[dict]:
     """Helper to describe the next upcoming unlock for the user."""
     for mode, cfg in MODES.items():
         mp = progress["mode_progress"][mode]
-        if not mp["practice_unlocked"] and cfg["practice_unlock_at"]:
-            return {
-                "type": "mode_practice",
-                "mode": mode,
-                "label": cfg["label"],
-                "requires_module": cfg["practice_unlock_at"],
-                "requires_module_title": MODULES[cfg["practice_unlock_at"]]["title"],
-            }
-        if not mp["sim_unlocked"] and cfg["sim_unlock_at"]:
+        if not mp["practice_unlocked"]:
+            if cfg.get("practice_unlock_at"):
+                return {
+                    "type": "mode_practice",
+                    "mode": mode,
+                    "label": cfg["label"],
+                    "requires_module": cfg["practice_unlock_at"],
+                    "requires_module_title": MODULES[cfg["practice_unlock_at"]]["title"],
+                }
+            else:
+                return {
+                    "type": "mode_practice",
+                    "mode": mode,
+                    "label": cfg["label"],
+                    "requires_module": None,
+                    "requires_module_title": "Complete prerequisite modes",
+                }
+        if not mp["sim_unlocked"] and cfg.get("sim_unlock_at"):
             return {
                 "type": "mode_simulation",
                 "mode": mode,

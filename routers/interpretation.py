@@ -579,6 +579,7 @@ async def analyze_interpretation(
     user_audio:    UploadFile = File(None),
     source_video_id: str = Form(""),
     source_wpm:    str = Form(""),
+    verbatim:      str = Form("0"),
 ):
     try:
         is_shadowing = mode == "shadowing"
@@ -735,7 +736,57 @@ Return JSON only:
   "summary": "2-sentence assessment in voice of senior broadcast coach"
 }}"""
         else:
-            prompt = f"""You are an expert interpretation trainer and broadcast coach.
+            is_verbatim = verbatim.strip() in ("1", "true", "True")
+            if is_verbatim:
+                prompt = f"""You are a certified evaluator for LEGAL VERBATIM INTERPRETATION — strict accuracy mode for legal interpreting with exact wording requirements. Assess this session with extreme rigor; even minor deviations from the source register or wording are penalized.
+
+MODE: {mode.upper()} | FIELD: {specialization.upper()} | DIRECTION: {direction} | LEVEL: {difficulty.upper()}
+{("TOPIC: " + topic) if topic else ""}
+
+SOURCE SPEECH:
+{source_text}
+
+INTERPRETER'S RENDITION:
+{rendition_text}
+
+LEGAL VERBATIM SCORING RUBRIC (0-100 each):
+• accuracy (30%): Exact meaning AND wording preserved — no paraphrasing, no summarization, no embellishments. Every factual and legal element preserved with maximal fidelity.
+• completeness (25%): ALL elements of the source present — numbers, dates, names, clauses, legal formulae. ZERO omissions tolerated. Classify each omission as Strategic (deliberate, for clarity — still heavily penalized) or Unintentional (missed content — full penalty).
+• terminology (15%): Correct legal terminology reproduced exactly. Every term must match the source's legal precision and convention.
+• fluency (5%): Delivery must be clear but NOT at the expense of accuracy. Hesitations are acceptable if they preserve exact wording; false starts that change meaning are penalized severely.
+• professional_protocol (10%): Strict impartiality, no editorializing, no cultural mediation, no softening of legal language. The interpreter is a transparent conduit.
+• register_preservation (25%): Strict adherence to the legal register of the source — formal, precise, and authoritative. No drift into casual, simplified, or explanatory language. Exact register reproduction is paramount.
+
+overall_score = 0.30×accuracy + 0.25×completeness + 0.15×terminology + 0.05×fluency + 0.10×professional_protocol + 0.25×register_preservation
+
+Assess professionally. Return JSON only:
+{{
+  "overall_score": <0-100>,
+  "accuracy": <0-100>,
+  "completeness": <0-100>,
+  "terminology": <0-100>,
+  "fluency": <0-100>,
+  "professional_protocol": <0-100>,
+  "register_preservation": <0-100>,
+  "grade": "A(90-100)|B(80-89)|C(70-79)|D(60-69)|F(<60)",
+  "ideal_interpretation": "Full professional-grade verbatim rendition of the source — what a Band 8+ interpreter would say, preserving exact wording and legal register",
+  "omissions": [{{"type": "strategic|unintentional", "description": "key idea omitted"}}],
+  "additions": ["inappropriate addition"],
+  "term_errors": [{{"wrong": "...", "correct": "..."}}],
+  "tone_analysis": {{
+    "register": "formal|informal|mixed",
+    "emotion_match": "natural|over-emotional|flat|uncertain",
+    "pace_assessment": "too fast|appropriate|too slow",
+    "confidence": "high|medium|low",
+    "tone_notes": "one specific observation about tone and delivery"
+  }},
+  "strengths": ["specific strength"],
+  "coaching_tips": ["actionable technique to improve immediately"],
+  "next_drill": "one concrete exercise for today",
+  "summary": "2-sentence professional assessment in the voice of a senior trainer"
+}}"""
+            else:
+                prompt = f"""You are an expert interpretation trainer and broadcast coach.
 
 MODE: {mode.upper()} | FIELD: {specialization.upper()} | DIRECTION: {direction} | LEVEL: {difficulty.upper()}
 {("TOPIC: " + topic) if topic else ""}
@@ -2884,6 +2935,7 @@ async def ci_new_session(
     participants: int = Form(0),          # additional voices
     one_way:      str = Form("0"),        # "1" = one-directional interpretation
     mode:         str = Form("consecutive"),   # "consecutive" | "simultaneous" | "chuchotage" | "escort" | "sight" | "legal_verbatim"
+    verbatim:     str = Form("0"),               # "1" = legal verbatim evaluation weights
     atmosphere:   str = Form("booth"),         # SI only: "booth" | "remote-stable" | "remote-intermittent" | "remote-poor"
     listener_count: int = Form(1),             # Chuchotage only: 1 | 2
     noise_level:    str = Form("quiet"),       # Chuchotage only: "quiet" | "moderate" | "noisy"
@@ -2916,12 +2968,13 @@ async def ci_new_session(
         from elevenlabs import ElevenLabs
 
         is_one_way = one_way.strip() in ("1", "true", "True")
+        is_verbatim = verbatim.strip() in ("1", "true", "True")
         mode = mode.strip().lower()
         is_si = mode == "simultaneous"
         is_chuchotage = mode == "chuchotage"
         is_escort = mode == "escort"
         is_sight = mode == "sight"
-        is_legal_verbatim = mode in ("legal_verbatim", "legal")
+        is_legal_verbatim = mode in ("legal_verbatim", "legal") or is_verbatim
         is_live_render = is_si or is_chuchotage  # concurrent listen+render, no replay
         if is_escort and difficulty in ("advanced", "expert"):
             # Escort/Liaison is explicitly the lowest-stakes mode — never let it run at
@@ -3171,6 +3224,7 @@ Rules:
             "setting_data": setting_data,
             "protocol": protocol,
             "mode": mode,
+            "verbatim": is_verbatim,
             "atmosphere": atmosphere,
             "evs_target_sec": evs_target_sec,
             "listener_count": listener_count,
@@ -3478,7 +3532,7 @@ async def ci_end_session(session_id: str = Form(...)):
     is_chuchotage = sess_mode == "chuchotage"
     is_escort = sess_mode == "escort"
     is_sight = sess_mode == "sight"
-    is_legal_verbatim = sess_mode in ("legal_verbatim", "legal")
+    is_legal_verbatim = sess_mode in ("legal_verbatim", "legal") or sess.get("verbatim", False)
     atmosphere = sess.get("atmosphere", "booth")
 
     if is_si or is_chuchotage:
