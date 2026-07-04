@@ -1084,6 +1084,11 @@ OPI_VOICE_PAIRS = {
     "immigration":   (VOICE_DANIEL,  VOICE_CHARLIE),
     "mental_health": (VOICE_MATILDA, VOICE_RIVER),
     "pharmacy":      (VOICE_MATILDA, VOICE_ADAM),
+    "diplomatic":    (VOICE_BRIAN,   VOICE_ERIC),
+    "business":      (VOICE_DANIEL,  VOICE_WILL),
+    "academic":      (VOICE_MATILDA, VOICE_BRIAN),
+    "security":      (VOICE_ADAM,    VOICE_CHARLIE),
+    "media":         (VOICE_SARAH,   VOICE_RIVER),
 }
 
 # Voices grouped by perceived gender — ElevenLabs premade voices work fine across
@@ -1583,8 +1588,10 @@ async def opi_next_turn(
 
     # ── Transcribe interpreter's recording ──────────────────────────
     transcript = text_input
+    user_audio_b64 = None
     if audio:
         data = await audio.read()
+        user_audio_b64 = base64.b64encode(data).decode()
         with tempfile.NamedTemporaryFile(suffix=".webm", delete=False) as f:
             f.write(data); tmp = f.name
         lang_code = "ar" if sess["tgt"].lower().startswith("ar") else "en"
@@ -1603,11 +1610,13 @@ async def opi_next_turn(
     # This is the single source of truth for the end-of-call evaluation — it can't
     # drift out of sync with what the user actually heard and said, regardless of
     # whether the line was pre-generated or produced live.
+    # We also store the raw user audio so end-call can re-transcribe for grading.
     if source_speaker and source_text:
         sess["pairs"].append({
             "speaker":          source_speaker,
             "source_text":      source_text,
             "interpreter_text": transcript,
+            "user_audio_b64":   user_audio_b64,
         })
 
     # ── Buffer drain: just acknowledge — the frontend already has the next line ──
@@ -1928,11 +1937,30 @@ async def opi_end_call(session_id: str = Form(...)):
 
     sess["ended"] = True
 
-    # `pairs` is the single source of truth — built turn-by-turn from exactly what the
-    # frontend told us it played and what it transcribed back, so it can never drift
-    # out of sync (the old approach inferred pairs from array adjacency, which broke
-    # once pre-generated and live-generated turns were interleaved).
+    # ── Re-transcribe user audio for each pair to ensure evaluation grades ──
+    # the interpreter's actual spoken rendition, not any fallback text.
     ordered_pairs = sess.get("pairs", [])
+    lang_code = "ar" if sess["tgt"].lower().startswith("ar") else "en"
+    for p in ordered_pairs:
+        user_audio_b64 = p.get("user_audio_b64")
+        if user_audio_b64:
+            try:
+                audio_bytes = base64.b64decode(user_audio_b64)
+                with tempfile.NamedTemporaryFile(suffix=".webm", delete=False) as f:
+                    f.write(audio_bytes); tmp = f.name
+                segs, _ = whisper.transcribe(tmp, language=lang_code, beam_size=1)
+                actual_transcript = " ".join(s.text for s in segs).strip()
+                p["interpreter_text"] = actual_transcript if actual_transcript else "No user audio captured"
+            except Exception:
+                p["interpreter_text"] = "No user audio captured"
+            finally:
+                try:
+                    os.unlink(tmp)
+                except Exception:
+                    pass
+        else:
+            p["interpreter_text"] = "No user audio captured"
+
     pairs_text = [
         f"SOURCE ({p['speaker']}): {p['source_text']}\nINTERPRETER: {p['interpreter_text']}"
         for p in ordered_pairs
