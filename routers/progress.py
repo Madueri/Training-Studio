@@ -33,7 +33,7 @@ MODULES = {
     "M003": {"phase": 1, "title": "Memory Training", "mode": "shadowing", "field": "general"},
     "M004": {"phase": 1, "title": "Note-Taking Basics", "mode": "consecutive", "field": "general"},
     "M005": {"phase": 1, "title": "Consecutive Interpreting Intro", "mode": "consecutive", "field": "general"},
-    "M006": {"phase": 1, "title": "Sight Translation Intro", "mode": "sight_translation", "field": "general"},
+    "M006": {"phase": 1, "title": "Source-Text Analysis Fundamentals", "mode": "consecutive", "field": "general"},
     "M007": {"phase": 1, "title": "Terminology & Glossaries", "mode": "consecutive", "field": "general"},
     "M008": {"phase": 1, "title": "Register Awareness", "mode": "shadowing", "field": "general"},
 
@@ -43,25 +43,25 @@ MODULES = {
     "M011": {"phase": 2, "title": "Medical CI", "mode": "consecutive", "field": "medical"},
     "M012": {"phase": 2, "title": "Legal CI", "mode": "consecutive", "field": "legal"},
     "M013": {"phase": 2, "title": "Business CI", "mode": "consecutive", "field": "business"},
-    "M014": {"phase": 2, "title": "Diplomatic CI", "mode": "consecutive", "field": "diplomatic"},
-    "M015": {"phase": 2, "title": "Community CI", "mode": "consecutive", "field": "community"},
+    "M014": {"phase": 2, "title": "Legal CI Advanced", "mode": "consecutive", "field": "legal"},
+    "M015": {"phase": 2, "title": "Community & Immigration CI", "mode": "consecutive", "field": "community"},
 
     # Phase 3 — Simultaneous Interpreting (7 modules)
-    "M016": {"phase": 3, "title": "SI Introduction", "mode": "simultaneous", "field": "general"},
+    "M016": {"phase": 3, "title": "Sight Translation", "mode": "sight_translation", "field": "general"},
     "M017": {"phase": 3, "title": "EVS Training", "mode": "simultaneous", "field": "general"},
     "M018": {"phase": 3, "title": "SI Medical", "mode": "simultaneous", "field": "medical"},
-    "M019": {"phase": 3, "title": "SI Legal", "mode": "simultaneous", "field": "legal"},
-    "M020": {"phase": 3, "title": "SI Business", "mode": "simultaneous", "field": "business"},
-    "M021": {"phase": 3, "title": "SI Conference", "mode": "simultaneous", "field": "conference"},
+    "M019": {"phase": 3, "title": "SI Business", "mode": "simultaneous", "field": "business"},
+    "M020": {"phase": 3, "title": "SI Legal", "mode": "simultaneous", "field": "legal"},
+    "M021": {"phase": 3, "title": "SI Diplomatic", "mode": "simultaneous", "field": "diplomatic"},
     "M022": {"phase": 3, "title": "Chuchotage", "mode": "chuchotage", "field": "general"},
 
     # Phase 4 — Specialization Tracks (7 modules)
     "M023": {"phase": 4, "title": "OPI Mastery", "mode": "opi", "field": "general"},
-    "M024": {"phase": 4, "title": "VRI & Remote Interpreting", "mode": "opi", "field": "tech"},
+    "M024": {"phase": 4, "title": "Academic Interpreting", "mode": "opi", "field": "academic"},
     "M025": {"phase": 4, "title": "Escort & Liaison", "mode": "escort", "field": "general"},
     "M026": {"phase": 4, "title": "Summit-Level Interpreting", "mode": "simultaneous", "field": "diplomatic"},
-    "M027": {"phase": 4, "title": "Whispered Interpreting", "mode": "chuchotage", "field": "military"},
-    "M028": {"phase": 4, "title": "Retour Interpreting", "mode": "simultaneous", "field": "conference"},
+    "M027": {"phase": 4, "title": "Security Interpreting", "mode": "chuchotage", "field": "security"},
+    "M028": {"phase": 4, "title": "Media Interpreting", "mode": "simultaneous", "field": "media"},
     "M029": {"phase": 4, "title": "Certification Prep", "mode": "opi", "field": "general"},
 }
 
@@ -89,14 +89,14 @@ MODES = {
     },
     "simultaneous": {
         "label": "Simultaneous Interpreting",
-        "practice_unlock_at": "M016",
+        "practice_unlock_at": "M017",
         "sim_unlock_at": "M022",
         "description": "Interpret in real-time while the speaker continues, using the booth."
     },
     "sight_translation": {
         "label": "Sight Translation",
-        "practice_unlock_at": "M006",
-        "sim_unlock_at": "M006",  # same module for practice and sim
+        "practice_unlock_at": "M016",
+        "sim_unlock_at": "M016",  # same module for practice and sim
         "description": "Translate a written text aloud into the target language."
     },
     "chuchotage": {
@@ -122,15 +122,15 @@ MODES = {
 # ── Field Unlock System (9 domains) ───────────────────────────────────────────
 
 FIELDS = {
-    "general":    {"label": "General", "unlock_module": None, "description": "Default, always unlocked."},
-    "legal":      {"label": "Legal", "unlock_module": "M012", "description": "Courts, contracts, depositions, and legal proceedings."},
-    "medical":    {"label": "Medical", "unlock_module": "M011", "description": "Hospitals, clinics, patient consultations, and medical conferences."},
-    "business":   {"label": "Business", "unlock_module": "M013", "description": "Corporate meetings, negotiations, and trade events."},
-    "tech":       {"label": "Technology", "unlock_module": "M024", "description": "IT, engineering, remote interpreting platforms, and tech conferences."},
-    "diplomatic": {"label": "Diplomatic", "unlock_module": "M014", "description": "Embassy work, bilateral meetings, and international relations."},
-    "military":   {"label": "Military", "unlock_module": "M027", "description": "Defense briefings, field operations, and security contexts."},
-    "community":  {"label": "Community", "unlock_module": "M015", "description": "Social services, immigration, and non-profit settings."},
-    "conference": {"label": "Conference", "unlock_module": "M021", "description": "Large-scale multilateral conferences and summit settings."},
+    "medical":     {"label": "Medical",     "unlock_module": "M011", "description": "Hospitals, clinics, patient consultations, and medical conferences."},
+    "legal":       {"label": "Legal",       "unlock_module": "M014", "description": "Courts, contracts, depositions, and legal proceedings."},
+    "immigration": {"label": "Immigration", "unlock_module": "M015", "description": "Visa applications, asylum interviews, and immigration proceedings."},
+    "business":    {"label": "Business",    "unlock_module": "M019", "description": "Corporate meetings, negotiations, and trade events."},
+    "diplomatic":  {"label": "Diplomatic",  "unlock_module": "M021", "description": "Embassy work, bilateral meetings, and international relations."},
+    "academic":    {"label": "Academic",    "unlock_module": "M024", "description": "University lectures, research conferences, and scholarly exchange."},
+    "community":   {"label": "Community",   "unlock_module": "M015", "description": "Social services, non-profit settings, and community outreach."},
+    "security":    {"label": "Security",    "unlock_module": "M027", "description": "Defense briefings, field operations, and security contexts."},
+    "media":       {"label": "Media",       "unlock_module": "M028", "description": "Press conferences, broadcast interpreting, and journalism."},
 }
 
 # ── Achievement System (19 achievements) ─────────────────────────────────────
@@ -313,7 +313,7 @@ def _check_achievements(progress: dict) -> list[str]:
         "shadow_walker": "M001" in passed,
         "note_taker": progress["mode_progress"]["consecutive"]["practice_unlocked"],
         "in_the_booth": progress["mode_progress"]["simultaneous"]["sim_unlocked"],
-        "on_sight": "M006" in passed,
+        "on_sight": "M016" in passed,
         "whisper_network": "M022" in passed,
         "cultural_bridge": "M025" in passed,
         "answer_the_call": "M029" in passed,

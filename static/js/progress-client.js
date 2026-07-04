@@ -36,9 +36,9 @@ const MODE_UNLOCK_MAP = {
 };
 
 const FIELD_UNLOCK_MAP = {
-  legal:       19, medical:     20, diplomatic:  21,
-  immigration: 22, business:    23, academic:    24,
-  community:   25, security:    26, media:       27,
+  medical:     11, legal:       14, immigration: 15,
+  business:    19, diplomatic:  21, academic:    24,
+  community:   15, security:    27, media:       28,
 };
 
 const LEVEL_NAMES = ['Novice','Apprentice','Practitioner','Interpreter','Professional','Expert','Senior Expert','Master','Grand Master','Legend'];
