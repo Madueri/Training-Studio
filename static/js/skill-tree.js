@@ -1,6 +1,5 @@
 /**
- * MAD Training Studio — Layered Skill Tree Renderer
- * Renders an interactive skill-progression tree into a container div.
+ * MAD Training Studio — Clean Layered Skill Tree Renderer
  * 4 horizontal layers (Beginner → Intermediate → Advanced → Expert)
  * with offset "side mission" nodes for Liaison and Chuchotage.
  *
@@ -13,123 +12,115 @@
   'use strict';
 
   /* ═══════════════════════════════════════════════════════════════
-     Tree Data — Layered Layout
+     Tree Data — Layered Layout (layer, position, offset)
      ═══════════════════════════════════════════════════════════════ */
 
-  const TREE_NODES = [
+  const TREE_DATA = [
     {
       id: 'shadowing',
       name: 'Shadowing',
       mode: 'shadowing',
+      layer: 0,
+      position: 'center',
+      offset: false,
       level: 'Beginner',
       levelClass: 'badge-beginner',
       description:
         'Repeat the speaker simultaneously in the same language. Builds listening, rhythm, and spoken fluency at broadcast pace.',
-      color: 'shadowing',
-      layer: 0,
-      position: 'center',
-      isOffset: false,
     },
     {
       id: 'consecutive',
-      name: 'Consecutive',
+      name: 'CI',
       mode: 'consecutive',
+      layer: 1,
+      position: 'left',
+      offset: false,
       level: 'Intermediate',
       levelClass: 'badge-intermediate',
       description:
         'Listen to segments, take notes, then deliver your interpretation during the pause. Core conference skill.',
-      color: 'consecutive',
-      layer: 1,
-      position: 'left',
-      isOffset: false,
     },
     {
       id: 'liaison',
-      name: 'Liaison / Escort',
+      name: 'Liaison☆',
       mode: 'escort',
+      layer: 1,
+      position: 'center',
+      offset: true,
       level: 'Intermediate',
       levelClass: 'badge-intermediate',
       description:
         'Informal, bidirectional interpreting for business, social, or administrative settings. Emphasizes natural conversation and cultural mediation.',
-      color: 'escort',
+    },
+    {
+      id: 'simultaneous',
+      name: 'SI',
+      mode: 'simultaneous',
       layer: 1,
-      position: 'center',
-      isOffset: true,
+      position: 'right',
+      offset: false,
+      level: 'Intermediate',
+      levelClass: 'badge-intermediate',
+      description:
+        'Interpret in real-time while the speaker talks. Maximum cognitive challenge — full conference booth standard.',
     },
     {
       id: 'sight',
       name: 'Sight Translation',
       mode: 'sight',
+      layer: 2,
+      position: 'center',
+      offset: false,
       level: 'Advanced',
       levelClass: 'badge-advanced',
       description:
         'Written-input, oral-output interpreting. Read a document on screen and deliver an oral rendition at a sustained pace.',
-      color: 'sight',
-      layer: 2,
-      position: 'center',
-      isOffset: false,
-    },
-    {
-      id: 'simultaneous',
-      name: 'Simultaneous',
-      mode: 'simultaneous',
-      level: 'Advanced',
-      levelClass: 'badge-advanced',
-      description:
-        'Interpret in real-time while the speaker talks. Maximum cognitive challenge — full conference booth standard.',
-      color: 'simultaneous',
-      layer: 2,
-      position: 'right',
-      isOffset: false,
     },
     {
       id: 'chuchotage',
-      name: 'Chuchotage',
+      name: 'Chuchotage☆',
       mode: 'chuchotage',
+      layer: 2,
+      position: 'right',
+      offset: true,
       level: 'Advanced',
       levelClass: 'badge-advanced',
       description:
         'Whispered simultaneous, no booth or equipment, delivered at close proximity to 1–2 listeners. Adds volume discipline and noise resilience.',
-      color: 'chuchotage',
-      layer: 2,
-      position: 'center-right',
-      isOffset: true,
     },
     {
       id: 'vri-opi',
       name: 'VRI / OPI',
       mode: 'opi',
+      layer: 3,
+      position: 'left',
+      offset: false,
       level: 'Expert',
       levelClass: 'badge-premium',
       description:
         'Over-the-Phone & Video Remote Interpreting. Triadic communication between two simulated parties.',
-      color: 'opi',
-      layer: 3,
-      position: 'left',
-      isOffset: false,
     },
   ];
 
   const CONNECTIONS = [
-    { from: 'shadowing', to: 'consecutive', type: 'branch' },
-    { from: 'shadowing', to: 'liaison', type: 'branch' },
-    { from: 'shadowing', to: 'simultaneous', type: 'branch' },
-    { from: 'consecutive', to: 'sight', type: 'branch' },
-    { from: 'liaison', to: 'sight', type: 'branch' },
-    { from: 'simultaneous', to: 'chuchotage', type: 'branch' },
-    { from: 'chuchotage', to: 'sight', type: 'branch' },
-    { from: 'sight', to: 'vri-opi', type: 'branch' },
+    { from: 'shadowing', to: 'consecutive' },
+    { from: 'shadowing', to: 'liaison' },
+    { from: 'shadowing', to: 'simultaneous' },
+    { from: 'consecutive', to: 'sight' },
+    { from: 'liaison', to: 'sight' },
+    { from: 'simultaneous', to: 'chuchotage' },
+    { from: 'chuchotage', to: 'sight' },
+    { from: 'sight', to: 'vri-opi' },
   ];
 
-  /* Unlock requirement strings shown in tooltips */
   const UNLOCK_REQ_TEXT = {
     shadowing: 'Always available — your starting point.',
-    consecutive: 'Complete Shadowing practice or finish Module 5.',
+    consecutive: 'Complete Shadowing practice to unlock.',
     liaison: 'Complete Shadowing practice to unlock this side mission.',
-    simultaneous: 'Complete Shadowing practice or finish Module 12.',
-    sight: 'Complete Consecutive, Liaison, or Chuchotage practice.',
-    chuchotage: 'Complete Simultaneous practice or finish Module 20.',
-    'vri-opi': 'Complete Sight Translation to unlock the expert track.',
+    simultaneous: 'Complete Shadowing + CI practice to unlock.',
+    sight: 'Complete CI or Liaison practice to unlock.',
+    chuchotage: 'Complete SI practice to unlock.',
+    'vri-opi': 'Complete Sight Translation + Chuchotage to unlock the expert track.',
   };
 
   /* ═══════════════════════════════════════════════════════════════
@@ -159,16 +150,13 @@
   const CHECK_ICON =
     '<svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>';
 
+  const LAYER_NAMES = ['Beginner', 'Intermediate', 'Advanced', 'Expert'];
+
   /* ═══════════════════════════════════════════════════════════════
      SkillTreeRenderer Class
      ═══════════════════════════════════════════════════════════════ */
 
   class SkillTreeRenderer {
-    /**
-     * @param {string|HTMLElement} container — selector or element
-     * @param {Object} progress — user progress data
-     * @param {Object} options — optional config
-     */
     constructor(container, progress = {}, options = {}) {
       this.container =
         typeof container === 'string'
@@ -177,13 +165,13 @@
       this.progress = progress;
       this.options = Object.assign(
         {
-          staggerDelay: 120,
-          lineAnimDuration: 800,
-          onNodeClick: null, // fn(mode) — if null, falls back to enterPractice(mode)
+          staggerDelay: 200,
+          onNodeClick: null,
         },
         options
       );
       this.nodes = new Map(); // id -> DOM element
+      this.svg = null;
       this.resizeHandler = null;
     }
 
@@ -195,19 +183,20 @@
         return;
       }
       this.container.innerHTML = '';
+      this.container.classList.add('skill-tree-container');
       this.nodes.clear();
 
       this._buildDOM();
       this._computeStates();
       this._applyStates();
 
-      // Draw lines after DOM is laid out
+      // Draw lines after DOM layout is complete
       requestAnimationFrame(() => {
         this._drawLines();
         this._animateEntrance();
       });
 
-      // Re-draw lines on resize
+      // Re-draw on resize
       this.resizeHandler = () => this._drawLines();
       window.addEventListener('resize', this.resizeHandler);
     }
@@ -217,7 +206,10 @@
         window.removeEventListener('resize', this.resizeHandler);
         this.resizeHandler = null;
       }
-      if (this.container) this.container.innerHTML = '';
+      if (this.container) {
+        this.container.innerHTML = '';
+        this.container.classList.remove('skill-tree-container');
+      }
       this.nodes.clear();
     }
 
@@ -232,54 +224,48 @@
 
     _computeStates() {
       const p = this.progress || {};
-      const s = {};
 
-      // Helper
       const practiced = (k) => !!(p[k]?.practiced || p[k]?.sessions > 0);
       const completed = (k) => !!(p[k]?.completed || p[k]?.score >= 80);
-      const mod = (n) => p.module >= n || p.currentModule >= n;
+
+      const s = {};
 
       // Shadowing — always unlocked
       s.shadowing = { locked: false, completed: practiced('shadowing') };
 
-      // Consecutive (CI) — unlocked after Shadowing
+      // CI — unlocked after Shadowing
       s.consecutive = {
-        locked: !(practiced('shadowing') || mod(5)),
+        locked: !practiced('shadowing'),
         completed: completed('consecutive'),
       };
 
-      // Liaison / Escort — side mission, unlocked after Shadowing
+      // Liaison — side mission, unlocked after Shadowing
       s.liaison = {
-        locked: !(practiced('shadowing') || mod(7)),
+        locked: !practiced('shadowing'),
         completed: practiced('escort') || practiced('liaison'),
       };
 
-      // Simultaneous (SI) — unlocked after Shadowing
+      // SI — unlocked after Shadowing + CI
       s.simultaneous = {
-        locked: !(practiced('shadowing') || mod(12)),
+        locked: !(practiced('shadowing') && practiced('consecutive')),
         completed: completed('simultaneous'),
       };
 
-      // Chuchotage — side mission, unlocked after Simultaneous
-      s.chuchotage = {
-        locked: !(practiced('simultaneous') || mod(20)),
-        completed: completed('chuchotage'),
-      };
-
-      // Sight Translation — convergence point ( bridges CI, Liaison, Chuchotage )
+      // Sight Translation — unlocked after CI OR Liaison
       s.sight = {
-        locked: !(
-          practiced('consecutive') ||
-          practiced('liaison') ||
-          practiced('chuchotage') ||
-          mod(16)
-        ),
+        locked: !(practiced('consecutive') || practiced('liaison')),
         completed: completed('sight'),
       };
 
-      // VRI / OPI — unlocked via Sight Translation
+      // Chuchotage — side mission, unlocked after SI
+      s.chuchotage = {
+        locked: !practiced('simultaneous'),
+        completed: completed('chuchotage'),
+      };
+
+      // VRI / OPI — unlocked after Sight Translation + Chuchotage
       s['vri-opi'] = {
-        locked: !practiced('sight'),
+        locked: !(practiced('sight') && practiced('chuchotage')),
         completed: completed('opi') || completed('vri'),
       };
 
@@ -289,7 +275,7 @@
 
     _applyStates() {
       const s = this._computed;
-      TREE_NODES.forEach((node) => {
+      TREE_DATA.forEach((node) => {
         const el = this.nodes.get(node.id);
         if (!el) return;
         const st = s[node.id] || { locked: true, completed: false };
@@ -302,7 +288,6 @@
           el.classList.add('locked');
         } else {
           el.classList.add('unlocked');
-          // Mark as "active" if it is the first unlocked-but-not-completed node
           if (this._isCurrentNode(node.id)) {
             el.classList.add('active');
           }
@@ -327,20 +312,19 @@
       const idx = order.indexOf(nodeId);
       if (idx === -1) return false;
 
-      const s = this._computed;
       for (let i = 0; i < idx; i++) {
         const id = order[i];
-        const st = s[id];
-        if (st && !st.locked && !st.completed) return false; // earlier node is active
+        const st = this._computed[id];
+        if (st && !st.locked && !st.completed) return false;
       }
-      const myState = s[nodeId];
+      const myState = this._computed[nodeId];
       return myState && !myState.locked && !myState.completed;
     }
 
     /* ── DOM Builder ────────────────────────────────────────── */
 
     _buildDOM() {
-      // SVG layer
+      // SVG layer (appended first so it sits behind nodes)
       const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
       svg.classList.add('skill-tree-svg');
       svg.setAttribute('aria-hidden', 'true');
@@ -359,11 +343,9 @@
       const layersWrap = document.createElement('div');
       layersWrap.className = 'skill-tree-layers';
 
-      const LAYER_NAMES = ['Beginner', 'Intermediate', 'Advanced', 'Expert'];
-
       // Group nodes by layer
       const layerMap = new Map();
-      TREE_NODES.forEach((node) => {
+      TREE_DATA.forEach((node) => {
         if (!layerMap.has(node.layer)) layerMap.set(node.layer, []);
         layerMap.get(node.layer).push(node);
       });
@@ -371,28 +353,33 @@
       for (let layerIdx = 0; layerIdx < 4; layerIdx++) {
         const layerNodes = layerMap.get(layerIdx) || [];
         const layerEl = document.createElement('div');
-        layerEl.className = 'skill-tree-layer';
+        layerEl.className = 'skill-layer';
         layerEl.dataset.layer = layerIdx;
-
-        // Background band
-        const bg = document.createElement('div');
-        bg.className = 'skill-tree-layer-bg';
-        layerEl.appendChild(bg);
 
         // Layer label
         const label = document.createElement('div');
-        label.className = 'skill-tree-layer-label';
+        label.className = 'skill-layer-label';
         label.textContent = LAYER_NAMES[layerIdx];
         layerEl.appendChild(label);
 
-        // Nodes container
+        // Nodes container — always 3 slots (left, center, right)
         const nodesWrap = document.createElement('div');
-        nodesWrap.className = 'skill-tree-layer-nodes';
+        nodesWrap.className = 'skill-layer-nodes';
 
-        layerNodes.forEach((node) => {
-          const el = this._buildNode(node);
-          this.nodes.set(node.id, el);
-          nodesWrap.appendChild(el);
+        const byPos = { left: null, center: null, right: null };
+        layerNodes.forEach((n) => {
+          byPos[n.position] = n;
+        });
+
+        ['left', 'center', 'right'].forEach((pos) => {
+          const node = byPos[pos];
+          if (node) {
+            nodesWrap.appendChild(this._buildNode(node));
+          } else {
+            const spacer = document.createElement('div');
+            spacer.className = 'skill-node-spacer';
+            nodesWrap.appendChild(spacer);
+          }
         });
 
         layerEl.appendChild(nodesWrap);
@@ -404,48 +391,46 @@
 
     _buildNode(node) {
       const el = document.createElement('div');
-      el.className = 'skill-tree-node';
-      if (node.isOffset) el.classList.add('is-offset');
-      if (node.position) el.classList.add(`stn-pos-${node.position}`);
+      el.className = 'skill-node';
+      if (node.offset) el.classList.add('offset-node');
       el.dataset.id = node.id;
       el.dataset.mode = node.mode || '';
-      el.dataset.layer = node.layer;
 
       // Icon
       const iconWrap = document.createElement('div');
-      iconWrap.className = 'stn-icon';
-      iconWrap.innerHTML = ICONS[node.color] || ICONS.opi;
+      iconWrap.className = 'skill-node-icon';
+      iconWrap.innerHTML = ICONS[node.mode] || ICONS.opi;
       el.appendChild(iconWrap);
 
       // Name
       const name = document.createElement('div');
-      name.className = 'stn-name';
+      name.className = 'skill-node-name';
       name.textContent = node.name;
       el.appendChild(name);
 
       // Level badge
       const badge = document.createElement('span');
-      badge.className = `stn-level ${node.levelClass}`;
+      badge.className = `skill-node-level ${node.levelClass}`;
       badge.textContent = node.level;
       el.appendChild(badge);
 
-      // Side mission badge (for offset nodes)
-      if (node.isOffset) {
+      // Side mission badge
+      if (node.offset) {
         const sideBadge = document.createElement('div');
-        sideBadge.className = 'stn-side-badge';
+        sideBadge.className = 'skill-node-side-badge';
         sideBadge.textContent = 'Side Mission';
         el.appendChild(sideBadge);
       }
 
       // Lock overlay
       const lockOverlay = document.createElement('div');
-      lockOverlay.className = 'stn-lock-overlay';
+      lockOverlay.className = 'skill-node-lock';
       lockOverlay.innerHTML = LOCK_ICON;
       el.appendChild(lockOverlay);
 
-      // Completed check badge
+      // Completed check
       const checkBadge = document.createElement('div');
-      checkBadge.className = 'stn-check-badge';
+      checkBadge.className = 'skill-node-check';
       checkBadge.innerHTML = CHECK_ICON;
       el.appendChild(checkBadge);
 
@@ -453,12 +438,11 @@
       const tooltip = document.createElement('div');
       tooltip.className = 'skill-tree-tooltip';
       tooltip.innerHTML = `
-        <div class="stt-title">${this._escapeHtml(node.name)}</div>
-        <div class="stt-desc">${this._escapeHtml(node.description)}</div>
-        <div class="stt-req">
-          <span class="stt-req-label">Unlock requirement</span>
-          ${this._escapeHtml(
-            UNLOCK_REQ_TEXT[node.id] || 'Complete previous modes to unlock.'
+        <div style="font-weight:700;color:var(--text-primary);margin-bottom:4px;">${this._escapeHtml(node.name)}</div>
+        <div style="font-size:12px;color:var(--text-secondary);line-height:1.5;margin-bottom:12px;">${this._escapeHtml(node.description)}</div>
+        <div style="font-size:11px;color:var(--text-tertiary);border-top:1px solid var(--border-subtle);padding-top:8px;">
+          <span style="color:var(--accent);font-weight:600;">Unlock:</span> ${this._escapeHtml(
+            UNLOCK_REQ_TEXT[node.id] || 'Complete previous modes.'
           )}
         </div>
       `;
@@ -469,6 +453,7 @@
         el.addEventListener('click', () => this._onClick(node));
       }
 
+      this.nodes.set(node.id, el);
       return el;
     }
 
@@ -476,12 +461,12 @@
 
     _drawLines() {
       if (!this.svg) return;
+
       // Remove old paths (keep defs)
-      const oldPaths = this.svg.querySelectorAll('path');
+      const oldPaths = this.svg.querySelectorAll('.st-line, .st-line-bg');
       oldPaths.forEach((p) => p.remove());
 
       const containerRect = this.container.getBoundingClientRect();
-      const isMobile = window.innerWidth < 768;
 
       CONNECTIONS.forEach((conn) => {
         const fromEl = this.nodes.get(conn.from);
@@ -491,87 +476,48 @@
         const r1 = fromEl.getBoundingClientRect();
         const r2 = toEl.getBoundingClientRect();
 
-        // Coordinates relative to container
+        // Center-to-center, relative to container
         const x1 = r1.left + r1.width / 2 - containerRect.left;
-        const y1 = r1.bottom - containerRect.top;
+        const y1 = r1.top + r1.height / 2 - containerRect.top;
         const x2 = r2.left + r2.width / 2 - containerRect.left;
-        const y2 = r2.top - containerRect.top;
+        const y2 = r2.top + r2.height / 2 - containerRect.top;
 
-        // Mobile: straight vertical-ish lines
-        if (isMobile) {
-          this._addLine(x1, y1, x2, y2, false);
-          return;
-        }
+        const dy = y2 - y1;
 
-        // Desktop: curved paths
-        const isBridge = conn.type === 'bridge';
-        this._addCurvedLine(x1, y1, x2, y2, isBridge);
+        // Cubic bezier control points — smooth S-curve
+        const cp1x = x1;
+        const cp1y = y1 + dy * 0.5;
+        const cp2x = x2;
+        const cp2y = y2 - dy * 0.5;
+
+        const d = `M ${x1} ${y1} C ${cp1x} ${cp1y}, ${cp2x} ${cp2y}, ${x2} ${y2}`;
+
+        // Background track
+        const bg = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+        bg.setAttribute('d', d);
+        bg.classList.add('st-line-bg');
+        bg.classList.add('skill-tree-line-bg');
+        this.svg.appendChild(bg);
+
+        // Flow line
+        const flow = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+        flow.setAttribute('d', d);
+        flow.classList.add('st-line');
+        flow.classList.add('skill-tree-line');
+        this.svg.appendChild(flow);
       });
-    }
-
-    _addLine(x1, y1, x2, y2, isDashed) {
-      const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-      const d = `M ${x1} ${y1} L ${x2} ${y2}`;
-      path.setAttribute('d', d);
-      path.classList.add('skill-tree-lines');
-      if (isDashed) {
-        path.style.strokeDasharray = '4 4';
-        path.style.opacity = '0.5';
-      }
-      this.svg.appendChild(path);
-    }
-
-    _addCurvedLine(x1, y1, x2, y2, isBridge) {
-      const deltaY = y2 - y1;
-      const cpY1 = y1 + deltaY * 0.5;
-      const cpY2 = y2 - deltaY * 0.5;
-
-      let d;
-      if (isBridge) {
-        // Horizontal bridge: more curvature
-        const midY = (y1 + y2) / 2 + 10;
-        d = `M ${x1} ${y1} Q ${x1} ${midY} ${(x1 + x2) / 2} ${midY} Q ${x2} ${midY} ${x2} ${y2}`;
-      } else {
-        // Vertical branch: smooth S-curve
-        d = `M ${x1} ${y1} C ${x1} ${cpY1}, ${x2} ${cpY2}, ${x2} ${y2}`;
-      }
-
-      // Background track
-      const bg = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-      bg.setAttribute('d', d);
-      bg.classList.add('skill-tree-line-bg');
-      this.svg.appendChild(bg);
-
-      // Animated flow line
-      const flow = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-      flow.setAttribute('d', d);
-      flow.classList.add('skill-tree-line-flow');
-      if (isBridge) {
-        flow.style.opacity = '0.4';
-        flow.style.animationDuration = '2s';
-      }
-      this.svg.appendChild(flow);
     }
 
     /* ── Entrance Animation ─────────────────────────────────── */
 
     _animateEntrance() {
-      const nodes = Array.from(this.nodes.values());
-      nodes.forEach((el, i) => {
-        setTimeout(() => {
-          el.classList.add('is-visible');
-        }, i * this.options.staggerDelay);
-      });
-
-      // Also animate SVG lines drawing in
-      const lines = this.svg.querySelectorAll('.skill-tree-line-flow');
-      lines.forEach((line, i) => {
-        const len = line.getTotalLength ? line.getTotalLength() : 200;
-        line.style.strokeDasharray = len;
-        line.style.strokeDashoffset = len;
-        line.style.transition = `stroke-dashoffset ${this.options.lineAnimDuration}ms ease-out ${i * 100 + 400}ms`;
-        requestAnimationFrame(() => {
-          line.style.strokeDashoffset = '0';
+      const layers = this.container.querySelectorAll('.skill-layer');
+      layers.forEach((layer, li) => {
+        const nodes = layer.querySelectorAll('.skill-node');
+        nodes.forEach((node, ni) => {
+          setTimeout(() => {
+            node.classList.add('is-visible');
+          }, li * this.options.staggerDelay + ni * 100);
         });
       });
     }
@@ -587,20 +533,15 @@
         return;
       }
 
-      // Fallback: use global enterPractice if available
       if (typeof global.enterPractice === 'function') {
         global.enterPractice(node.mode);
-      } else {
-        // Navigate to practice tab as fallback
-        if (typeof global.goPage === 'function') {
-          global.goPage('practice');
-          // Small delay to let page switch, then call enterPractice
-          setTimeout(() => {
-            if (typeof global.enterPractice === 'function') {
-              global.enterPractice(node.mode);
-            }
-          }, 100);
-        }
+      } else if (typeof global.goPage === 'function') {
+        global.goPage('practice');
+        setTimeout(() => {
+          if (typeof global.enterPractice === 'function') {
+            global.enterPractice(node.mode);
+          }
+        }, 100);
       }
     }
 
