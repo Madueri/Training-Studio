@@ -33,10 +33,17 @@ app.include_router(interpretation.router)
 app.include_router(voiceover.router)
 app.include_router(progress.router)
 
-# ── Root ──────────────────────────────────────────────────────────────────────
+# ── Routes ──────────────────────────────────────────────────────────────────────
 
 @app.get("/", response_class=HTMLResponse)
 async def root():
+    """Landing page — public entry point."""
+    return (STATIC_DIR / "landing.html").read_text(encoding="utf-8")
+
+
+@app.get("/app", response_class=HTMLResponse)
+async def app_page():
+    """Training Studio app — the full interpreter training platform."""
     return (STATIC_DIR / "index.html").read_text(encoding="utf-8")
 
 # ── Sessions (cross-tab, used by Progress page) ──────────────────────────────
