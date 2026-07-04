@@ -581,7 +581,7 @@ async def analyze_interpretation(
     source_wpm:    str = Form(""),
 ):
     try:
-        is_shadowing = mode == "shadowing" and source_text.startswith("[Shadowing")
+        is_shadowing = mode == "shadowing"
 
         # ── Shadowing acoustic evaluation ─────────────────────────────
         if is_shadowing and user_audio:

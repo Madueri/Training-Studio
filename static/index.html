@@ -3026,6 +3026,19 @@ async function analyzeInterpretation() {
  fd.append('mode', currentMode); fd.append('specialization', document.getElementById('interp-spec').value);
  fd.append('direction', getLangPair());
  fd.append('topic', topic); fd.append('difficulty', difficulty);
+ // Shadowing: send raw audio + source video ID for acoustic evaluation
+ if (currentMode === 'shadowing' && interpBlob) {
+  fd.append('user_audio', interpBlob, 'rec.webm');
+  if (currentSessionVideo && currentSessionVideo.known_id) {
+   fd.append('source_video_id', currentSessionVideo.known_id);
+  }
+  if (currentSessionVideo && currentSessionVideo.wpm_number) {
+   fd.append('source_wpm', String(currentSessionVideo.wpm_number));
+  } else if (currentSessionVideo && currentSessionVideo.wpm_est) {
+   const wpmMatch = String(currentSessionVideo.wpm_est).match(/(\d+)/);
+   if (wpmMatch) fd.append('source_wpm', wpmMatch[1]);
+  }
+ }
  try {
  const r = await fetch('/api/analyze-interpretation', { method: 'POST', body: fd });
  const d = await r.json();
@@ -3049,7 +3062,13 @@ function renderInterpFeedback(d) {
  const gradeColors = { 'Excellent': 'var(--green)', 'Good': 'var(--gold)', 'Satisfactory': 'var(--amber)', 'Needs Work': 'var(--red)' };
  document.getElementById('interp-grade').innerHTML =
  `<span style="color:${gradeColors[grade]||'var(--gold)'};font-size:22px">◆ ${grade}</span>`;
- const scores = [
+ // Use acoustic score labels for shadowing acoustic evaluation
+ const isShadowingAcoustic = d.evaluation_method === 'acoustic';
+ const scores = isShadowingAcoustic ? [
+ { label: 'Overall', val: d.overall_score }, { label: 'WPM', val: d.wpm_score },
+ { label: 'Pauses', val: d.pause_score }, { label: 'Phonemic', val: d.phonemic_score },
+ { label: 'Intonation', val: d.intonation_score }
+ ] : [
  { label: 'Overall', val: d.overall_score }, { label: 'Accuracy', val: d.accuracy },
  { label: 'Complete', val: d.completeness }, { label: 'Terms', val: d.terminology },
  { label: 'Fluency', val: d.fluency }
