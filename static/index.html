@@ -123,6 +123,7 @@
   <button class="snl active" onclick="goPage('dashboard')" id="snl-dashboard">Dashboard</button>
   <button class="snl" onclick="goPage('learn')" id="snl-learn">Learn</button>
   <button class="snl" onclick="goPage('practice')" id="snl-practice">Practice</button>
+  <button class="snl" onclick="goPage('progress')" id="snl-progress">My Progress</button>
   <button class="snl" onclick="goPage('community')" id="snl-community">Community</button>
  </div>
  <div class="snav-right">
@@ -1133,7 +1134,7 @@
 <div id="page-progress" class="studio-page">
 <!-- TAB 4 PROGRESS content lives here — rendered by loadProgress() -->
 <div id="tab-progress" class="panel active" style="display:block">
-<div id="dashboard-v2-container" style="display:none"></div>
+<div id="dashboard-v2-container"></div>
 <!--
  IELTS content (moved into Practice > IELTS sub-tab via JS on load)
  -->
@@ -1354,6 +1355,17 @@
    <div style="margin-top:20px;padding:14px;background:var(--bg2);border:1px solid var(--border);border-radius:10px">
     <div class="learn-path-tag" id="learn-path-tag" style="margin-bottom:10px">Path: —</div>
     <div style="font-size:11px;color:var(--dim);line-height:1.5" id="learn-path-desc"></div>
+   </div>
+   <!-- My Progress shortcut -->
+   <div style="margin-top:14px;padding:14px;background:var(--bg2);border:1px solid var(--border);border-radius:10px;cursor:pointer" onclick="goPage('progress')">
+    <div style="display:flex;align-items:center;gap:10px">
+     <div style="width:32px;height:32px;border-radius:8px;background:var(--purple);display:flex;align-items:center;justify-content:center;font-size:16px">📊</div>
+     <div>
+      <div style="font-size:12px;font-weight:700;color:var(--text)">My Progress</div>
+      <div style="font-size:11px;color:var(--dim)">View stats, streaks & achievements</div>
+     </div>
+     <div style="margin-left:auto;font-size:14px;color:var(--dim)">→</div>
+    </div>
    </div>
   </div>
 
@@ -5429,6 +5441,18 @@ async function loadProgress() {
  const sessions = await r.json();
  document.getElementById('session-count').textContent = sessions.length + ' sessions';
 
+ // ── FIFA-Style Dashboard v2 (render FIRST, always) ───────
+ try {
+   if (typeof DashboardRenderer !== 'undefined') {
+     const dbContainer = document.getElementById('dashboard-v2-container');
+     if (dbContainer) {
+       dbContainer.style.display = 'block';
+       const renderer = new DashboardRenderer('dashboard-v2-container', sessions.length ? null : null);
+       await renderer.render();
+     }
+   }
+ } catch (e) { console.error('Dashboard v2 render error:', e); }
+
  if (!sessions.length) {
  document.getElementById('progress-list').innerHTML = '<div class="loading">No sessions yet — start practicing!</div>';
  document.getElementById('xp-display').textContent = '0';
@@ -5470,18 +5494,6 @@ async function loadProgress() {
 
  // ── Performance Chart ────────────────────────────────────
  renderPerfChart(sessions);
-
- // ── FIFA-Style Dashboard v2 ─────────────────────────────
- try {
-   if (typeof DashboardRenderer !== 'undefined') {
-     const dbContainer = document.getElementById('dashboard-v2-container');
-     if (dbContainer) {
-       dbContainer.style.display = 'block';
-       const renderer = new DashboardRenderer('dashboard-v2-container', null);
-       await renderer.render();
-     }
-   }
- } catch (e) { console.error('Dashboard v2 render error:', e); }
 
  // ── OPI Session History ─────────────────────────────────
  const _opiProg = JSON.parse(localStorage.getItem('opi-sessions') || '[]');
