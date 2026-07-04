@@ -8,6 +8,7 @@
 <link rel="stylesheet" href="/static/css/interpretation.css">
 <link rel="stylesheet" href="/static/css/onboarding.css">
 <link rel="stylesheet" href="/static/css/progress.css">
+<link rel="stylesheet" href="/static/css/dashboard.css">
 </head>
 <body>
 
@@ -1132,6 +1133,7 @@
 <div id="page-progress" class="studio-page">
 <!-- TAB 4 PROGRESS content lives here — rendered by loadProgress() -->
 <div id="tab-progress" class="panel active" style="display:block">
+<div id="dashboard-v2-container" style="display:none"></div>
 <!--
  IELTS content (moved into Practice > IELTS sub-tab via JS on load)
  -->
@@ -5469,6 +5471,18 @@ async function loadProgress() {
  // ── Performance Chart ────────────────────────────────────
  renderPerfChart(sessions);
 
+ // ── FIFA-Style Dashboard v2 ─────────────────────────────
+ try {
+   if (typeof DashboardRenderer !== 'undefined') {
+     const dbContainer = document.getElementById('dashboard-v2-container');
+     if (dbContainer) {
+       dbContainer.style.display = 'block';
+       const renderer = new DashboardRenderer('dashboard-v2-container', null);
+       await renderer.render();
+     }
+   }
+ } catch (e) { console.error('Dashboard v2 render error:', e); }
+
  // ── OPI Session History ─────────────────────────────────
  const _opiProg = JSON.parse(localStorage.getItem('opi-sessions') || '[]');
  const _ciProg  = JSON.parse(localStorage.getItem('ci-sessions')  || '[]');
@@ -8832,6 +8846,8 @@ function opiNewCall() {
 <script src="/static/js/api.js"></script>
 <script src="/static/js/progress-client.js"></script>
 <script src="/static/js/onboarding.js"></script>
+
+<script src="/static/js/dashboard.js"></script>
 
 </body>
 </html>
