@@ -3316,6 +3316,10 @@ function ciInitCIOverlay() {
   ciTgtLangChanged('Arabic');
   ciFieldChanged('medical');
   ciApplyModeKindUI();
+  // Reset Legal Verbatim toggle to off by default
+  ciVerbatim = false;
+  const vb = document.getElementById('ci-verbatim');
+  if (vb) vb.checked = false;
   ciSwitchView('ci-pre-view');
 }
 
