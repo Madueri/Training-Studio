@@ -60,6 +60,9 @@ def _load_audio(path: str, target_sr: int = 16000) -> tuple:
 
 def _extract_wpm_from_segments(segments) -> tuple:
     """Return (wpm, word_count, speech_duration_sec) from whisper segments."""
+    # Convert generator to list if needed
+    if hasattr(segments, '__iter__') and not hasattr(segments, '__len__'):
+        segments = list(segments)
     if not segments:
         return 0, 0, 0.0
     words = []
@@ -67,8 +70,8 @@ def _extract_wpm_from_segments(segments) -> tuple:
         text = getattr(seg, "text", seg.get("text", "")) if isinstance(seg, dict) else getattr(seg, "text", "")
         words.extend(re.findall(r"[a-zA-Z؀-ۿ]+(?:[''][a-zA-Z]+)?", text))
     word_count = len(words)
-    starts = [getattr(s, "start", s.get("start", 0)) for s in segments]
-    ends = [getattr(s, "end", s.get("end", 0)) for s in segments]
+    starts = [getattr(s, "start", s.get("start", 0)) if isinstance(s, dict) else getattr(s, "start", 0) for s in segments]
+    ends = [getattr(s, "end", s.get("end", 0)) if isinstance(s, dict) else getattr(s, "end", 0) for s in segments]
     if not starts or not ends:
         return 0, 0, 0.0
     speech_duration = max(ends) - min(starts)
@@ -81,11 +84,14 @@ def _extract_wpm_from_segments(segments) -> tuple:
 def _extract_pauses_from_segments(segments, min_gap: float = 0.5) -> list:
     """Extract pauses (gaps between segments) from whisper segments."""
     pauses = []
+    # Convert generator to list if needed
+    if hasattr(segments, '__iter__') and not hasattr(segments, '__len__'):
+        segments = list(segments)
     if not segments or len(segments) < 2:
         return pauses
     for i in range(1, len(segments)):
-        prev_end = getattr(segments[i - 1], "end", segments[i - 1].get("end", 0))
-        curr_start = getattr(segments[i], "start", segments[i].get("start", 0))
+        prev_end = getattr(segments[i - 1], "end", segments[i - 1].get("end", 0)) if isinstance(segments[i - 1], dict) else getattr(segments[i - 1], "end", 0)
+        curr_start = getattr(segments[i], "start", segments[i].get("start", 0)) if isinstance(segments[i], dict) else getattr(segments[i], "start", 0)
         gap = curr_start - prev_end
         if gap >= min_gap:
             pauses.append({"start": round(prev_end, 2), "end": round(curr_start, 2), "duration": round(gap, 2)})
@@ -302,6 +308,41 @@ def _get_source_pauses_from_captions(video_id: str) -> list:
         return []
 
 
+def _get_source_text_from_captions(video_id: str) -> str:
+    """Fetch full transcript text from YouTube captions."""
+    try:
+        import yt_dlp
+        opts = {"quiet": True, "no_warnings": True, "skip_download": True}
+        with yt_dlp.YoutubeDL(opts) as ydl:
+            info = ydl.extract_info(f"https://www.youtube.com/watch?v={video_id}", download=False)
+        auto = info.get("automatic_captions") or {}
+        manual = info.get("subtitles") or {}
+        caps = manual.get("en") or auto.get("en") or []
+        if not caps:
+            return ""
+        cap_url = next((c["url"] for c in caps if c.get("ext") == "json3"), None)
+        if not cap_url:
+            cap_url = caps[0].get("url", "") if caps else None
+        if not cap_url:
+            return ""
+        with urllib.request.urlopen(cap_url, timeout=7) as resp:
+            raw = resp.read().decode("utf-8", errors="ignore")
+        try:
+            data = json.loads(raw)
+            events = data.get("events", [])
+            texts = []
+            for ev in events:
+                for seg in (ev.get("segs") or []):
+                    t = (seg.get("utf8") or "").strip()
+                    if t and t != "\n":
+                        texts.append(t)
+            return " ".join(texts)
+        except Exception:
+            return re.sub(r"<[^>]+>", " ", raw)
+    except Exception:
+        return ""
+
+
 def _download_source_audio(video_id: str) -> str | None:
     """Download YouTube audio to cache, return path or None."""
     cache_dir = Path(tempfile.gettempdir()) / "training_studio_audio_cache"
@@ -334,8 +375,15 @@ def _evaluate_shadowing_acoustic(user_audio_path: str, source_audio_path: str | 
     Evaluate shadowing performance using acoustic metrics.
     Returns dict with wpm_score, pause_score, phonemic_score, intonation_score, overall_score.
     """
+    # If source_text is a placeholder, try to get real captions
+    if source_text.startswith("[Shadowing") and source_video_id:
+        caption_text = _get_source_text_from_captions(source_video_id)
+        if caption_text:
+            source_text = caption_text
+
     # Transcribe user audio with timestamps
-    user_segs, _ = whisper.transcribe(user_audio_path, beam_size=1)
+    user_segs_gen, _ = whisper.transcribe(user_audio_path, beam_size=1)
+    user_segs = list(user_segs_gen)  # convert generator to list for multiple iterations
     user_words = []
     for seg in user_segs:
         user_words.extend(re.findall(r"[a-zA-Z؀-ۿ]+(?:[''][a-zA-Z]+)?", seg.text))

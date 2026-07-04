@@ -6,3 +6,6 @@ faster-whisper
 elevenlabs
 yt-dlp
 python-multipart
+librosa
+scipy
+
