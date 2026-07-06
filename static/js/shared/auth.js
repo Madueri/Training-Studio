@@ -108,6 +108,16 @@ async function signUp(email, password, fullName) {
 
     if (error) return { error: error.message };
 
+    // If session is returned, user is auto-signed in — set tokens immediately
+    if (data.session) {
+      accessToken = data.session.access_token;
+      refreshToken = data.session.refresh_token;
+      currentUser = data.user;
+      localStorage.setItem("sb_access_token", accessToken);
+      localStorage.setItem("sb_refresh_token", refreshToken);
+      updateAuthUI();
+    }
+
     return {
       success: true,
       user: data.user,
@@ -260,12 +270,21 @@ function updateAuthUI() {
       userDisplay.textContent = currentUser.email || "User";
       userDisplay.style.display = "inline-block";
     }
-    if (authModal) authModal.style.display = "none";
+    // Force-hide modal immediately and after short delays (safety net)
+    if (authModal) {
+      authModal.style.display = "none";
+      authModal.classList.add("auth-modal-hidden");
+      setTimeout(() => { if (authModal) { authModal.style.display = "none"; authModal.classList.add("auth-modal-hidden"); } }, 50);
+      setTimeout(() => { if (authModal) { authModal.style.display = "none"; authModal.classList.add("auth-modal-hidden"); } }, 200);
+      setTimeout(() => { if (authModal) { authModal.style.display = "none"; authModal.classList.add("auth-modal-hidden"); } }, 500);
+      setTimeout(() => { if (authModal) { authModal.style.display = "none"; authModal.classList.add("auth-modal-hidden"); } }, 1000);
+    }
   } else {
     if (loginBtn) loginBtn.style.display = "inline-block";
     if (signupBtn) signupBtn.style.display = "inline-block";
     if (logoutBtn) logoutBtn.style.display = "none";
     if (userDisplay) userDisplay.style.display = "none";
+    if (authModal) authModal.classList.remove("auth-modal-hidden");
   }
 }
 
@@ -356,8 +375,12 @@ async function handleSignIn(event) {
   } else {
     errorEl.style.display = "none";
     hideAuthModal();
-    // Reload page to reflect auth state
-    window.location.reload();
+    updateAuthUI(); // Ensure UI updates immediately
+    // Force-hide modal again after a short delay (safety)
+    setTimeout(() => hideAuthModal(), 100);
+    setTimeout(() => hideAuthModal(), 500);
+    // Don't reload — let the auth state change naturally
+    // window.location.reload();
   }
 }
 
@@ -374,19 +397,26 @@ async function handleSignUp(event) {
     errorEl.style.display = "block";
   } else {
     errorEl.style.display = "none";
-    if (result.message.includes("Check your email")) {
+    if (result.message && result.message.includes("Check your email")) {
       errorEl.textContent = result.message;
       errorEl.style.color = "#4CAF50";
       errorEl.style.display = "block";
     } else {
       hideAuthModal();
-      window.location.reload();
+      updateAuthUI(); // Ensure UI updates immediately
+      // Force-hide modal again after short delays (safety)
+      setTimeout(() => hideAuthModal(), 100);
+      setTimeout(() => hideAuthModal(), 500);
+      // Don't reload — let the auth state change naturally
+      // window.location.reload();
     }
   }
 }
 
 async function handleSignOut() {
   await signOut();
+  // Clear any stuck modal
+  hideAuthModal();
   window.location.reload();
 }
 

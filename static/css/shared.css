@@ -755,3 +755,10 @@ body[data-theme="light"] .diff-expert{background:#ede9fe;color:#5b21b6;border-co
 .mod-status-badge.active{color:var(--gold)}
 .mod-lock-icon{position:absolute;right:16px;top:50%;transform:translateY(-50%);color:var(--dim);opacity:.6}
 .mod-lock-icon svg{width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   Auth Modal — force hidden when authenticated
+   ═══════════════════════════════════════════════════════════════════════════ */
+.auth-modal-hidden {
+  display: none !important;
+}
