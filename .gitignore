@@ -1,6 +1,22 @@
 # Secrets — never commit. Each teammate creates their own .env from .env.example
 .env
 
+# Business, financial, legal, and personal documents (keep locally, never commit)
+BUSINESS_CASE.md
+INTERPRETING_PROTOCOLS_AND_KPIS.md
+MAD_Training_Studio_Financial_Model.xlsx
+PROGRESS_SYSTEM_PLAN.md
+PROJECT_BRIEF.md
+ROADMAP.md
+STACK_RECOMMENDATION.md
+DEPLOYMENT_SANITIZATION_CHECKLIST.md
+docs/
+
+# Runtime artifacts
+server.log
+sessions/
+progress/
+
 # Python
 __pycache__/
 *.pyc
