@@ -13,8 +13,7 @@ from pathlib import Path
 from datetime import datetime
 
 # ── Config ────────────────────────────────────────────────────────────────────
-# Primary source: this folder's own .env — keeps the Studio fully standalone so
-# it runs unchanged once moved off JarvisLocal onto its own server.
+# Primary source: this folder's own .env — keeps the Studio fully standalone.
 from dotenv import load_dotenv
 load_dotenv(Path(__file__).parent / ".env")
 
@@ -22,8 +21,8 @@ ANTHROPIC_API_KEY   = os.getenv("ANTHROPIC_API_KEY", "")
 ELEVENLABS_API_KEY  = os.getenv("ELEVENLABS_API_KEY", "")
 ELEVENLABS_VOICE_ID = os.getenv("ELEVENLABS_VOICE_ID", "")
 
-# No fallback to Voice-Engine/Jarvis — this app is fully standalone. If any of
-# these are missing, fail loudly here instead of silently borrowing Jarvis's
+# No fallback to external systems — this app is fully standalone. If any of
+# these are missing, fail loudly here instead of silently borrowing another app's
 # keys/voice at runtime.
 _missing = [name for name, val in (
     ("ANTHROPIC_API_KEY", ANTHROPIC_API_KEY),

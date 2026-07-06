@@ -1691,7 +1691,7 @@ opi_sessions: dict = {}
 
 # ── Verified voice IDs from this ElevenLabs account ──────────────────────────
 # Provider voices — authoritative / professional
-VOICE_JARVIS   = ELEVENLABS_VOICE_ID       # Jarvis  — Custom AI assistant voice
+VOICE_DEFAULT  = ELEVENLABS_VOICE_ID       # Default voice for TTS generation
 VOICE_DANIEL   = "onwK4e9ZLuTAKqWW03F9"  # Daniel  — Steady Broadcaster
 VOICE_MATILDA  = "XrExE9yKIg1WjnnlVkGX"  # Matilda — Knowledgeable, Professional
 VOICE_SARAH    = "EXAVITQu4vr4xnSDxMaL"  # Sarah   — Mature, Reassuring

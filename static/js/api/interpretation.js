@@ -261,7 +261,7 @@ let currentVoiceStyle = 'commercial';
 
 /**
  * Saves the user's interpretation notes to the vault.
- * Currently displays a mock alert; in production this would call the Jarvis vault write API.
+ * Currently displays a mock alert; in production this would save to a backend notes API.
  *
  * @returns {void}
  */
@@ -270,8 +270,8 @@ async function saveNote() {
   const note = document.getElementById('interp-notes').value;
   // Guard clause: abort if the note is empty or contains only whitespace
   if (!note.trim()) return;
-  // Would call Jarvis vault write API in production
-  alert('Note saved to vault: Inbox/Interpretation-Notes.md');
+  // Would call backend notes API in production
+  alert('Note saved to your collection.');
 }
 
 // ── Error display ──────────────────────────────────────────────

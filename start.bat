@@ -1,5 +1,5 @@
 @echo off
-REM One-command launcher for Windows (cmd or PowerShell) — no Jarvis or voice assistant required.
+REM One-command launcher for Windows (cmd or PowerShell) — no external voice assistant required.
 cd /d "%~dp0"
 
 if not exist venv (

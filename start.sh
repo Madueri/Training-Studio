@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# One-command launcher — no Jarvis or voice assistant required.
+# One-command launcher — no external voice assistant required.
 set -e
 cd "$(dirname "$0")"
 
