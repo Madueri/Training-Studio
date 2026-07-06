@@ -254,6 +254,7 @@ async function authFetch(url, options = {}) {
 /**
  * Update the UI based on authentication state.
  * Shows/hides login/logout elements, updates user display.
+ * Sets body[data-authenticated] for CSS-based modal hiding.
  */
 function updateAuthUI() {
   const loginBtn = document.getElementById("auth-login-btn");
@@ -263,6 +264,9 @@ function updateAuthUI() {
   const authModal = document.getElementById("auth-modal");
 
   if (isAuthenticated()) {
+    // Set body attribute for CSS-based modal suppression
+    document.body.setAttribute("data-authenticated", "true");
+
     if (loginBtn) loginBtn.style.display = "none";
     if (signupBtn) signupBtn.style.display = "none";
     if (logoutBtn) logoutBtn.style.display = "inline-flex";
@@ -270,21 +274,21 @@ function updateAuthUI() {
       userDisplay.textContent = currentUser.email || "User";
       userDisplay.style.display = "inline-block";
     }
-    // Force-hide modal immediately and after short delays (safety net)
+    // Force-hide modal via JS + CSS class + body attribute (triple safety)
     if (authModal) {
       authModal.style.display = "none";
       authModal.classList.add("auth-modal-hidden");
-      setTimeout(() => { if (authModal) { authModal.style.display = "none"; authModal.classList.add("auth-modal-hidden"); } }, 50);
-      setTimeout(() => { if (authModal) { authModal.style.display = "none"; authModal.classList.add("auth-modal-hidden"); } }, 200);
-      setTimeout(() => { if (authModal) { authModal.style.display = "none"; authModal.classList.add("auth-modal-hidden"); } }, 500);
-      setTimeout(() => { if (authModal) { authModal.style.display = "none"; authModal.classList.add("auth-modal-hidden"); } }, 1000);
     }
+    console.log("[Auth] User authenticated — modal hidden, UI updated");
   } else {
+    document.body.removeAttribute("data-authenticated");
+
     if (loginBtn) loginBtn.style.display = "inline-block";
     if (signupBtn) signupBtn.style.display = "inline-block";
     if (logoutBtn) logoutBtn.style.display = "none";
     if (userDisplay) userDisplay.style.display = "none";
     if (authModal) authModal.classList.remove("auth-modal-hidden");
+    console.log("[Auth] User not authenticated — login UI shown");
   }
 }
 
@@ -427,3 +431,52 @@ if (document.readyState === "loading") {
 } else {
   initSupabase();
 }
+
+// ── Auth Modal MutationObserver (safety net) ──────────────────────────────────
+// If the auth modal is ever added or shown while the user is authenticated, hide it immediately
+(function _setupAuthModalWatcher() {
+  function _forceHideIfAuth() {
+    if (isAuthenticated()) {
+      const modal = document.getElementById("auth-modal");
+      if (modal) {
+        modal.style.display = "none";
+        modal.classList.add("auth-modal-hidden");
+      }
+      document.body.setAttribute("data-authenticated", "true");
+    }
+  }
+  // Watch for DOM changes that might add or modify the auth modal
+  const observer = new MutationObserver((mutations) => {
+    for (const mutation of mutations) {
+      if (mutation.type === "childList") {
+        for (const node of mutation.addedNodes) {
+          if (node.nodeType === 1 && (node.id === "auth-modal" || node.querySelector?.("#auth-modal"))) {
+            _forceHideIfAuth();
+            return;
+          }
+        }
+      }
+      if (mutation.type === "attributes" && mutation.target.id === "auth-modal") {
+        _forceHideIfAuth();
+        return;
+      }
+    }
+  });
+  // Start observing once DOM is ready
+  if (document.body) {
+    observer.observe(document.body, { childList: true, subtree: true, attributes: true, attributeFilter: ["style", "class"] });
+  } else {
+    document.addEventListener("DOMContentLoaded", () => {
+      observer.observe(document.body, { childList: true, subtree: true, attributes: true, attributeFilter: ["style", "class"] });
+    });
+  }
+  // Also run a periodic check every 2 seconds for 30 seconds after page load
+  let checks = 0;
+  const interval = setInterval(() => {
+    _forceHideIfAuth();
+    checks++;
+    if (checks >= 15) clearInterval(interval);
+  }, 2000);
+  // Run immediately once
+  _forceHideIfAuth();
+})();
