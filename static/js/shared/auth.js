@@ -247,13 +247,15 @@ async function authFetch(url, options = {}) {
  */
 function updateAuthUI() {
   const loginBtn = document.getElementById("auth-login-btn");
+  const signupBtn = document.getElementById("auth-signup-btn");
   const logoutBtn = document.getElementById("auth-logout-btn");
   const userDisplay = document.getElementById("auth-user-display");
   const authModal = document.getElementById("auth-modal");
 
   if (isAuthenticated()) {
     if (loginBtn) loginBtn.style.display = "none";
-    if (logoutBtn) logoutBtn.style.display = "inline-block";
+    if (signupBtn) signupBtn.style.display = "none";
+    if (logoutBtn) logoutBtn.style.display = "inline-flex";
     if (userDisplay) {
       userDisplay.textContent = currentUser.email || "User";
       userDisplay.style.display = "inline-block";
@@ -261,6 +263,7 @@ function updateAuthUI() {
     if (authModal) authModal.style.display = "none";
   } else {
     if (loginBtn) loginBtn.style.display = "inline-block";
+    if (signupBtn) signupBtn.style.display = "inline-block";
     if (logoutBtn) logoutBtn.style.display = "none";
     if (userDisplay) userDisplay.style.display = "none";
   }
