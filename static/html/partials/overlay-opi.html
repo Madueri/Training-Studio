@@ -1,0 +1,307 @@
+<!-- ══════════════════════════════════════════════════════════════════════════════
+     OPI SIMULATION — Full-screen overlay
+════════════════════════════════════════════════════════════════════════════════ -->
+<div id="opi-sim-overlay" style="display:none;position:fixed;inset:0;background:var(--bg0);z-index:1000;flex-direction:column">
+
+<div class="opi-wrap">
+
+ <!-- Header -->
+ <div class="opi-hdr">
+  <div style="display:flex;align-items:center;gap:10px">
+   <button onclick="exitOPISim()" style="background:var(--bg2);border:1px solid var(--border);color:var(--dim);padding:4px 10px;border-radius:6px;cursor:pointer;font-size:12px;font-weight:600">← Back</button>
+   <span style="font-size:13px;font-weight:700;color:var(--text)">OPI Simulation</span>
+  </div>
+  <div class="opi-hdr-conn"><div class="opi-hdr-conn-dot"></div>Connected to server</div>
+  <div id="opi-call-timer-top" style="display:none;font-size:15px;font-weight:800;font-family:monospace;color:var(--gold)">00:00</div>
+ </div>
+
+ <!-- Parameters -->
+ <div id="opi-param-row" class="ci-ov-params" style="border-bottom:1px solid var(--border);padding:8px 18px 6px">
+  <!-- Row 1: Field+Type + Source + Source Dialect + Target + Target Dialect + Difficulty + Duration -->
+  <div class="ci-ov-params-r1" style="grid-template-columns:1.6fr 1.1fr 22px 1.1fr 1.2fr 1fr">
+   <div>
+    <span class="ci-ov-plbl">Field</span>
+    <select id="opi-field" class="ci-ov-sel" onchange="opiFieldChanged(this.value)" style="margin-bottom:4px">
+     <!-- populated by opiInitOverlay() -->
+    </select>
+    <select id="opi-field-type" class="ci-ov-sel" style="font-size:10px;color:var(--dim)" onchange="opiTypeChanged(this.value)">
+     <!-- populated by opiFieldChanged() -->
+    </select>
+   </div>
+   <div>
+    <span class="ci-ov-plbl">Source Language</span>
+    <select id="opi-src-lang" class="ci-ov-sel" onchange="opiSrcLangChanged(this.value)" style="margin-bottom:4px">
+     <option value="English" selected>English</option>
+     <option value="Arabic">Arabic</option>
+     <option value="French">French</option>
+     <option value="Spanish">Spanish</option>
+     <option value="German">German</option>
+     <option value="Chinese">Chinese</option>
+     <option value="Russian">Russian</option>
+     <option value="Portuguese">Portuguese</option>
+    </select>
+    <span class="ci-ov-plbl">Source Dialect</span>
+    <select id="opi-src-dialect" class="ci-ov-sel">
+     <option>American English</option><option>British English</option><option>Australian English</option><option>Canadian English</option><option>Indian English</option>
+    </select>
+   </div>
+   <!-- Direction glyphs -->
+   <div style="display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:2px;padding-bottom:6px">
+    <span id="opi-dir-fwd" style="font-size:11px;font-weight:800;color:var(--blue);line-height:1">→</span>
+    <span id="opi-dir-bwd" style="font-size:11px;font-weight:800;color:var(--dim);line-height:1">←</span>
+   </div>
+   <div>
+    <span class="ci-ov-plbl">Target Language</span>
+    <select id="opi-tgt-lang" class="ci-ov-sel" onchange="opiTgtLangChanged(this.value)" style="margin-bottom:4px">
+     <option value="Arabic" selected>Arabic</option>
+     <option value="English">English</option>
+     <option value="French">French</option>
+     <option value="Spanish">Spanish</option>
+     <option value="German">German</option>
+     <option value="Chinese">Chinese</option>
+     <option value="Russian">Russian</option>
+     <option value="Portuguese">Portuguese</option>
+    </select>
+    <span class="ci-ov-plbl">Target Dialect</span>
+    <select id="opi-tgt-dialect" class="ci-ov-sel">
+     <option>Modern Standard Arabic</option><option>Egyptian Arabic</option><option>Levantine Arabic</option><option>Gulf Arabic</option><option>Moroccan Arabic</option>
+    </select>
+   </div>
+   <div>
+    <span class="ci-ov-plbl">Difficulty</span>
+    <select id="opi-difficulty" class="ci-ov-sel">
+     <option value="foundation">Foundation — clear accent, plain register, no interruptions</option>
+     <option value="intermediate" selected>Intermediate — moderate jargon, mild accent, some overlap</option>
+     <option value="advanced">Advanced — heavy terminology, strong accent, frequent interruptions</option>
+     <option value="expert">Expert — max pressure, overlapping speakers, dense register</option>
+    </select>
+   </div>
+   <div>
+    <span class="ci-ov-plbl">Duration</span>
+    <select id="opi-duration" class="ci-ov-sel">
+     <option value="5" selected>5 min</option>
+     <option value="10">10 min</option>
+     <option value="15">15 min</option>
+     <option value="20">20 min</option>
+     <option value="25">25 min</option>
+     <option value="30">30 min</option>
+     <option value="35">35 min</option>
+     <option value="40">40 min</option>
+     <option value="45">45 min</option>
+     <option value="50">50 min</option>
+     <option value="55">55 min</option>
+     <option value="60">60 min</option>
+     <option value="65">65 min</option>
+     <option value="70">70 min</option>
+     <option value="75">75 min</option>
+     <option value="80">80 min</option>
+     <option value="85">85 min</option>
+     <option value="90">90 min</option>
+     <option value="95">95 min</option>
+     <option value="100">100 min</option>
+     <option value="105">105 min</option>
+     <option value="110">110 min</option>
+     <option value="115">115 min</option>
+     <option value="120">120 min</option>
+    </select>
+   </div>
+  </div>
+  <!-- Row 2: Pace slider only — no participant stepper (OPI is a fixed 2-party call) -->
+  <div class="ci-ov-params-r2">
+   <span class="ci-ov-plbl" style="margin-bottom:0">Pace</span>
+   <span style="font-size:9px;color:var(--dim)">Slow</span>
+   <input type="range" id="opi-pace" min="1" max="4" step="1" value="2" oninput="opiUpdatePace(+this.value)" style="width:130px;accent-color:var(--blue);cursor:pointer">
+   <span style="font-size:9px;color:var(--dim)">Rapid</span>
+   <span id="opi-pace-lbl" style="font-size:10px;font-weight:700;font-family:monospace;color:var(--text);min-width:135px">Moderate — ~110 WPM</span>
+   <div style="width:1px;height:18px;background:var(--border);margin:0 2px"></div>
+   <span style="font-size:10px;color:var(--dim);font-style:italic">Fixed 2-person exchange (provider/caller) — phone protocol</span>
+   <div style="width:1px;height:18px;background:var(--border);margin:0 2px"></div>
+   <!-- OPI/VRI merge: same protocol, this toggle is the only branch point. Adds a
+        visual channel — camera panel activates and briefing/eval shift to emphasize
+        non-verbal reading, per PROJECT_BRIEF.md roadmap. -->
+   <label style="display:flex;align-items:center;gap:6px;cursor:pointer;user-select:none">
+    <input type="checkbox" id="opi-video-toggle" onchange="opiToggleVideoMode(this.checked)" style="accent-color:var(--blue);cursor:pointer;width:14px;height:14px">
+    <span style="font-size:11px;font-weight:700;color:var(--text)">Video call (VRI)</span>
+   </label>
+   <span id="opi-video-sub" style="font-size:10px;color:var(--dim);font-style:italic;display:none">Camera active — read non-verbal cues</span>
+  </div>
+ </div>
+
+ <!-- Body: left stats+history | right phone widget -->
+ <div class="opi-body">
+
+  <!-- LEFT: stats + session history -->
+  <div class="opi-left">
+   <div class="opi-stats-row">
+    <div class="opi-stat-card"><div class="opi-stat-label">Calls today</div><div class="opi-stat-val" id="opi-calls-today">0</div></div>
+    <div class="opi-stat-card"><div class="opi-stat-label">Avg accuracy</div><div class="opi-stat-val" id="opi-avg-acc">—</div></div>
+    <div class="opi-stat-card"><div class="opi-stat-label">Protocol score</div><div class="opi-stat-val" id="opi-avg-proto">—</div></div>
+   </div>
+   <div class="opi-hist-card">
+    <div class="opi-hist-header">
+     <span>Session history</span>
+     <span id="opi-log-count">0 calls</span>
+    </div>
+    <div class="opi-logs-list" id="opi-logs-list">
+     <div style="padding:20px;text-align:center;font-size:12px;color:var(--dim)">No sessions yet — go online to start</div>
+    </div>
+   </div>
+  </div>
+
+  <!-- RIGHT: phone widget -->
+  <div class="opi-right">
+   <div class="opi-phone" id="opi-phone-frame">
+
+    <!-- Dynamic island -->
+    <div class="opi-phone-island">
+     <div class="opi-phone-island-inner">
+      <div id="opi-sdot"></div>
+      <span id="opi-slbl">offline</span>
+     </div>
+    </div>
+
+    <!-- Phone screen with all states -->
+    <div class="opi-phone-screen">
+
+     <!-- OFFLINE -->
+     <div id="opi-ps-offline" class="opi-ps" style="display:block">
+      <div style="width:88px;height:88px;border-radius:50%;background:var(--bg1);border:2px solid rgba(243,63,94,.5);display:flex;align-items:center;justify-content:center;margin:0 auto 18px;animation:opi-pulse-r 2.4s ease infinite">
+       <svg viewBox="0 0 24 24" width="30" height="30" stroke="#e24b4a" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81a19.79 19.79 0 01-3.07-8.72A2 2 0 012 .5h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 8.37a16 16 0 006.29 6.29l1.24-1.16a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+      </div>
+      <p style="color:var(--dim);font-size:10px;margin:0 0 3px;letter-spacing:.5px;text-transform:uppercase">Status</p>
+      <p style="color:var(--red);font-size:15px;font-weight:700;margin:0 0 24px">Offline</p>
+      <button onclick="opiCircleClick()" style="background:var(--green);color:#fff;border:none;border-radius:26px;padding:13px 0;font-size:13px;font-weight:600;cursor:pointer;width:100%">Go Online</button>
+     </div>
+
+     <!-- TESTING -->
+     <div id="opi-ps-testing" class="opi-ps">
+      <div style="width:88px;height:88px;border-radius:50%;background:var(--bg1);border:2px solid rgba(232,151,30,.5);display:flex;align-items:center;justify-content:center;margin:0 auto 18px;animation:opi-pulse-y 1s ease infinite">
+       <div style="width:26px;height:26px;border:3px solid #ca8a04;border-top-color:transparent;border-radius:50%;animation:opi-spin .8s linear infinite"></div>
+      </div>
+      <p style="color:var(--dim);font-size:10px;margin:0 0 3px;letter-spacing:.5px;text-transform:uppercase">Status</p>
+      <p style="color:var(--gold);font-size:15px;font-weight:700;margin:0 0 10px">Checking mic</p>
+      <div class="opi-mic-check" id="opi-mic-check-zone">
+       <div class="opi-mic-bars-sm" id="opi-mic-bars-sm"></div>
+       <div class="opi-mic-status-row">
+        <div class="opi-mic-status-dot" id="opi-mic-status-dot"></div>
+        <div class="opi-mic-status-txt" id="opi-mic-status-txt">Checking…</div>
+       </div>
+      </div>
+     </div>
+
+     <!-- WAITING -->
+     <div id="opi-ps-waiting" class="opi-ps">
+      <div style="position:relative;width:110px;height:110px;margin:0 auto 18px">
+       <div style="position:absolute;inset:-16px;border-radius:50%;border:1.5px solid rgba(22,163,74,.2);animation:opi-ripple 2.6s ease-out infinite"></div>
+       <div style="position:absolute;inset:-16px;border-radius:50%;border:1.5px solid rgba(22,163,74,.2);animation:opi-ripple 2.6s ease-out .85s infinite"></div>
+       <div style="position:absolute;inset:-16px;border-radius:50%;border:1.5px solid rgba(22,163,74,.2);animation:opi-ripple 2.6s ease-out 1.7s infinite"></div>
+       <div style="width:110px;height:110px;border-radius:50%;background:rgba(34,197,94,.06);border:2px solid rgba(34,197,94,.5);display:flex;align-items:center;justify-content:center;position:relative">
+        <svg viewBox="0 0 24 24" width="36" height="36" stroke="#16a34a" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81a19.79 19.79 0 01-3.07-8.72A2 2 0 012 .5h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 8.37a16 16 0 006.29 6.29l1.24-1.16a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+       </div>
+      </div>
+      <p style="color:var(--dim);font-size:10px;margin:0 0 3px;letter-spacing:.5px;text-transform:uppercase">Status</p>
+      <p style="color:var(--green);font-size:15px;font-weight:700;margin:0 0 4px">Online</p>
+      <p style="color:var(--dim);font-size:12px;margin:0 0 22px" id="opi-waiting-field">Awaiting call…</p>
+      <button onclick="opiCircleClick()" style="background:transparent;color:var(--dim);border:1px solid var(--border);border-radius:26px;padding:9px 0;font-size:12px;cursor:pointer;width:100%">Go Offline</button>
+     </div>
+
+     <!-- INCOMING -->
+     <div id="opi-ps-incoming" class="opi-ps">
+      <div style="width:72px;height:72px;border-radius:50%;background:var(--bg2);border:2px solid rgba(167,139,250,.5);display:flex;align-items:center;justify-content:center;margin:0 auto 14px;animation:opi-ring-shake .65s ease infinite">
+       <svg viewBox="0 0 24 24" width="26" height="26" stroke="#a78bfa" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81a19.79 19.79 0 01-3.07-8.72A2 2 0 012 .5h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 8.37a16 16 0 006.29 6.29l1.24-1.16a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+      </div>
+      <p style="color:var(--purple);font-size:10px;margin:0 0 6px;letter-spacing:.5px;text-transform:uppercase">Incoming call</p>
+      <p style="color:var(--text);font-size:15px;font-weight:700;margin:0 0 3px;line-height:1.2" id="opi-incoming-agency">Riverside Medical Center</p>
+      <p style="color:var(--dim);font-size:12px;margin:0 0 12px" id="opi-incoming-caller">Ahmad Hassan — Iraqi</p>
+      <div style="display:flex;gap:5px;justify-content:center;flex-wrap:wrap;margin-bottom:18px" id="opi-incoming-tags"></div>
+      <button onclick="opiAcceptCall()" style="background:var(--green);color:#fff;border:none;border-radius:26px;padding:13px 0;font-size:13px;font-weight:700;cursor:pointer;width:100%;display:flex;align-items:center;justify-content:center;gap:8px">
+       <svg viewBox="0 0 24 24" width="14" height="14" stroke="#fff" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81a19.79 19.79 0 01-3.07-8.72A2 2 0 012 .5h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 8.37a16 16 0 006.29 6.29l1.24-1.16a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+       Answer
+      </button>
+     </div>
+
+     <!-- ACTIVE -->
+     <div id="opi-ps-active" class="opi-ps">
+      <div style="text-align:center;margin-bottom:14px">
+       <div style="width:52px;height:52px;border-radius:50%;background:var(--bg2);border:1px solid rgba(167,139,250,.25);display:flex;align-items:center;justify-content:center;margin:0 auto 8px">
+        <span style="font-size:15px;font-weight:700;color:var(--purple)" id="opi-active-initials">RMC</span>
+       </div>
+       <p style="color:var(--text);font-size:13px;font-weight:700;margin:0 0 2px;line-height:1.2" id="opi-active-agency-name">Riverside Medical Center</p>
+       <p style="color:var(--dim);font-size:11px;margin:0" id="opi-active-detail">Iraqi · Medical · Intermediate</p>
+      </div>
+      <!-- VRI camera panel — active by default whenever the video toggle is on, per
+           PROJECT_BRIEF.md ("camera panel active by default when VRI is toggled on").
+           Reuses CI's camera classes rather than building new visual-canvas CSS. -->
+      <div id="opi-camera-panel" class="ci-camera-panel" style="display:none;margin-bottom:10px">
+       <div class="ci-camera-head" style="display:flex;align-items:center;justify-content:space-between;padding:6px 10px;font-size:10px;color:var(--dim)">
+        <span>📷 Video — read non-verbal cues</span>
+        <span style="color:var(--green);font-weight:700">● LIVE</span>
+       </div>
+       <div style="background:var(--bg1);padding:10px;font-size:11px;color:var(--text);line-height:1.5;text-align:left" id="opi-visual-cue-text">Watching for gestures, items shown, and visible context…</div>
+      </div>
+      <div style="text-align:center;margin-bottom:10px;padding:6px 0">
+       <div style="font-size:28px;font-weight:700;color:var(--text);letter-spacing:3px" id="opi-call-timer-main">00:00</div>
+       <div style="font-size:9px;color:var(--dim);letter-spacing:1px;margin-top:3px;text-transform:uppercase">Call Duration</div>
+      </div>
+      <div id="opi-turn-status" style="background:var(--bg1);border-radius:8px;padding:8px 11px;margin-bottom:10px;font-size:11px;color:var(--dim);border-left:2px solid #7c3aed;text-align:left">Preparing call…</div>
+      <div id="opi-your-turn-zone" class="opi-yturn" style="display:none">
+       <div style="font-size:12px;font-weight:800;color:var(--red);margin-bottom:3px" id="opi-yturn-title">Your Turn — Render Now</div>
+       <div style="font-size:11px;color:var(--dim);margin-bottom:6px" id="opi-render-hint">Interpret into the target language</div>
+       <div class="waveform" id="wave-opi" style="height:28px;margin:4px 0;position:relative"></div>
+       <div style="font-size:12px;font-family:monospace;color:var(--red);margin:3px 0" id="opi-rec-timer">0:00</div>
+       <div style="font-size:10px;color:var(--dim);margin-bottom:4px">Stops automatically on silence</div>
+       <button onclick="opiManualStop()" style="background:rgba(124,58,237,.15);color:#a78bfa;border:1px solid rgba(124,58,237,.35);border-radius:18px;padding:7px 0;font-size:11px;font-weight:700;cursor:pointer;width:100%;margin-top:4px">Stop &amp; Submit</button>
+      </div>
+      <div id="opi-current-speaker" style="display:none"></div>
+      <div class="opi-tx" id="opi-transcript" style="display:none"></div>
+      <button onclick="opiEndCall()" style="background:rgba(243,63,94,.15);color:var(--red);border:1px solid rgba(243,63,94,.3);border-radius:24px;padding:12px 0;font-size:13px;cursor:pointer;width:100%;margin-top:4px;display:flex;align-items:center;justify-content:center;gap:6px">
+       <svg viewBox="0 0 24 24" width="13" height="13" stroke="#fecaca" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81a19.79 19.79 0 01-3.07-8.72A2 2 0 012 .5h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 8.37a16 16 0 006.29 6.29l1.24-1.16a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+       End Call
+      </button>
+     </div>
+
+    </div><!-- end phone-screen -->
+    <!-- Persistent offline control — visible during incoming/active so the
+         interpreter always has the option to go offline, even mid-ring or
+         mid-call (not just while idle in 'waiting'). 'waiting' keeps its own
+         inline Go Offline button above; this one stays hidden there to avoid
+         a duplicate control. See opiRequestOffline() / opiSetState(). -->
+    <button id="opi-global-offline-btn" onclick="opiRequestOffline()" style="display:none;background:transparent;color:var(--dim);border:1px solid var(--border);border-radius:20px;padding:8px 0;font-size:11px;cursor:pointer;width:100%;margin-top:8px">Go Offline</button>
+   </div><!-- end opi-phone -->
+   <p id="opi-phone-hint" style="font-size:11px;color:var(--dim);text-align:center;margin-top:10px">Click "Go Online" to begin</p>
+  </div><!-- end opi-right -->
+
+  <!-- Evaluation sheet (slides up from bottom after call ends) -->
+  <div id="opi-eval-overlay" onclick="opiEvalBgClose(event)">
+   <div id="opi-eval-sheet" onclick="event.stopPropagation()">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
+     <div>
+      <div style="font-size:14px;font-weight:700;color:var(--text)">Call Evaluation</div>
+      <div style="font-size:12px;color:var(--dim);margin-top:2px" id="opi-eval-subtitle"></div>
+     </div>
+     <button onclick="opiCloseEval()" style="background:var(--bg2);border:1px solid var(--border);border-radius:50%;width:28px;height:28px;cursor:pointer;font-size:16px;color:var(--dim);line-height:1;display:flex;align-items:center;justify-content:center">×</button>
+    </div>
+    <div id="opi-eval-kpi-bars" style="display:flex;flex-direction:column;gap:8px;margin-bottom:16px"></div>
+    <div id="opi-eval-latency" style="font-size:11px;color:var(--dim);margin-bottom:10px;display:none"></div>
+    <div style="display:flex;gap:8px">
+     <button onclick="opiCloseEval()" style="flex:1;padding:10px;border-radius:10px;border:1px solid var(--border);background:transparent;color:var(--dim);cursor:pointer;font-size:13px">Close</button>
+     <button onclick="opiOpenFullEval()" style="flex:2;padding:10px;border-radius:10px;border:none;background:#7c3aed;color:#fff;cursor:pointer;font-size:13px;font-weight:600">View full evaluation →</button>
+    </div>
+   </div>
+  </div>
+
+  <!-- Full evaluation (full-screen overlay) -->
+  <div id="opi-full-eval">
+   <div style="display:flex;align-items:center;gap:10px;margin-bottom:18px">
+    <button onclick="opiCloseFullEval()" style="background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:6px 12px;cursor:pointer;font-size:12px;color:var(--dim)">← Back</button>
+    <div>
+     <div style="font-size:14px;font-weight:700;color:var(--text)" id="opi-full-eval-title">Full Evaluation</div>
+     <div style="font-size:12px;color:var(--dim);margin-top:2px" id="opi-full-eval-sub"></div>
+    </div>
+   </div>
+   <div id="opi-full-eval-content"></div>
+  </div>
+
+ </div><!-- end opi-body -->
+</div><!-- end .opi-wrap -->
+</div><!-- end #opi-sim-overlay -->

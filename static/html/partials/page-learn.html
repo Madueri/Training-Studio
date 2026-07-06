@@ -1,0 +1,266 @@
+<!-- ═══ PAGE: LEARN ══════════════════════════════════════════════ -->
+<div id="page-learn" class="studio-page" style="display:none">
+ <div class="learn-layout">
+
+  <!-- Sidebar: phase navigation -->
+  <div class="learn-sidebar" id="learn-sidebar">
+   <div style="font-size:10px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:var(--dim);margin-bottom:12px;padding:0 4px">Phases</div>
+   <div class="learn-sidebar-phase active-phase" id="lsp-1" onclick="scrollToPhase(1)">
+    <div><div class="lsp-num">01</div><div class="lsp-bar"><div class="lsp-bar-fill" id="lspf-1" style="width:0%;background:var(--blue)"></div></div></div>
+    <div class="lsp-label">Foundations</div>
+   </div>
+   <div class="learn-sidebar-phase" id="lsp-2" onclick="scrollToPhase(2)">
+    <div><div class="lsp-num">02</div><div class="lsp-bar"><div class="lsp-bar-fill" id="lspf-2" style="width:0%;background:var(--blue)"></div></div></div>
+    <div class="lsp-label">Consecutive</div>
+   </div>
+   <div class="learn-sidebar-phase" id="lsp-3" onclick="scrollToPhase(3)">
+    <div><div class="lsp-num">03</div><div class="lsp-bar"><div class="lsp-bar-fill" id="lspf-3" style="width:0%;background:var(--blue)"></div></div></div>
+    <div class="lsp-label">Simultaneous</div>
+   </div>
+   <div class="learn-sidebar-phase" id="lsp-4" onclick="scrollToPhase(4)">
+    <div><div class="lsp-num">04</div><div class="lsp-bar"><div class="lsp-bar-fill" id="lspf-4" style="width:0%;background:var(--gold)"></div></div></div>
+    <div class="lsp-label">Specialization</div>
+   </div>
+   <div style="margin-top:20px;padding:14px;background:var(--bg2);border:1px solid var(--border);border-radius:10px">
+    <div class="learn-path-tag" id="learn-path-tag" style="margin-bottom:10px">Path: —</div>
+    <div style="font-size:11px;color:var(--dim);line-height:1.5" id="learn-path-desc"></div>
+   </div>
+   <!-- My Progress shortcut -->
+   <div style="margin-top:14px;padding:14px;background:var(--bg2);border:1px solid var(--border);border-radius:10px;cursor:pointer" onclick="goPage('progress')">
+    <div style="display:flex;align-items:center;gap:10px">
+     <div style="width:32px;height:32px;border-radius:8px;background:var(--purple);display:flex;align-items:center;justify-content:center;font-size:16px">📊</div>
+     <div>
+      <div style="font-size:12px;font-weight:700;color:var(--text)">My Progress</div>
+      <div style="font-size:11px;color:var(--dim)">View stats, streaks & achievements</div>
+     </div>
+     <div style="margin-left:auto;font-size:14px;color:var(--dim)">→</div>
+    </div>
+   </div>
+  </div>
+
+  <!-- Main column: module list -->
+  <div class="learn-main-col" id="learn-main-col">
+
+   <!-- Phase 1 -->
+   <div class="learn-phase-section" id="lphase-1">
+    <div class="learn-phase-hdr" onclick="togglePhase(1)">
+     <div class="learn-phase-hdr-num" style="background:rgba(72,120,240,.12);border-color:rgba(72,120,240,.25);color:var(--blue)">01</div>
+     <div class="learn-phase-hdr-info">
+      <div class="learn-phase-hdr-name">Foundations of Interpreting</div>
+      <div class="learn-phase-hdr-sub">Theory, ethics, and cognitive preparation</div>
+     </div>
+     <div class="learn-phase-hdr-prog" id="lphdr-prog-1">0 / 5</div>
+     <div class="learn-phase-hdr-chev" id="lphdr-chev-1"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></div>
+    </div>
+    <div class="learn-phase-body" id="lphase-body-1">
+     <div class="mod-row" id="mr-1" onclick="openModule(1)">
+      <div class="mod-row-num">01</div>
+      <div class="mod-row-icon"><svg viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg></div>
+      <div class="mod-row-body">
+       <div class="mod-row-title">What is Interpreting?</div>
+       <div class="mod-row-desc">Modes, scope, and professional landscape — the field defined</div>
+      </div>
+      <div class="mod-row-right">
+       <span class="mod-tag mod-tag-theory">Theory</span>
+       <span class="mod-status-badge" id="msb-1">Unlocked</span>
+      </div>
+     </div>
+     <div class="mod-row" id="mr-2" onclick="openModule(2)">
+      <div class="mod-row-num">02</div>
+      <div class="mod-row-icon"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+      <div class="mod-row-body">
+       <div class="mod-row-title">Professional Ethics and Standards</div>
+       <div class="mod-row-desc">AIIC code, impartiality, confidentiality, and conflict of interest</div>
+      </div>
+      <div class="mod-row-right">
+       <span class="mod-tag mod-tag-theory">Theory</span>
+       <span class="mod-status-badge" id="msb-2">Locked</span>
+      </div>
+      <div class="mod-lock-icon" id="mlk-2"><svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
+     </div>
+     <div class="mod-row" id="mr-3" onclick="openModule(3)">
+      <div class="mod-row-num">03</div>
+      <div class="mod-row-icon"><svg viewBox="0 0 24 24"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg></div>
+      <div class="mod-row-body">
+       <div class="mod-row-title">Cognitive Load and Memory</div>
+       <div class="mod-row-desc">How the interpreter's brain works — dual-task management and working memory</div>
+      </div>
+      <div class="mod-row-right">
+       <span class="mod-tag mod-tag-lab">Theory + Lab</span>
+       <span class="mod-status-badge" id="msb-3">Locked</span>
+      </div>
+      <div class="mod-lock-icon" id="mlk-3"><svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
+     </div>
+     <div class="mod-row" id="mr-4" onclick="openModule(4)">
+      <div class="mod-row-num">04</div>
+      <div class="mod-row-icon"><svg viewBox="0 0 24 24"><path d="M3 18v-6a9 9 0 0 1 18 0v6"/><path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"/></svg></div>
+      <div class="mod-row-body">
+       <div class="mod-row-title">Active Listening Skills</div>
+       <div class="mod-row-desc">Source analysis, anticipation, and sustained concentration under pressure</div>
+      </div>
+      <div class="mod-row-right">
+       <span class="mod-tag mod-tag-lab">Lab</span>
+       <span class="mod-status-badge" id="msb-4">Locked</span>
+      </div>
+      <div class="mod-lock-icon" id="mlk-4"><svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
+     </div>
+     <div class="mod-row" id="mr-5" onclick="openModule(5)">
+      <div class="mod-row-num">05</div>
+      <div class="mod-row-icon"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
+      <div class="mod-row-body">
+       <div class="mod-row-title">Fusha Arabic and Formal Register</div>
+       <div class="mod-row-desc">Modern Standard Arabic grammar, register selection, and dialect avoidance</div>
+      </div>
+      <div class="mod-row-right">
+       <span class="mod-tag mod-tag-lab">Theory + Lab</span>
+       <span class="mod-status-badge" id="msb-5">Locked</span>
+      </div>
+      <div class="mod-lock-icon" id="mlk-5"><svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
+     </div>
+    </div>
+   </div>
+
+   <!-- Phase 2 -->
+   <div class="learn-phase-section" id="lphase-2">
+    <div class="learn-phase-hdr" onclick="togglePhase(2)">
+     <div class="learn-phase-hdr-num" style="background:rgba(167,139,250,.1);border-color:rgba(167,139,250,.25);color:var(--purple)">02</div>
+     <div class="learn-phase-hdr-info">
+      <div class="learn-phase-hdr-name">Consecutive Interpreting</div>
+      <div class="learn-phase-hdr-sub">Note-taking, analysis, rendition — and Escort/Liaison</div>
+     </div>
+     <div class="learn-phase-hdr-prog" id="lphdr-prog-2">0 / 6</div>
+     <div class="learn-phase-hdr-chev" id="lphdr-chev-2"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></div>
+    </div>
+    <div class="learn-phase-body" id="lphase-body-2">
+     <div class="mod-row mod-locked" id="mr-6" onclick="openModule(6)">
+      <div class="mod-row-num">06</div>
+      <div class="mod-row-icon"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
+      <div class="mod-row-body">
+       <div class="mod-row-title">Introduction to CI and EVS</div>
+       <div class="mod-row-desc">Ear-voice span, processing model, and segment length in CI</div>
+      </div>
+      <div class="mod-row-right">
+       <span class="mod-tag mod-tag-theory">Theory</span>
+       <span class="mod-status-badge" id="msb-6">Locked</span>
+      </div>
+      <div class="mod-lock-icon" id="mlk-6"><svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
+     </div>
+     <div class="mod-row mod-locked" id="mr-7" onclick="openModule(7)">
+      <div class="mod-row-num">07</div>
+      <div class="mod-row-icon"><svg viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg></div>
+      <div class="mod-row-body">
+       <div class="mod-row-title">Note-Taking Systems</div>
+       <div class="mod-row-desc">Rozan method, symbols, and language-neutral notation for long speeches</div>
+      </div>
+      <div class="mod-row-right">
+       <span class="mod-tag mod-tag-lab">Theory + Lab</span>
+       <span class="mod-status-badge" id="msb-7">Locked</span>
+      </div>
+      <div class="mod-lock-icon" id="mlk-7"><svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
+     </div>
+     <div class="mod-row mod-locked" id="mr-8" onclick="openModule(8)">
+      <div class="mod-row-num">08</div>
+      <div class="mod-row-icon"><svg viewBox="0 0 24 24"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg></div>
+      <div class="mod-row-body">
+       <div class="mod-row-title">Paraphrasing and Reformulation</div>
+       <div class="mod-row-desc">Meaning-based transfer, not word-for-word — advanced reformulation drills</div>
+      </div>
+      <div class="mod-row-right">
+       <span class="mod-tag mod-tag-lab">Lab</span>
+       <span class="mod-status-badge" id="msb-8">Locked</span>
+      </div>
+      <div class="mod-lock-icon" id="mlk-8"><svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
+     </div>
+     <div class="mod-row mod-locked" id="mr-9" onclick="openModule(9)">
+      <div class="mod-row-num">09</div>
+      <div class="mod-row-icon"><svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></div>
+      <div class="mod-row-body">
+       <div class="mod-row-title">Terminology and Glossaries</div>
+       <div class="mod-row-desc">Building domain glossaries, term extraction, and active vocabulary in both languages</div>
+      </div>
+      <div class="mod-row-right">
+       <span class="mod-tag mod-tag-lab">Theory + Lab</span>
+       <span class="mod-status-badge" id="msb-9">Locked</span>
+      </div>
+      <div class="mod-lock-icon" id="mlk-9"><svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
+     </div>
+     <div class="mod-row mod-locked" id="mr-10" onclick="openModule(10)">
+      <div class="mod-row-num">10</div>
+      <div class="mod-row-icon"><svg viewBox="0 0 24 24"><path d="M16 4h2a2 2 0 0 1 2 2v14"/><path d="M8 20H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="M12 12h.01M9 16l-2-2 2-2M15 16l2-2-2-2"/></svg></div>
+      <div class="mod-row-body">
+       <div class="mod-row-title">Escort / Liaison Interpreting</div>
+       <div class="mod-row-desc">Bidirectional, informal consecutive — site visits, delegations, and one-on-one dialogue</div>
+      </div>
+      <div class="mod-row-right">
+       <span class="mod-tag mod-tag-lab">Theory + Lab</span>
+       <span class="mod-status-badge" id="msb-10">Locked</span>
+      </div>
+      <div class="mod-lock-icon" id="mlk-10"><svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
+     </div>
+     <div class="mod-row mod-locked" id="mr-11" onclick="openModule(11)">
+      <div class="mod-row-num">11</div>
+      <div class="mod-row-icon"><svg viewBox="0 0 24 24"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg></div>
+      <div class="mod-row-body">
+       <div class="mod-row-title">CI Simulation — Short Speeches</div>
+       <div class="mod-row-desc">Live AI-generated speeches with full AIIC-rubric evaluation</div>
+      </div>
+      <div class="mod-row-right">
+       <span class="mod-tag mod-tag-sim">Simulation</span>
+       <span class="mod-status-badge" id="msb-11">Locked</span>
+      </div>
+      <div class="mod-lock-icon" id="mlk-11"><svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
+     </div>
+    </div>
+   </div>
+
+   <!-- Phase 3 -->
+   <div class="learn-phase-section" id="lphase-3">
+    <div class="learn-phase-hdr" onclick="togglePhase(3)">
+     <div class="learn-phase-hdr-num" style="background:rgba(34,197,94,.08);border-color:rgba(34,197,94,.2);color:var(--green)">03</div>
+     <div class="learn-phase-hdr-info">
+      <div class="learn-phase-hdr-name">Simultaneous Interpreting</div>
+      <div class="learn-phase-hdr-sub">Booth technique, divided attention, speed — plus Chuchotage and Sight Translation</div>
+     </div>
+     <div class="learn-phase-hdr-prog" id="lphdr-prog-3">0 / 7</div>
+     <div class="learn-phase-hdr-chev" id="lphdr-chev-3"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></div>
+    </div>
+    <div class="learn-phase-body" id="lphase-body-3">
+     <div class="mod-row mod-locked" id="mr-12" onclick="openModule(12)"><div class="mod-row-num">12</div><div class="mod-row-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div><div class="mod-row-body"><div class="mod-row-title">Principles of Simultaneous</div><div class="mod-row-desc">The SI model, EVS, anticipation strategies, and source-text chunking</div></div><div class="mod-row-right"><span class="mod-tag mod-tag-theory">Theory</span><span class="mod-status-badge" id="msb-12">Locked</span></div><div class="mod-lock-icon" id="mlk-12"><svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div></div>
+     <div class="mod-row mod-locked" id="mr-13" onclick="openModule(13)"><div class="mod-row-num">13</div><div class="mod-row-icon"><svg viewBox="0 0 24 24"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg></div><div class="mod-row-body"><div class="mod-row-title">Shadowing Technique (Advanced — Booth Drill)</div><div class="mod-row-desc">Simultaneous repetition drills to train divided-attention and latency control under booth load</div></div><div class="mod-row-right"><span class="mod-tag mod-tag-lab">Lab</span><span class="mod-status-badge" id="msb-13">Locked</span></div><div class="mod-lock-icon" id="mlk-13"><svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div></div>
+     <div class="mod-row mod-locked" id="mr-14" onclick="openModule(14)"><div class="mod-row-num">14</div><div class="mod-row-icon"><svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div><div class="mod-row-body"><div class="mod-row-title">Compression and Anticipation</div><div class="mod-row-desc">Cutting redundancy without losing meaning — anticipating verb-final structures</div></div><div class="mod-row-right"><span class="mod-tag mod-tag-lab">Theory + Lab</span><span class="mod-status-badge" id="msb-14">Locked</span></div><div class="mod-lock-icon" id="mlk-14"><svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div></div>
+     <div class="mod-row mod-locked" id="mr-15" onclick="openModule(15)"><div class="mod-row-num">15</div><div class="mod-row-icon"><svg viewBox="0 0 24 24"><path d="M11 5L6 9H2v6h4l5 4V5z"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/></svg></div><div class="mod-row-body"><div class="mod-row-title">Chuchotage</div><div class="mod-row-desc">Whispered simultaneous beside the listener — the no-equipment bridge into booth SI</div></div><div class="mod-row-right"><span class="mod-tag mod-tag-lab">Theory + Lab</span><span class="mod-status-badge" id="msb-15">Locked</span></div><div class="mod-lock-icon" id="mlk-15"><svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div></div>
+     <div class="mod-row mod-locked mod-standalone" id="mr-16" onclick="openModule(16)"><div class="mod-row-num">16</div><div class="mod-row-icon"><svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></div><div class="mod-row-body"><div class="mod-row-title">Sight Translation</div><div class="mod-row-desc">Written-to-oral conversion on the fly — scanning ahead while rendering aloud</div></div><div class="mod-row-right"><span class="mod-standalone-flag">Standalone</span><span class="mod-tag mod-tag-lab">Theory + Lab</span><span class="mod-status-badge" id="msb-16">Locked</span></div><div class="mod-lock-icon" id="mlk-16"><svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div></div>
+     <div class="mod-row mod-locked" id="mr-17" onclick="openModule(17)"><div class="mod-row-num">17</div><div class="mod-row-icon"><svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg></div><div class="mod-row-body"><div class="mod-row-title">Booth Etiquette and Equipment</div><div class="mod-row-desc">ISO 2603 standards, relay, handover, and console operation</div></div><div class="mod-row-right"><span class="mod-tag mod-tag-theory">Theory</span><span class="mod-status-badge" id="msb-17">Locked</span></div><div class="mod-lock-icon" id="mlk-17"><svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div></div>
+     <div class="mod-row mod-locked" id="mr-18" onclick="openModule(18)"><div class="mod-row-num">18</div><div class="mod-row-icon"><svg viewBox="0 0 24 24"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg></div><div class="mod-row-body"><div class="mod-row-title">SI Simulation — Live Stream</div><div class="mod-row-desc">Full simultaneous mode: continuous audio, EVS meter, dual-channel review</div></div><div class="mod-row-right"><span class="mod-tag mod-tag-sim">Simulation</span><span class="mod-status-badge" id="msb-18">Locked</span></div><div class="mod-lock-icon" id="mlk-18"><svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div></div>
+    </div>
+   </div>
+
+   <!-- Phase 4 -->
+   <div class="learn-phase-section" id="lphase-4">
+    <div class="learn-phase-hdr" onclick="togglePhase(4)">
+     <div class="learn-phase-hdr-num" style="background:rgba(232,151,30,.1);border-color:rgba(232,151,30,.25);color:var(--gold)">04</div>
+     <div class="learn-phase-hdr-info">
+      <div class="learn-phase-hdr-name">Specialization Tracks</div>
+      <div class="learn-phase-hdr-sub">All Field/Domain specialties, plus OPI/VRI mastery and your final assessment</div>
+     </div>
+     <div class="learn-phase-hdr-prog" id="lphdr-prog-4">0 / 11</div>
+     <div class="learn-phase-hdr-chev" id="lphdr-chev-4"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></div>
+    </div>
+    <div class="learn-phase-body" id="lphase-body-4">
+     <div class="mod-row mod-locked" id="mr-19" onclick="openModule(19)"><div class="mod-row-num">19</div><div class="mod-row-icon"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M9 13h6M9 17h6M9 9h1"/></svg></div><div class="mod-row-body"><div class="mod-row-title">Legal Interpreting</div><div class="mod-row-desc">Courtroom register, legal terminology, verbatim obligations and oaths</div></div><div class="mod-row-right"><span class="mod-tag mod-tag-lab">Theory + Lab</span><span class="mod-status-badge" id="msb-19">Locked</span></div><div class="mod-lock-icon" id="mlk-19"><svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div></div>
+     <div class="mod-row mod-locked" id="mr-20" onclick="openModule(20)"><div class="mod-row-num">20</div><div class="mod-row-icon"><svg viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></div><div class="mod-row-body"><div class="mod-row-title">Medical Interpreting</div><div class="mod-row-desc">Clinical terminology, patient-provider dynamics, and informed consent scenarios</div></div><div class="mod-row-right"><span class="mod-tag mod-tag-lab">Theory + Lab</span><span class="mod-status-badge" id="msb-20">Locked</span></div><div class="mod-lock-icon" id="mlk-20"><svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div></div>
+     <div class="mod-row mod-locked" id="mr-21" onclick="openModule(21)"><div class="mod-row-num">21</div><div class="mod-row-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></div><div class="mod-row-body"><div class="mod-row-title">Conference Domains — Politics, Economics, and Diplomatic Protocol</div><div class="mod-row-desc">UN discourse, diplomatic register, and macroeconomic terminology drills</div></div><div class="mod-row-right"><span class="mod-tag mod-tag-lab">Theory + Lab</span><span class="mod-status-badge" id="msb-21">Locked</span></div><div class="mod-lock-icon" id="mlk-21"><svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div></div>
+     <div class="mod-row mod-locked" id="mr-22" onclick="openModule(22)"><div class="mod-row-num">22</div><div class="mod-row-icon"><svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg></div><div class="mod-row-body"><div class="mod-row-title">Immigration Interpreting</div><div class="mod-row-desc">Asylum interviews, USCIS terminology, and trauma-informed dialogue handling</div></div><div class="mod-row-right"><span class="mod-tag mod-tag-lab">Theory + Lab</span><span class="mod-status-badge" id="msb-22">Locked</span></div><div class="mod-lock-icon" id="mlk-22"><svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div></div>
+     <div class="mod-row mod-locked" id="mr-23" onclick="openModule(23)"><div class="mod-row-num">23</div><div class="mod-row-icon"><svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16M12 12h.01"/></svg></div><div class="mod-row-body"><div class="mod-row-title">Business Interpreting</div><div class="mod-row-desc">Negotiations, earnings calls, and corporate terminology across registers</div></div><div class="mod-row-right"><span class="mod-tag mod-tag-lab">Theory + Lab</span><span class="mod-status-badge" id="msb-23">Locked</span></div><div class="mod-lock-icon" id="mlk-23"><svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div></div>
+     <div class="mod-row mod-locked" id="mr-24" onclick="openModule(24)"><div class="mod-row-num">24</div><div class="mod-row-icon"><svg viewBox="0 0 24 24"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 2 9 2 12 0v-5"/></svg></div><div class="mod-row-body"><div class="mod-row-title">Academic Interpreting</div><div class="mod-row-desc">Lectures, conference panels, and discipline-specific terminology drills</div></div><div class="mod-row-right"><span class="mod-tag mod-tag-lab">Theory + Lab</span><span class="mod-status-badge" id="msb-24">Locked</span></div><div class="mod-lock-icon" id="mlk-24"><svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div></div>
+     <div class="mod-row mod-locked" id="mr-25" onclick="openModule(25)"><div class="mod-row-num">25</div><div class="mod-row-icon"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg></div><div class="mod-row-body"><div class="mod-row-title">Community Interpreting</div><div class="mod-row-desc">Social services, schools, and everyday civic-life encounters</div></div><div class="mod-row-right"><span class="mod-tag mod-tag-lab">Theory + Lab</span><span class="mod-status-badge" id="msb-25">Locked</span></div><div class="mod-lock-icon" id="mlk-25"><svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div></div>
+     <div class="mod-row mod-locked" id="mr-26" onclick="openModule(26)"><div class="mod-row-num">26</div><div class="mod-row-icon"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg></div><div class="mod-row-body"><div class="mod-row-title">Security Interpreting</div><div class="mod-row-desc">Law-enforcement and defense-adjacent terminology, protocol, and register control</div></div><div class="mod-row-right"><span class="mod-tag mod-tag-lab">Theory + Lab</span><span class="mod-status-badge" id="msb-26">Locked</span></div><div class="mod-lock-icon" id="mlk-26"><svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div></div>
+     <div class="mod-row mod-locked" id="mr-27" onclick="openModule(27)"><div class="mod-row-num">27</div><div class="mod-row-icon"><svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="15" rx="2"/><polyline points="17 2 12 7 7 2"/></svg></div><div class="mod-row-body"><div class="mod-row-title">Media Interpreting</div><div class="mod-row-desc">Live broadcast, press conferences, and fast-turnaround news terminology</div></div><div class="mod-row-right"><span class="mod-tag mod-tag-lab">Theory + Lab</span><span class="mod-status-badge" id="msb-27">Locked</span></div><div class="mod-lock-icon" id="mlk-27"><svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div></div>
+     <div class="mod-row mod-locked" id="mr-28" onclick="openModule(28)"><div class="mod-row-num">28</div><div class="mod-row-icon"><svg viewBox="0 0 24 24"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/></svg></div><div class="mod-row-body"><div class="mod-row-title">OPI Mastery and Certification Prep</div><div class="mod-row-desc">Full AIIC-rubric OPI simulations, scoring breakdowns, and exam strategy</div></div><div class="mod-row-right"><span class="mod-tag mod-tag-sim">Simulation</span><span class="mod-status-badge" id="msb-28">Locked</span></div><div class="mod-lock-icon" id="mlk-28"><svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div></div>
+     <div class="mod-row mod-locked" id="mr-29" onclick="openModule(29)"><div class="mod-row-num">29</div><div class="mod-row-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/></svg></div><div class="mod-row-body"><div class="mod-row-title">Final Assessment and Portfolio</div><div class="mod-row-desc">Timed full-session exam, peer review, and digital portfolio submission</div></div><div class="mod-row-right"><span class="mod-tag mod-tag-assess">Assessment</span><span class="mod-status-badge" id="msb-29">Locked</span></div><div class="mod-lock-icon" id="mlk-29"><svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div></div>
+    </div>
+   </div>
+
+  </div><!-- end learn-main-col -->
+ </div><!-- end learn-layout -->
+</div><!-- end page-learn -->

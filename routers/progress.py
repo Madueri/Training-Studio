@@ -275,6 +275,25 @@ def save_progress(data: dict):
     fp.write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8")
 
 
+# ── Mode Name Normalization (frontend ↔ backend) ────────────────────────────────
+
+# Frontend uses shorter mode names; backend uses full canonical names.
+# This mapping ensures compatibility between the two.
+_MODE_NAME_MAP = {
+    "escort": "liaison",
+    "sight": "sight_translation",
+    "vri": "vri",
+    "vri-opi": "opi",
+    "relay": "relay",
+}
+
+def normalize_mode(mode: Optional[str]) -> Optional[str]:
+    """Convert a frontend mode name to the backend canonical name."""
+    if not mode:
+        return mode
+    return _MODE_NAME_MAP.get(mode, mode)
+
+
 # ── Unlock Logic ──────────────────────────────────────────────────────────────
 
 
@@ -763,6 +782,9 @@ async def session_complete(
                 status_code=400
             )
 
+        # Normalize frontend mode name to backend canonical name
+        mode = normalize_mode(mode)
+
         # Update streak
         _update_streak(progress)
         streak = progress["streak_days"]
@@ -921,6 +943,10 @@ async def check_unlock(user_id: str, mode: Optional[str] = None, field: Optional
         progress = load_progress(user_id)
         _update_mode_progress(progress)
         _update_field_unlocks(progress)
+
+        # Normalize frontend mode name to backend canonical name
+        if mode:
+            mode = normalize_mode(mode)
 
         result = {"user_id": user_id, "unlocked": False, "reason": None}
 

@@ -1,0 +1,154 @@
+<!-- ═══ PAGE: DASHBOARD ═══════════════════════════════════════════ -->
+<div id="page-dashboard" class="studio-page active">
+ <div class="dash-wrap">
+  <div class="dash-greeting" id="dash-greeting">Welcome back, Mohammed Al Dwairy!</div>
+  <div class="dash-sub" id="dash-sub-text">Start your first exercise</div>
+
+  <!-- Stats row -->
+  <div class="dash-stats">
+   <div class="dash-stat">
+    <div class="dash-stat-label">Current Plan</div>
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px">
+     <span class="dash-stat-val" style="font-size:20px">Basic</span>
+     <span style="font-size:13px;color:var(--dim)">Free</span>
+    </div>
+    <div class="dash-stat-link" onclick="goPage('settings')">Upgrade to Premium ↗</div>
+   </div>
+   <div class="dash-stat">
+    <div class="dash-stat-label">This Month</div>
+    <div style="display:flex;align-items:center;gap:8px">
+     <span class="dash-stat-val" id="dash-month-count">0</span>
+     <span style="font-size:13px;color:var(--dim)">/ ∞ sessions</span>
+    </div>
+    <div class="dash-stat-sub" id="dash-month-bar-wrap" style="margin-top:8px">
+     <div style="background:var(--bg3);border-radius:4px;height:4px;overflow:hidden">
+      <div id="dash-month-bar" style="height:100%;background:var(--blue);border-radius:4px;width:0%;transition:width .6s"></div>
+     </div>
+    </div>
+   </div>
+   <div class="dash-stat">
+    <div class="dash-stat-label">Recent Evaluations</div>
+    <div id="dash-recent-eval-preview" style="font-size:13px;color:var(--dim)">No recordings yet.</div>
+    <div class="dash-stat-link" onclick="goPage('practice')">▶ Start your first practice</div>
+   </div>
+  </div>
+
+  <!-- Main grid -->
+  <div class="dash-grid">
+
+   <!-- LEFT -->
+   <div>
+    <!-- This week -->
+    <div class="dash-card" style="margin-bottom:16px">
+     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
+      <div class="dash-card-title">This Week</div>
+      <span class="dash-stat-link" onclick="goPage('progress')">Full progress →</span>
+     </div>
+     <div id="dash-week-content" style="font-size:13px;color:var(--dim);font-style:italic">No evaluations yet — your weekly trend will appear after your first practice.</div>
+    </div>
+
+    <!-- Recommended next -->
+    <div class="dash-card" style="margin-bottom:16px">
+     <div class="dash-card-title">Recommended Next</div>
+     <div class="rec-card" id="dash-rec-card" onclick="goPage('practice')">
+      <div class="rec-title" id="dash-rec-title">Medical Consecutive — Beginner</div>
+      <div class="rec-tags" id="dash-rec-tags">
+       <span class="rec-tag badge-beginner">Beginner</span>
+       <span class="rec-tag" style="background:var(--bg4);color:var(--blue2);border:1px solid var(--border)">Medical</span>
+       <span class="rec-tag" style="background:var(--bg4);color:var(--purple);border:1px solid var(--border)">Consecutive</span>
+      </div>
+      <div class="rec-why" id="dash-rec-why">Start with a structured medical scenario to build your baseline. Built-in silence gaps — no manual pausing needed.</div>
+      <div class="rec-action">▶ Practice now</div>
+     </div>
+    </div>
+
+    <!-- Quick stats -->
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px">
+     <div class="dash-card" style="padding:16px">
+      <div class="dash-card-title" style="margin-bottom:8px">Practice Sessions</div>
+      <div style="font-size:32px;font-weight:800;color:var(--text)" id="dash-total-sessions">0</div>
+     </div>
+     <div class="dash-card" style="padding:16px">
+      <div class="dash-card-title" style="margin-bottom:8px">Average Score</div>
+      <div style="font-size:32px;font-weight:800;color:var(--gold)" id="dash-avg-score">—</div>
+     </div>
+    </div>
+
+    <button class="dash-cta" onclick="goPage('practice')" style="width:100%;justify-content:center">▶ Start Practice</button>
+   </div>
+
+   <!-- RIGHT -->
+   <div>
+    <!-- Learning Journey -->
+    <div class="dash-card" style="margin-bottom:16px">
+     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
+      <div class="dash-card-title">Learning Journey</div>
+      <span class="dash-stat-link" onclick="goPage('progress')">View full progress →</span>
+     </div>
+     <div class="journey-steps" id="dash-journey">
+      <!-- Rendered by JS -->
+     </div>
+     <div style="font-size:12px;color:var(--dim);margin-top:8px" id="dash-journey-status">Start your first practice to begin the journey</div>
+    </div>
+
+    <!-- Your Progress -->
+    <div class="dash-card" style="margin-bottom:16px">
+     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
+      <div class="dash-card-title">Your Progress</div>
+      <span class="dash-stat-link" onclick="goPage('progress')">View All →</span>
+     </div>
+     <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px">
+      <div style="width:40px;height:40px;background:var(--blue);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:800;color:#fff;flex-shrink:0" id="dash-level-circle">1</div>
+      <div style="flex:1">
+       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px">
+        <span style="font-size:12px;font-weight:600;color:var(--text)" id="dash-level-name">Level 1 — Novice</span>
+        <span style="font-size:11px;color:var(--dim)" id="dash-xp-label">0 XP</span>
+       </div>
+       <div class="xp-bar-outer"><div class="xp-bar-fill" id="dash-xp-bar" style="width:0%"></div></div>
+      </div>
+     </div>
+     <div style="display:flex;gap:12px">
+      <div style="flex:1;background:var(--bg3);border-radius:8px;padding:10px;text-align:center">
+       <div style="font-size:22px;font-weight:800;color:var(--amber)" id="dash-streak-num">0</div>
+       <div style="font-size:10px;color:var(--dim);text-transform:uppercase;letter-spacing:.3px;margin-top:2px">Day Streak</div>
+      </div>
+      <div style="flex:1;background:var(--bg3);border-radius:8px;padding:10px;text-align:center">
+       <div style="font-size:22px;font-weight:800;color:var(--green)" id="dash-best-streak-num">0</div>
+       <div style="font-size:10px;color:var(--dim);text-transform:uppercase;letter-spacing:.3px;margin-top:2px">Best Streak</div>
+      </div>
+     </div>
+    </div>
+
+    <!-- Recent Practice -->
+    <div class="dash-card">
+     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
+      <div class="dash-card-title">Recent Practice</div>
+     </div>
+     <div id="dash-recent-list">
+      <div style="font-size:12px;color:var(--dim);text-align:center;padding:16px">No practice sessions yet</div>
+     </div>
+     <button onclick="goPage('practice')" style="width:100%;margin-top:12px;padding:10px;background:var(--blue);color:#fff;border:none;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer">▶ Start your first exercise</button>
+    </div>
+
+    <!-- OPI + CI Performance KPIs -->
+    <div class="dash-card" style="margin-top:16px">
+     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+      <div class="dash-card-title">Simulation Performance</div>
+      <span class="dash-stat-link" onclick="goPage('practice')">Practice ↗</span>
+     </div>
+     <div style="display:flex;gap:8px;margin-bottom:12px" id="dash-sim-tabs">
+      <button onclick="dashSimTab('opi')" id="dash-sim-tab-opi" style="flex:1;padding:6px 0;font-size:11px;font-weight:700;border-radius:6px;border:1px solid var(--blue);background:var(--blue);color:#fff;cursor:pointer">OPI Calls</button>
+      <button onclick="dashSimTab('ci')"  id="dash-sim-tab-ci"  style="flex:1;padding:6px 0;font-size:11px;font-weight:700;border-radius:6px;border:1px solid var(--border);background:transparent;color:var(--dim);cursor:pointer">Consecutive</button>
+     </div>
+     <div id="dash-opi-kpis">
+      <div style="font-size:12px;color:var(--dim);text-align:center;padding:12px">Complete an OPI simulation to see your KPI breakdown</div>
+     </div>
+     <div id="dash-ci-kpis" style="display:none">
+      <div style="font-size:12px;color:var(--dim);text-align:center;padding:12px">Complete a CI session to see your KPI breakdown</div>
+     </div>
+    </div>
+   </div>
+
+  </div><!-- end dash-grid -->
+ </div>
+</div><!-- end page-dashboard -->

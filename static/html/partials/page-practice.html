@@ -1,0 +1,809 @@
+<!-- ═══ PAGE: PRACTICE ════════════════════════════════════════════ -->
+<div id="page-practice" class="studio-page">
+ <!-- Practice sub-tab bar -->
+ <div class="prac-subtabs">
+  <button class="prac-tab active" data-tab="interpretation" onclick="goPracticeTab('interpretation')">Interpretation</button>
+  <button class="prac-tab" data-tab="voiceover" onclick="goPracticeTab('voiceover')">Voice-Over Studio</button>
+ </div>
+ <!-- Sub-tab content wrappers -->
+ <div id="prac-interpretation" class="prac-content active">
+  <!-- INTERPRETATION content inserted here -->
+
+<!--
+ TAB 1 — INTERPRETATION
+ -->
+<div id="tab-interp" class="panel active">
+<!-- PAGE 1: MODE HOME -->
+ <div id="interp-home">
+ <div class="mode-home-intro">
+ <div class="mode-home-title">Interpretation Practice</div>
+ <div class="mode-home-sub">Choose a mode to begin your session</div>
+ </div>
+ <!-- Skill Tree + Grid Toggle Wrapper -->
+ <div id="mode-view-wrapper" style="padding:20px 0">
+  <div style="text-align:center;margin-bottom:24px">
+   <h2 style="font-size:22px;font-weight:800;margin-bottom:8px">Your Interpretation Journey</h2>
+   <p style="color:var(--dim);font-size:14px">Master each level to unlock the next. Start with Shadowing.</p>
+  </div>
+  <div style="text-align:right;margin-bottom:12px">
+   <button class="btn btn-ghost btn-sm" onclick="toggleModeView()" id="mode-view-toggle">View as Grid</button>
+  </div>
+  <!-- Tree view -->
+  <div id="skill-tree-container">
+   <div id="skill-tree"></div>
+  </div>
+  <!-- Fallback grid view (hidden by default) -->
+  <div id="mode-cards-grid" style="display:none">
+   <div class="mode-grid">
+    <div class="mode-card-v2 shadowing" onclick="enterPractice('shadowing')">
+     <div class="mc-icon"></div>
+     <div class="mc-title">Shadowing</div>
+     <div class="mc-desc">Repeat the speaker simultaneously in the same language. Builds listening, rhythm, and spoken fluency at broadcast pace.</div>
+     <div class="mc-tags">
+      <span class="mc-tag badge-beginner">Beginner</span>
+      <span class="mc-tag" style="background:var(--bg3);color:var(--dim);border:1px solid var(--border)">Same language</span>
+     </div>
+     <div style="margin-top:14px;font-size:11px;color:var(--dim)">Watch → Shadow simultaneously → Get fluency score</div>
+    </div>
+    <div class="mode-card-v2 consecutive" onclick="enterPractice('consecutive')">
+     <div class="mc-icon"></div>
+     <div class="mc-title">Consecutive</div>
+     <div class="mc-desc">Listen to segments, take notes, then deliver your interpretation during the pause. Core conference skill.</div>
+     <div class="mc-tags">
+      <span class="mc-tag badge-intermediate">Intermediate</span>
+      <span class="mc-tag" style="background:var(--bg3);color:var(--dim);border:1px solid var(--border)">Cross-language</span>
+     </div>
+     <div style="margin-top:14px;font-size:11px;color:var(--dim)">Watch segment → Pause → Interpret → Score</div>
+    </div>
+    <div class="mode-card-v2 escort" onclick="enterPractice('escort')">
+     <div class="mc-icon"></div>
+     <div class="mc-title">Escort/Liaison</div>
+     <div class="mc-desc">Informal, bidirectional interpreting for business, social, or administrative settings. Emphasizes natural conversation and cultural mediation.</div>
+     <div class="mc-tags">
+      <span class="mc-tag badge-intermediate">Intermediate</span>
+      <span class="mc-tag" style="background:var(--bg3);color:var(--dim);border:1px solid var(--border)">Bidirectional, informal</span>
+     </div>
+     <div style="margin-top:14px;font-size:11px;color:var(--dim)">Converse both ways → Score on cultural mediation &amp; naturalness</div>
+    </div>
+    <div class="mode-card-v2 simultaneous" onclick="enterPractice('simultaneous')">
+     <div class="mc-icon"></div>
+     <div class="mc-title">Simultaneous</div>
+     <div class="mc-desc">Interpret in real-time while the speaker talks. Maximum cognitive challenge — full conference booth standard.</div>
+     <div class="mc-tags">
+      <span class="mc-tag badge-advanced">Advanced</span>
+      <span class="mc-tag" style="background:var(--bg3);color:var(--dim);border:1px solid var(--border)">Real-time</span>
+     </div>
+     <div style="margin-top:14px;font-size:11px;color:var(--dim)">Watch + Interpret simultaneously → Analyze accuracy</div>
+    </div>
+    <div class="mode-card-v2 chuchotage" onclick="enterPractice('chuchotage')">
+     <div class="mc-icon"></div>
+     <div class="mc-title">Chuchotage</div>
+     <div class="mc-desc">Whispered simultaneous, no booth or equipment, delivered at close proximity to 1-2 listeners. Adds volume discipline and noise resilience.</div>
+     <div class="mc-tags">
+      <span class="mc-tag badge-advanced">Advanced</span>
+      <span class="mc-tag" style="background:var(--bg3);color:var(--dim);border:1px solid var(--border)">Real-time, whispered</span>
+     </div>
+     <div style="margin-top:14px;font-size:11px;color:var(--dim)">Watch + Whisper-interpret live → Score on volume &amp; noise control</div>
+    </div>
+    <div class="mode-card-v2 sight" onclick="enterPractice('sight')">
+     <div class="mc-icon"></div>
+     <div class="mc-title">Sight Translation</div>
+     <div class="mc-desc">Written-input, oral-output interpreting. Read a document on screen and deliver an oral rendition at a sustained pace.</div>
+     <div class="mc-tags">
+      <span class="mc-tag badge-advanced">Advanced</span>
+      <span class="mc-tag" style="background:var(--bg3);color:var(--dim);border:1px solid var(--border)">Written → Oral</span>
+     </div>
+     <div style="margin-top:14px;font-size:11px;color:var(--dim)">Read document → Speak rendition → Score on register &amp; WPM throughput</div>
+    </div>
+    <div class="mode-card-v2 opi" onclick="enterPractice('opi')">
+     <div class="mc-icon"></div>
+     <div class="mc-title">OPI / VRI</div>
+     <div class="mc-desc">Over-the-Phone &amp; Video Remote Interpreting. Triadic communication between two simulated parties — toggle video on for the VRI visual channel.</div>
+     <div class="mc-tags">
+      <span class="mc-tag badge-premium">Professional</span>
+      <span class="mc-tag" style="background:var(--bg3);color:var(--dim);border:1px solid var(--border)">Triadic</span>
+     </div>
+     <div style="margin-top:14px;font-size:11px;color:var(--dim)">Listen to call scenario → Interpret both parties → Toggle video for VRI</div>
+    </div>
+    <div class="mode-card-v2 relay" style="opacity:0.45;pointer-events:none;filter:grayscale(50%)" title="Coming soon">
+     <div class="mc-icon" style="opacity:0.5"></div>
+     <div class="mc-title">Relay</div>
+     <div class="mc-desc">Relay interpreting — pass through a pivot language between two interpreters who do not share a common language. Coming soon.</div>
+     <div class="mc-tags">
+      <span class="mc-tag badge-premium">Expert</span>
+      <span class="mc-tag" style="background:var(--bg3);color:var(--dim);border:1px solid var(--border)">Coming Soon</span>
+     </div>
+     <div style="margin-top:14px;font-size:11px;color:var(--dim)">Interpreter A → Relay → Interpreter B</div>
+    </div>
+   </div>
+  </div>
+ </div>
+</div>
+
+<!-- PAGE 2: PARAMETERS + VIDEO SEARCH -->
+ <div id="interp-params" style="display:none">
+ <div class="practice-header">
+ <button class="back-btn" onclick="backToModeSelect()" title="Back to mode selection">← Modes</button>
+ <div>
+ <div class="practice-mode-name" id="practice-mode-name">Shadowing</div>
+ <div class="practice-mode-sub" id="practice-mode-sub">Real-time fluency training</div>
+ </div>
+ </div>
+
+ <!-- Parameters card -->
+ <div class="card" style="margin-bottom:18px;padding:22px 28px">
+ <h3>Search Parameters</h3>
+
+ <!-- Row 1: Field+Subtype + Language(s)+Dialect(s) + Difficulty + Duration.
+      Every item below carries an EXPLICIT grid-column so that toggling
+      shadowing-mode vs. pair-mode never reflows Difficulty/Duration —
+      hidden items simply leave their column empty instead of shifting
+      everything left (this is what was misaligned before). -->
+ <div class="ci-ov-params-r1" style="grid-template-columns:1.3fr 1.05fr 22px 1.05fr 1.05fr 0.85fr;gap:10px;margin-bottom:6px">
+
+  <!-- col 1: Field / Domain + sub-type (reuses CI's field taxonomy) -->
+  <div style="grid-column:1">
+   <span class="ci-ov-plbl">Field / Domain</span>
+   <select id="interp-spec" class="ci-ov-sel" onchange="interpFieldChanged(this.value)" style="margin-bottom:4px">
+    <option value="medical">Medical</option>
+    <option value="legal">Legal</option>
+    <option value="immigration">Immigration</option>
+    <option value="diplomatic">Diplomatic</option>
+    <option value="business">Business</option>
+    <option value="academic">Academic</option>
+    <option value="community">Community</option>
+    <option value="security">Security</option>
+    <option value="media">Media</option>
+   </select>
+   <select id="interp-spec-type" class="ci-ov-sel" style="font-size:10px;color:var(--dim)" onchange="interpTypeChanged(this.value)">
+    <!-- populated by interpFieldChanged() -->
+   </select>
+  </div>
+
+  <!-- col 2: SHADOWING — single language, dialect stacked directly below it -->
+  <div id="lang-shadow-lang-wrap" style="grid-column:2;display:none">
+   <span class="ci-ov-plbl">Language</span>
+   <select id="shadow-lang" class="ci-ov-sel" onchange="updateDialects()" style="margin-bottom:4px">
+    <option value="English">English</option>
+    <option value="Arabic">Arabic</option>
+    <option value="French">French</option>
+    <option value="Spanish">Spanish</option>
+    <option value="German">German</option>
+    <option value="Chinese">Chinese</option>
+    <option value="Russian">Russian</option>
+    <option value="Portuguese">Portuguese</option>
+   </select>
+   <span class="ci-ov-plbl" id="lang-shadow-dialect-wrap">Dialect / Accent</span>
+   <select id="shadow-dialect" class="ci-ov-sel">
+    <option value="US">United States</option>
+    <option value="UK">United Kingdom</option>
+    <option value="AU">Australia</option>
+    <option value="CA">Canada</option>
+    <option value="IN">India</option>
+   </select>
+  </div>
+
+  <!-- col 2/3/4: OTHER MODES — source → target pair, each with its dialect stacked
+       directly below it, a swap control, and the same direction glyphs CI uses -->
+  <div id="lang-pair-block" style="grid-column:2;display:none">
+   <span class="ci-ov-plbl">Source Language</span>
+   <select id="lang-source" class="ci-ov-sel" onchange="syncLangDir();updateDialects()" style="margin-bottom:4px">
+    <option value="English">EN — English</option>
+    <option value="Arabic">AR — Arabic</option>
+    <option value="French">FR — French</option>
+    <option value="Spanish">ES — Spanish</option>
+    <option value="German">DE — German</option>
+    <option value="Chinese">ZH — Chinese</option>
+    <option value="Russian">RU — Russian</option>
+    <option value="Portuguese">PT — Portuguese</option>
+   </select>
+   <span class="ci-ov-plbl" id="lang-pair-dialect-block">Source Dialect</span>
+   <select id="lang-source-dialect" class="ci-ov-sel"></select>
+  </div>
+  <div id="lang-pair-arrow-block" style="grid-column:3;display:none;flex-direction:column;align-items:center;justify-content:flex-end;gap:4px;padding-bottom:6px">
+   <span id="interp-dir-fwd" onclick="swapLanguages()" title="Swap source and target" style="font-size:13px;font-weight:800;color:var(--blue);line-height:1;cursor:pointer;transition:opacity .25s,transform .25s">→</span>
+   <span id="interp-dir-bwd" onclick="swapLanguages()" title="Swap source and target" style="font-size:13px;font-weight:800;color:var(--dim);line-height:1;cursor:pointer;transition:opacity .25s,transform .25s">←</span>
+  </div>
+  <div id="lang-pair-target-block" style="grid-column:4;display:none">
+   <span class="ci-ov-plbl">Target Language</span>
+   <select id="lang-target" class="ci-ov-sel" onchange="syncLangDir();updateDialects()" style="margin-bottom:4px">
+    <option value="Arabic">AR — Arabic</option>
+    <option value="English">EN — English</option>
+    <option value="French">FR — French</option>
+    <option value="Spanish">ES — Spanish</option>
+    <option value="German">DE — German</option>
+    <option value="Chinese">ZH — Chinese</option>
+    <option value="Russian">RU — Russian</option>
+    <option value="Portuguese">PT — Portuguese</option>
+   </select>
+   <span class="ci-ov-plbl" id="lang-pair-target-dialect-block">Target Dialect</span>
+   <select id="lang-target-dialect" class="ci-ov-sel"></select>
+  </div>
+
+  <!-- col 5: Difficulty (same options as CI/OPI, always pinned here) -->
+  <div style="grid-column:5">
+   <span class="ci-ov-plbl">Difficulty</span>
+   <select id="interp-difficulty" class="ci-ov-sel">
+    <option value="foundation">Foundation — clear accent, plain register, no interruptions</option>
+    <option value="intermediate" selected>Intermediate — moderate jargon, mild accent, some overlap</option>
+    <option value="advanced">Advanced — heavy terminology, strong accent, frequent interruptions</option>
+    <option value="expert">Expert — max pressure, overlapping speakers, dense register</option>
+   </select>
+  </div>
+
+  <!-- col 6: Duration (always pinned here) -->
+  <div style="grid-column:6">
+   <span class="ci-ov-plbl">Duration</span>
+   <select id="interp-dur" class="ci-ov-sel" onchange="updateDurLabel(this.value)">
+    <option value="5" selected>5 min</option>
+    <option value="10">10 min</option>
+    <option value="15">15 min</option>
+    <option value="20">20 min</option>
+    <option value="25">25 min</option>
+    <option value="30">30 min</option>
+    <option value="35">35 min</option>
+    <option value="40">40 min</option>
+    <option value="45">45 min</option>
+    <option value="50">50 min</option>
+    <option value="55">55 min</option>
+    <option value="60">60 min</option>
+    <option value="65">65 min</option>
+    <option value="70">70 min</option>
+    <option value="75">75 min</option>
+    <option value="80">80 min</option>
+    <option value="85">85 min</option>
+    <option value="90">90 min</option>
+    <option value="95">95 min</option>
+    <option value="100">100 min</option>
+    <option value="105">105 min</option>
+    <option value="110">110 min</option>
+    <option value="115">115 min</option>
+    <option value="120">120 min</option>
+   </select>
+  </div>
+ </div>
+
+ <input type="hidden" id="interp-dir" value="English → English">
+
+ <!-- Row 2: Pace (same slider as CI/OPI) + One-way toggle (pair modes only) + Number of Speakers -->
+ <div class="ci-ov-params-r2" style="margin-bottom:14px">
+  <span class="ci-ov-plbl" style="margin-bottom:0">Pace</span>
+  <span style="font-size:9px;color:var(--dim)">Slow</span>
+  <input type="range" id="interp-pace" min="1" max="4" step="1" value="1" oninput="interpUpdatePace(+this.value)" style="width:130px;accent-color:var(--blue);cursor:pointer">
+  <span style="font-size:9px;color:var(--dim)">Rapid</span>
+  <span id="interp-pace-lbl" style="font-size:10px;font-weight:700;font-family:monospace;color:var(--text);min-width:135px">Deliberate — ~80 WPM</span>
+  <div style="width:1px;height:18px;background:var(--border);margin:0 2px"></div>
+  <div id="interp-oneway-group" style="display:flex;align-items:center;gap:10px">
+   <label class="ci-toggle-wrap" style="margin:0">
+    <input type="checkbox" class="ci-toggle-input" id="interp-oneway" onchange="interpToggleOneWay(this.checked)">
+    <div class="ci-toggle-track"><div class="ci-toggle-thumb"></div></div>
+   </label>
+   <span style="font-size:11px;color:var(--dim)">One-way</span>
+  </div>
+  <div style="width:1px;height:18px;background:var(--border);margin:0 2px"></div>
+  <span class="ci-ov-plbl" style="margin-bottom:0">Number of Speakers</span>
+  <button class="ci-part-btn" id="interp-spk-minus" onclick="interpAdjustSpeakers(-1)">−</button>
+  <span class="ci-part-num" id="interp-spk-num" style="font-size:16px;font-weight:800;min-width:18px;text-align:center">2</span>
+  <button class="ci-part-btn" id="interp-spk-plus" onclick="interpAdjustSpeakers(1)">+</button>
+  <span id="interp-spk-note" style="font-size:10px;color:var(--dim);font-style:italic">speakers expected in the source video</span>
+ </div>
+
+ <div class="field" style="margin-bottom:14px">
+ <label>Specific Topic <span style="font-size:11px;color:var(--dim);font-weight:400">(optional — narrows the search)</span></label>
+ <input id="interp-topic" type="text" placeholder='e.g. "kidney transplant surgery", "refugee resettlement", "trade sanctions"...' style="width:100%">
+ </div>
+
+ <div style="display:flex;gap:10px">
+ <button class="btn btn-gold" style="flex:1;padding:12px" onclick="runVideoSearch()" title="Find videos matching your parameters"> Find Matching Videos</button>
+ <div style="flex:1;display:flex;gap:8px;align-items:center">
+ <input id="practice-custom-url" type="text" placeholder="Or paste a YouTube URL directly..." style="flex:1;font-size:12px">
+ <button class="btn btn-ghost" onclick="loadParamsCustomVideo()" style="white-space:nowrap" title="Load a custom YouTube URL">Load</button>
+ </div>
+ </div>
+ </div>
+
+ <!-- Video results grid -->
+ <div id="video-results-area">
+ <div style="text-align:center;padding:40px;color:var(--dim)">
+ <div style="font-size:36px;margin-bottom:10px"></div>
+ <div style="font-size:15px;font-weight:600;color:var(--text);margin-bottom:6px">Set your parameters above</div>
+ <div style="font-size:13px">Claude will search and analyze videos for difficulty — then you choose one to start</div>
+ </div>
+ </div>
+
+ <!-- AI Simulation card — OPI mode only, sits below video search -->
+ <div id="opi-ai-launch-card" style="display:none;margin-top:20px;background:var(--bg2);border:1px solid rgba(34,197,94,.3);border-radius:12px;padding:20px">
+  <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap">
+   <div>
+    <div style="font-size:13px;font-weight:800;color:var(--green);margin-bottom:5px">AI Call Simulation</div>
+    <div style="font-size:12px;color:var(--dim);line-height:1.5;max-width:480px">AI generates a realistic caller and provider with two different voices. You interpret each utterance live. Every call is logged with full dialogue, ideal translations, and AI feedback.</div>
+    <div style="display:flex;gap:6px;margin-top:8px">
+     <span style="font-size:11px;background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.25);color:var(--green);padding:2px 9px;border-radius:20px">Two AI voices</span>
+     <span style="font-size:11px;background:rgba(167,139,250,.08);border:1px solid rgba(167,139,250,.25);color:var(--purple);padding:2px 9px;border-radius:20px">Auto silence detection</span>
+     <span style="font-size:11px;background:rgba(232,151,30,.08);border:1px solid rgba(232,151,30,.25);color:var(--gold);padding:2px 9px;border-radius:20px">Call logs + feedback</span>
+    </div>
+   </div>
+   <button onclick="launchOPISimulation()" style="background:#22c55e;color:#000;padding:13px 26px;border-radius:9px;border:none;cursor:pointer;font-size:14px;font-weight:800;white-space:nowrap;flex-shrink:0;transition:all .2s" onmouseover="this.style.background='#16a34a'" onmouseout="this.style.background='#22c55e'">Start Simulation</button>
+  </div>
+ </div>
+
+ <!-- CI Simulation card — Consecutive mode only, sits below video search -->
+ <div id="ci-ai-launch-card" style="display:none;margin-top:20px;background:var(--bg2);border:1px solid rgba(72,120,240,.3);border-radius:12px;padding:20px">
+  <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap">
+   <div>
+    <div style="font-size:13px;font-weight:800;color:var(--blue);margin-bottom:5px">AI Consecutive Simulation</div>
+    <div style="font-size:12px;color:var(--dim);line-height:1.5;max-width:480px">AI generates a professional speaker in your chosen field and delivers timed segments for you to interpret. Every session is scored on memory accuracy, completeness, terminology, and professional register.</div>
+    <div style="display:flex;gap:6px;margin-top:8px">
+     <span style="font-size:11px;background:rgba(72,120,240,.08);border:1px solid rgba(72,120,240,.25);color:var(--blue);padding:2px 9px;border-radius:20px">9 environments</span>
+     <span style="font-size:11px;background:rgba(167,139,250,.08);border:1px solid rgba(167,139,250,.25);color:var(--purple);padding:2px 9px;border-radius:20px">Protocol-accurate positioning</span>
+     <span style="font-size:11px;background:rgba(232,151,30,.08);border:1px solid rgba(232,151,30,.25);color:var(--gold);padding:2px 9px;border-radius:20px">AIIC rubric scoring</span>
+    </div>
+   </div>
+   <button onclick="showCISim()" style="background:var(--blue);color:#fff;padding:13px 26px;border-radius:9px;border:none;cursor:pointer;font-size:14px;font-weight:800;white-space:nowrap;flex-shrink:0;transition:opacity .2s" onmouseover="this.style.opacity='.85'" onmouseout="this.style.opacity='1'">Start Simulation</button>
+  </div>
+ </div>
+
+ <!-- SI Simulation card — Simultaneous mode only, reuses the CI overlay with mode='simultaneous' -->
+ <div id="si-ai-launch-card" style="display:none;margin-top:20px;background:var(--bg2);border:1px solid rgba(167,139,250,.3);border-radius:12px;padding:20px">
+  <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap">
+   <div>
+    <div style="font-size:13px;font-weight:800;color:var(--purple);margin-bottom:5px">AI Simultaneous Simulation</div>
+    <div style="font-size:12px;color:var(--dim);line-height:1.5;max-width:480px">AI delivers continuous, booth-style live speech with no built-in pause — you render in real time, no replay. Scored on accuracy, completeness, and Ear-Voice Span (décalage) control. Includes an RSI (remote) atmosphere option.</div>
+    <div style="display:flex;gap:6px;margin-top:8px">
+     <span style="font-size:11px;background:rgba(167,139,250,.08);border:1px solid rgba(167,139,250,.25);color:var(--purple);padding:2px 9px;border-radius:20px">Live, no replay</span>
+     <span style="font-size:11px;background:rgba(72,120,240,.08);border:1px solid rgba(72,120,240,.25);color:var(--blue);padding:2px 9px;border-radius:20px">Décalage tracking</span>
+     <span style="font-size:11px;background:rgba(232,151,30,.08);border:1px solid rgba(232,151,30,.25);color:var(--gold);padding:2px 9px;border-radius:20px">RSI atmosphere option</span>
+    </div>
+   </div>
+   <button onclick="showCISim('simultaneous')" style="background:var(--purple);color:#fff;padding:13px 26px;border-radius:9px;border:none;cursor:pointer;font-size:14px;font-weight:800;white-space:nowrap;flex-shrink:0;transition:opacity .2s" onmouseover="this.style.opacity='.85'" onmouseout="this.style.opacity='1'">Start Simulation</button>
+  </div>
+ </div>
+
+ <!-- Chuchotage Simulation card — Whispered Simultaneous mode only, reuses the CI overlay with mode='chuchotage' -->
+ <div id="chuchotage-ai-launch-card" style="display:none;margin-top:20px;background:var(--bg2);border:1px solid rgba(20,184,166,.3);border-radius:12px;padding:20px">
+  <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap">
+   <div>
+    <div style="font-size:13px;font-weight:800;color:var(--teal);margin-bottom:5px">AI Chuchotage Simulation</div>
+    <div style="font-size:12px;color:var(--dim);line-height:1.5;max-width:480px">AI delivers continuous live speech as if whispered at close proximity, no booth or equipment — you render live, no replay. Scored like SI, plus volume discipline and noise resilience. Sessions are capped at 45 minutes by design.</div>
+    <div style="display:flex;gap:6px;margin-top:8px">
+     <span style="font-size:11px;background:rgba(20,184,166,.08);border:1px solid rgba(20,184,166,.25);color:var(--teal);padding:2px 9px;border-radius:20px">Live, no replay</span>
+     <span style="font-size:11px;background:rgba(72,120,240,.08);border:1px solid rgba(72,120,240,.25);color:var(--blue);padding:2px 9px;border-radius:20px">Volume &amp; noise discipline</span>
+     <span style="font-size:11px;background:rgba(232,151,30,.08);border:1px solid rgba(232,151,30,.25);color:var(--gold);padding:2px 9px;border-radius:20px">45-min fatigue cap</span>
+    </div>
+   </div>
+   <button onclick="showCISim('chuchotage')" style="background:var(--teal);color:#fff;padding:13px 26px;border-radius:9px;border:none;cursor:pointer;font-size:14px;font-weight:800;white-space:nowrap;flex-shrink:0;transition:opacity .2s" onmouseover="this.style.opacity='.85'" onmouseout="this.style.opacity='1'">Start Simulation</button>
+  </div>
+ </div>
+
+ <!-- Escort/Liaison Simulation card — informal bidirectional mode, reuses the CI overlay with mode='escort' -->
+ <div id="escort-ai-launch-card" style="display:none;margin-top:20px;background:var(--bg2);border:1px solid rgba(232,151,30,.3);border-radius:12px;padding:20px">
+  <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap">
+   <div>
+    <div style="font-size:13px;font-weight:800;color:var(--gold);margin-bottom:5px">AI Escort/Liaison Simulation</div>
+    <div style="font-size:12px;color:var(--dim);line-height:1.5;max-width:480px">AI plays both sides of an informal, bidirectional exchange — business, social, or administrative. Scored on accuracy and completeness plus cultural-mediation appropriateness and conversational naturalness. Capped at intermediate difficulty.</div>
+    <div style="display:flex;gap:6px;margin-top:8px">
+     <span style="font-size:11px;background:rgba(232,151,30,.08);border:1px solid rgba(232,151,30,.25);color:var(--gold);padding:2px 9px;border-radius:20px">Bidirectional, informal</span>
+     <span style="font-size:11px;background:rgba(72,120,240,.08);border:1px solid rgba(72,120,240,.25);color:var(--blue);padding:2px 9px;border-radius:20px">Cultural mediation scoring</span>
+     <span style="font-size:11px;background:rgba(167,139,250,.08);border:1px solid rgba(167,139,250,.25);color:var(--purple);padding:2px 9px;border-radius:20px">Intermediate ceiling</span>
+    </div>
+   </div>
+   <button onclick="showCISim('escort')" style="background:var(--gold);color:#fff;padding:13px 26px;border-radius:9px;border:none;cursor:pointer;font-size:14px;font-weight:800;white-space:nowrap;flex-shrink:0;transition:opacity .2s" onmouseover="this.style.opacity='.85'" onmouseout="this.style.opacity='1'">Start Simulation</button>
+  </div>
+ </div>
+
+
+
+ <!-- Sight Translation Simulation card — written-input, oral-output mode, reuses the CI overlay with mode='sight' -->
+ <div id="sight-ai-launch-card" style="display:none;margin-top:20px;background:var(--bg2);border:1px solid rgba(251,146,60,.3);border-radius:12px;padding:20px">
+  <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap">
+   <div>
+    <div style="font-size:13px;font-weight:800;color:var(--amber);margin-bottom:5px">AI Sight Translation Simulation</div>
+    <div style="font-size:12px;color:var(--dim);line-height:1.5;max-width:480px">A written document appears on screen and stays visible the whole time — no audio source. You read ahead silently while delivering an oral rendition aloud. Scored on register fidelity, completeness, WPM throughput, and public-speaking delivery.</div>
+    <div style="display:flex;gap:6px;margin-top:8px">
+     <span style="font-size:11px;background:rgba(251,146,60,.08);border:1px solid rgba(251,146,60,.25);color:var(--amber);padding:2px 9px;border-radius:20px">Written → Oral</span>
+     <span style="font-size:11px;background:rgba(72,120,240,.08);border:1px solid rgba(72,120,240,.25);color:var(--blue);padding:2px 9px;border-radius:20px">WPM throughput scoring</span>
+     <span style="font-size:11px;background:rgba(232,151,30,.08);border:1px solid rgba(232,151,30,.25);color:var(--gold);padding:2px 9px;border-radius:20px">No replay needed — doc stays visible</span>
+    </div>
+   </div>
+   <button onclick="showCISim('sight')" style="background:var(--amber);color:#fff;padding:13px 26px;border-radius:9px;border:none;cursor:pointer;font-size:14px;font-weight:800;white-space:nowrap;flex-shrink:0;transition:opacity .2s" onmouseover="this.style.opacity='.85'" onmouseout="this.style.opacity='1'">Start Simulation</button>
+  </div>
+ </div>
+
+ </div>
+
+ <!-- PAGE 3: PRACTICE SESSION -->
+ <div id="interp-session" style="display:none">
+ <!-- Session header -->
+ <div class="practice-header" style="margin-bottom:16px">
+ <button class="back-btn" onclick="backToParams()" title="Back to video selection">← Videos</button>
+ <div style="flex:1">
+ <div id="session-mode-label" style="font-size:16px;font-weight:800;color:var(--text)">Shadowing Session</div>
+ <div id="session-info-label" style="font-size:12px;color:var(--dim);margin-top:2px"></div>
+ </div>
+ <div id="session-diff-badge"></div>
+ <button class="btn btn-ghost" onclick="clearInterp()" style="font-size:12px" title="Reset this session">↺ Reset</button>
+ </div>
+
+ <div class="session-layout">
+
+ <!-- LEFT: Video + Controls -->
+ <div>
+ <div class="card" style="padding:14px">
+ <!-- Top row: speed + meta + REC dot -->
+ <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
+ <div class="speed-btns">
+ <button class="speed-btn" onclick="setSpeed(0.75,this)" title="Play at 75% speed">0.75×</button>
+ <button class="speed-btn active" onclick="setSpeed(1,this)" title="Play at normal speed">1×</button>
+ <button class="speed-btn" onclick="setSpeed(1.25,this)" title="Play at 125% speed">1.25×</button>
+ <button class="speed-btn" onclick="setSpeed(1.5,this)" title="Play at 150% speed">1.5×</button>
+ </div>
+ <div style="display:flex;align-items:center;gap:10px">
+ <span style="font-size:11px;color:var(--dim)" id="session-video-meta"></span>
+ <!-- Blinking REC indicator -->
+ <div id="rec-dot" style="display:none;align-items:center;gap:5px;background:rgba(244,63,94,.15);border:1px solid var(--red);border-radius:20px;padding:4px 10px">
+ <span class="rec-indicator" style="width:8px;height:8px"></span>
+ <span style="font-size:11px;font-weight:700;color:var(--red)" id="rec-dot-label">REC</span>
+ <span style="font-size:11px;font-family:monospace;color:var(--red)" id="timer-interp">0:00</span>
+ </div>
+ </div>
+ </div>
+
+ <!-- Video player (YT IFrame API) -->
+ <div style="position:relative;width:100%;padding-bottom:52%;background:#000;border-radius:10px;overflow:hidden" id="session-video-wrap">
+ <div style="position:absolute;top:0;left:0;width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;background:var(--bg3);gap:10px" id="video-placeholder-inner">
+ <div style="font-size:32px"></div>
+ <div style="font-size:13px;color:var(--dim)">Loading video...</div>
+ </div>
+ </div>
+
+ <!-- Video title -->
+ <div style="font-size:13px;font-weight:600;color:var(--text);margin-top:10px" id="session-video-title"></div>
+
+ <!-- Custom URL row -->
+ <div id="session-url-row" style="display:none;margin-top:10px;gap:8px;align-items:center">
+ <input id="session-custom-url" type="text" placeholder="Paste YouTube URL here and click Load…" style="flex:1;font-size:12px">
+ <button class="btn btn-gold" onclick="loadSessionCustomVideo()" style="white-space:nowrap;padding:8px 16px" title="Load this YouTube URL into the player">Load </button>
+ </div>
+
+ <!-- Media Controls -->
+ <div id="media-controls" style="display:flex;align-items:center;gap:8px;margin-top:14px;padding-top:12px;border-top:1px solid var(--border)">
+ <!-- Play/Pause — square, background-colored, just triangle -->
+ <button id="play-pause-btn" onclick="togglePlayPause()" title="Play / Pause"
+ style="width:32px;height:32px;border-radius:0;border:none;background:var(--bg2);color:var(--text);font-size:13px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:background .15s"
+ onmouseover="this.style.background='var(--bg3)'" onmouseout="this.style.background='var(--bg2)'">
+ <span id="play-pause-icon"></span>
+ </button>
+ <!-- Volume slider only — no icon -->
+ <div id="volume-wrap" style="display:flex;align-items:center;width:72px;flex-shrink:0" title="Volume">
+ <input id="volume-slider" type="range" min="0" max="100" value="100"
+ oninput="setVolume(this.value)"
+ class="yt-volume-slider">
+ </div>
+ <!-- Segment hint -->
+ <div style="flex:1;min-width:0">
+ <div id="segment-hint" style="font-size:11px;color:var(--dim);white-space:nowrap;overflow:hidden;text-overflow:ellipsis"></div>
+ </div>
+ <!-- Consecutive: Auto/Manual toggle -->
+ <button id="pause-mode-btn" onclick="togglePauseMode(this)"
+ title="Auto-pause at speech breaks — click to switch to manual"
+ style="display:none;background:var(--bg3);border:1px solid var(--green);border-radius:6px;padding:5px 10px;font-size:11px;font-weight:600;color:var(--green);cursor:pointer;transition:all .2s">
+ Auto-pause
+ </button>
+ <!-- Consecutive: Resume -->
+ <button id="resume-btn" class="btn btn-green" onclick="resumeFromSegment()" title="Resume video — your interpretation will be analyzed" style="display:none;padding:6px 14px;font-size:12px">Resume</button>
+ </div>
+ </div>
+
+ <!-- Voice level monitor -->
+ <div class="card voice-meter" style="padding:14px">
+ <div class="vm-label">
+ <span> Voice Level Monitor</span>
+ <span id="vm-status-text" style="color:var(--dim);display:flex;align-items:center;gap:5px">Not recording</span>
+ </div>
+ <div class="vm-bar-outer">
+ <div class="vm-zones">
+ <div class="vm-zone-low"></div><div class="vm-zone-ok"></div><div class="vm-zone-high"></div>
+ </div>
+ <div class="vm-fill" id="vm-fill" style="width:0%"></div>
+ </div>
+ <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--dim);margin-top:4px">
+ <span>Too quiet</span><span style="color:var(--green)">Optimal zone</span><span>Too loud</span>
+ </div>
+ </div>
+
+ <!-- Waveform (visible while recording) -->
+ <div id="rec-wave-card" class="card" style="display:none;padding:14px">
+ <div class="waveform" id="wave-interp" style="height:50px"></div>
+ </div>
+
+ <!-- Transcript + Analyze (shown after recording stops) -->
+ <div id="interp-transcript-area" style="display:none">
+ <div class="card">
+ <div class="field">
+ <label>Your Rendition <span style="font-size:11px;color:var(--dim);font-weight:400">edit if needed</span></label>
+ <textarea id="interp-transcript" rows="4"></textarea>
+ </div>
+ <button class="btn btn-gold" style="width:100%;margin-top:8px" onclick="analyzeInterpretation()" title="Analyze your interpretation against the source"> Analyze Performance</button>
+ </div>
+ </div>
+
+ <!-- Analyzing spinner -->
+ <div id="analyzing-state" style="display:none;text-align:center;padding:20px;color:var(--dim)">
+ <div style="font-size:24px;margin-bottom:8px"></div>
+ <div style="font-weight:600;color:var(--gold)">Analyzing your performance...</div>
+ </div>
+
+ <!-- Hidden source text — auto-populated from captions, not shown to user -->
+ <textarea id="source-text" style="display:none"></textarea>
+ <audio id="source-audio" style="display:none"></audio>
+
+ <!-- Notes -->
+ <div class="card">
+ <h3>Session Notes <span style="font-size:11px;color:var(--dim);font-weight:400">auto-saved to vault</span></h3>
+ <textarea id="interp-notes" rows="3" placeholder="Key terms, errors, phrases to study..."></textarea>
+ <button class="btn btn-ghost" onclick="saveNote()" style="margin-top:8px;width:100%" title="Save session notes to your vault"> Save to Vault</button>
+ </div>
+ </div>
+
+ <!-- RIGHT: Key Terms + Results -->
+ <div>
+ <!-- Key Terms -->
+ <div class="card" id="key-terms-panel">
+ <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
+ <h3 style="margin:0">Key Terms</h3>
+ <div style="display:flex;align-items:center;gap:8px">
+ <span id="key-terms-count" style="font-size:11px;color:var(--dim)"></span>
+ <button id="save-glossary-btn" onclick="saveGlossary()" title="Save these terms to your glossary file for flashcard review"
+ style="display:none;background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:4px 10px;font-size:11px;font-weight:600;color:var(--gold);cursor:pointer;transition:all .2s"
+ onmouseover="this.style.borderColor='var(--gold)'" onmouseout="this.style.borderColor='var(--border)'">
+ Save to Glossary
+ </button>
+ </div>
+ </div>
+ <div id="key-terms-loading" style="text-align:center;padding:20px;color:var(--dim);font-size:12px">
+ <div style="font-size:20px;margin-bottom:6px"></div>Loading terminology...
+ </div>
+ <div style="max-height:280px;overflow-y:auto;display:none" id="key-terms-scroll">
+ <table class="terms-table" id="key-terms-table">
+ <thead><tr><th>English</th><th>العربية</th><th>Note</th></tr></thead>
+ <tbody id="key-terms-body"></tbody>
+ </table>
+ </div>
+ </div>
+
+ <!-- Results panel -->
+ <div class="card" id="interp-results" style="display:none">
+ <h3>Performance Feedback</h3>
+ <div id="interp-grade" style="font-size:20px;font-weight:800;margin-bottom:14px"></div>
+ <div class="scores-grid" id="interp-scores"></div>
+
+ <!-- Ideal vs Yours comparison -->
+ <div id="ideal-comparison" style="display:none;margin-top:14px">
+ <div style="font-size:12px;font-weight:700;color:var(--gold);text-transform:uppercase;letter-spacing:.4px;margin-bottom:8px">Interpretation Comparison</div>
+ <div class="comparison-grid">
+ <div class="comparison-box">
+ <div class="comparison-label" style="color:var(--dim)">Your Rendition</div>
+ <div id="your-rendition-display" style="color:var(--text)"></div>
+ </div>
+ <div class="comparison-box" style="border-color:var(--gold)">
+ <div class="comparison-label" style="color:var(--gold)">Ideal Interpretation</div>
+ <div id="ideal-rendition-display" style="color:var(--text)"></div>
+ </div>
+ </div>
+ </div>
+
+ <!-- Tone analysis -->
+ <div id="tone-section" style="display:none;margin-top:14px">
+ <div style="font-size:12px;font-weight:700;color:var(--gold);text-transform:uppercase;letter-spacing:.4px;margin-bottom:8px">Tone & Delivery Analysis</div>
+ <div class="tone-grid" id="tone-grid"></div>
+ <div id="tone-notes" style="font-size:12px;color:var(--dim);padding:10px;background:var(--bg3);border-radius:8px;margin-top:8px;line-height:1.6;border-left:3px solid var(--gold)"></div>
+ </div>
+
+ <div id="interp-summary" class="summary-box" style="display:none;margin-top:12px"></div>
+ <div id="interp-detail" style="margin-top:12px"></div>
+
+ <!-- Next drill -->
+ <div id="next-drill" style="display:none;margin-top:12px;background:var(--bg3);border:1px solid var(--border);padding:12px;border-radius:8px;font-size:13px">
+ <span style="color:var(--gold);font-weight:700">Next Drill: </span>
+ <span id="next-drill-text"></span>
+ </div>
+ </div>
+
+ <!-- Placeholder before results -->
+ <div id="interp-results-placeholder" class="card">
+ <div style="text-align:center;padding:30px 16px;color:var(--dim)">
+ <div style="font-size:36px;margin-bottom:10px"></div>
+ <div style="font-size:13px;font-weight:600;color:var(--text);margin-bottom:6px">Results appear here</div>
+ <div style="font-size:12px">Record your interpretation then stop — analysis runs automatically</div>
+ </div>
+ </div>
+ </div>
+
+ </div>
+ </div>
+
+ </div><!-- end tab-interp -->
+ </div><!-- end prac-interpretation -->
+
+ <!-- Voice-Over sub-tab content -->
+ <div id="prac-voiceover" class="prac-content">
+  <div id="tab-vo-inner">
+<!--
+ TAB 2 — VOICE-OVER
+ -->
+<div id="tab-vo">
+
+ <!-- Voice Style Selector -->
+ <div class="card" style="margin-bottom:18px">
+ <h3>Voice Style</h3>
+ <div class="vstyle-grid" id="vstyle-grid">
+ <div class="vstyle-card active" onclick="selectVoiceStyle('commercial',this)">
+ <div class="vstyle-icon"></div>
+ <div class="vstyle-name">Commercial</div>
+ <div class="vstyle-desc">Warm, energetic, persuasive. Connects emotionally with the audience.</div>
+ </div>
+ <div class="vstyle-card" onclick="selectVoiceStyle('documentary',this)">
+ <div class="vstyle-icon"></div>
+ <div class="vstyle-name">Documentary</div>
+ <div class="vstyle-desc">Authoritative, measured narration. Guides the audience through a story.</div>
+ </div>
+ <div class="vstyle-card" onclick="selectVoiceStyle('news',this)">
+ <div class="vstyle-icon"></div>
+ <div class="vstyle-name">News Broadcast</div>
+ <div class="vstyle-desc">Crisp, neutral, confident. Delivers information with zero hesitation.</div>
+ </div>
+ <div class="vstyle-card" onclick="selectVoiceStyle('corporate',this)">
+ <div class="vstyle-icon"></div>
+ <div class="vstyle-name">Corporate / E-Learning</div>
+ <div class="vstyle-desc">Friendly, professional, approachable. Keeps audiences engaged through training.</div>
+ </div>
+ <div class="vstyle-card" onclick="selectVoiceStyle('arabic',this)">
+ <div class="vstyle-icon"></div>
+ <div class="vstyle-name">Arabic Broadcast فصحى</div>
+ <div class="vstyle-desc">Classical register, authoritative delivery. MSA precision for Arab broadcasters.</div>
+ </div>
+ <div class="vstyle-card" onclick="selectVoiceStyle('character',this)">
+ <div class="vstyle-icon"></div>
+ <div class="vstyle-name">Character / Animation</div>
+ <div class="vstyle-desc">Expressive, dynamic range. Brings written characters to life with distinct personality.</div>
+ </div>
+ </div>
+
+ <!-- Voice Coloring Profile -->
+ <div class="voice-profile" id="voice-profile">
+ <div class="vp-title" id="vp-style-name">Commercial — Voice Color Profile</div>
+ <div class="vp-bars" id="vp-bars"></div>
+ <div class="vp-desc-box" id="vp-desc"></div>
+ </div>
+ </div>
+
+ <div class="two-col">
+ <div>
+ <!-- Teleprompter -->
+ <div class="card">
+ <h3>Teleprompter</h3>
+ <div class="controls-row" style="margin-bottom:12px">
+ <div class="field">
+ <label>Speed</label>
+ <input type="range" id="prompt-speed" min="10" max="100" value="35" oninput="updatePromptSpeed()" style="width:120px">
+ </div>
+ <div class="field">
+ <label>Font Size</label>
+ <input type="range" id="prompt-size" min="14" max="32" value="20" oninput="updateFontSize()" style="width:100px">
+ </div>
+ <button class="btn btn-gold" onclick="togglePrompter()" title="Start or stop the teleprompter scroll"> Start</button>
+ <button class="btn btn-ghost" onclick="resetPrompter()" title="Reset teleprompter to the beginning">↺ Reset</button>
+ </div>
+ <div class="prompter-box" id="prompter-box">
+ <div class="prompter-text" id="prompter-text">Your script will appear here. Paste or type text below, then press Start.<br><br>
+تظهر نصوص القراءة هنا. الصق النص أو اكتبه في الحقل أدناه ثم اضغط ابدأ.</div>
+ <div class="prompter-overlay"></div>
+ <div class="prompter-overlay-bottom"></div>
+ <div class="prompter-line"></div>
+ </div>
+ <div class="field" style="margin-top:12px">
+ <label>Script (paste here)</label>
+ <textarea id="vo-script" rows="4" placeholder="Paste your broadcast script here (Arabic or English)..." oninput="updatePrompterText()"></textarea>
+ </div>
+ </div>
+
+ <!-- Recording -->
+ <div class="card">
+ <h3>Recording</h3>
+ <div class="record-zone" id="rec-zone-vo">
+ <div id="rec-idle-vo">
+ <div style="font-size:36px;margin-bottom:8px"></div>
+ <div style="color:var(--dim);font-size:13px;margin-bottom:12px">Record your voice-over performance</div>
+ <button class="btn btn-red" onclick="startRecording('vo')" title="Start recording your voice-over">⏺ Record</button>
+ </div>
+ <div id="rec-active-vo" style="display:none">
+ <div><span class="rec-indicator"></span><strong>Recording...</strong></div>
+ <div class="timer" id="timer-vo">0:00</div>
+ <div class="waveform" id="wave-vo"></div>
+ <button class="btn btn-ghost" onclick="stopRecording('vo')" title="Stop recording">⏹ Stop</button>
+ </div>
+ </div>
+ <div style="margin-top:12px;display:flex;gap:8px">
+ <input type="file" id="vo-upload" accept="audio/*" style="display:none" onchange="uploadVoFile()">
+ <button class="btn btn-ghost" onclick="document.getElementById('vo-upload').click()" title="Upload an existing audio file"> Upload</button>
+ <button class="btn btn-gold" id="btn-analyze-vo" onclick="analyzeVO()" disabled title="Analyze your voice-over performance"> Get Feedback</button>
+ </div>
+ </div>
+
+ <!-- Audio Levels -->
+ <div class="card">
+ <h3>Audio Levels</h3>
+ <div class="meters">
+ <div class="meter-card">
+ <div class="meter-label">EBU R128 (Broadcast)</div>
+ <div class="meter-value" id="lufs-ebu">—</div>
+ <div class="meter-target">Target: −23 LUFS</div>
+ <div class="meter-bar"><div class="meter-fill" id="lufs-ebu-bar" style="width:50%;background:var(--dim)"></div></div>
+ <div id="lufs-ebu-status" style="font-size:11px;margin-top:6px;color:var(--dim)">SBS / EBU standard</div>
+ </div>
+ <div class="meter-card">
+ <div class="meter-label">Online / Streaming</div>
+ <div class="meter-value" id="lufs-online">—</div>
+ <div class="meter-target">Target: −16 LUFS</div>
+ <div class="meter-bar"><div class="meter-fill" id="lufs-online-bar" style="width:50%;background:var(--dim)"></div></div>
+ <div id="lufs-online-status" style="font-size:11px;margin-top:6px;color:var(--dim)">YouTube / Podcast</div>
+ </div>
+ </div>
+ <div style="font-size:12px;color:var(--dim);padding:8px;background:var(--bg3);border-radius:8px">
+ Live level meter active while recording. Stop to get final readings.
+ </div>
+ </div>
+ </div>
+
+ <div>
+ <!-- Technique Videos -->
+ <div class="card" style="margin-bottom:18px">
+ <h3>Technique Videos</h3>
+ <div class="video-topics" id="vo-video-topics">
+ <button class="vtopic active" onclick="loadVOVideo('voice',this)" title="Voice power and vocal warmup techniques"> Voice Power</button>
+ <button class="vtopic" onclick="loadVOVideo('commercial',this)" title="Commercial read techniques"> Commercial</button>
+ <button class="vtopic" onclick="loadVOVideo('news',this)" title="Broadcast news delivery techniques"> News</button>
+ <button class="vtopic" onclick="loadVOVideo('arabic',this)" title="Arabic broadcast and makhraj techniques"> Arabic</button>
+ <button class="vtopic" onclick="loadVOVideo('breathing',this)" title="Diaphragmatic breathing for voice"> Breathing</button>
+ <button class="vtopic" onclick="loadVOVideo('mic',this)" title="Microphone technique and placement"> Mic Technique</button>
+ </div>
+ <div class="video-wrap">
+ <iframe id="vo-video-frame" src="https://www.youtube-nocookie.com/embed/eIho2S0ZahI?rel=0&modestbranding=1" allowfullscreen allow="autoplay; encrypted-media"></iframe>
+ </div>
+ <div class="video-info" id="vo-video-info">
+ <strong>Julian Treasure — "How to Speak so That People Want to Listen" (TED)</strong><br>
+ The essential voice masterclass. Seven deadly sins of speaking, HAIL framework, vocal toolbox. Every voice artist should watch this.
+ </div>
+ <div style="margin-top:8px;display:flex;gap:8px">
+ <input id="vo-custom-url" type="text" placeholder="Paste YouTube URL for custom material..." style="flex:1">
+ <button class="btn btn-gold" onclick="loadCustomVOVideo()" title="Load custom YouTube URL for voice-over reference"> Load</button>
+ </div>
+ </div>
+
+ <!-- AI Feedback -->
+ <div class="card" id="vo-results" style="display:none">
+ <h3>Coaching Feedback</h3>
+ <div class="scores-grid" id="vo-scores" style="grid-template-columns:repeat(3,1fr)"></div>
+ <div id="vo-summary" class="summary-box"></div>
+ <div id="vo-detail"></div>
+ </div>
+
+ <!-- Curriculum -->
+ <div class="card">
+ <h3>Coaching Curriculum</h3>
+ <div style="display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap">
+ <span class="tag tag-green">Level 1: Foundation</span>
+ <span class="tag tag-blue">Level 2: Delivery</span>
+ <span class="tag tag-amber">Level 3: Broadcast</span>
+ <span class="tag tag-red">Level 4: Pro</span>
+ </div>
+ <div id="coaching-lessons"></div>
+ </div>
+ </div>
+ </div>
+</div>
+
+ </div><!-- end tab-vo -->
+  </div><!-- end tab-vo-inner -->
+ </div><!-- end prac-voiceover -->
+</div><!-- end page-practice -->

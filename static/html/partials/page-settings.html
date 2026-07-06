@@ -1,0 +1,57 @@
+<!-- ═══ PAGE: SETTINGS ═══════════════════════════════════════════ -->
+<div id="page-settings" class="studio-page">
+ <div class="settings-wrap">
+  <h2 style="font-size:22px;font-weight:800;color:var(--text);margin-bottom:4px">Profile Settings</h2>
+  <div style="font-size:13px;color:var(--dim);margin-bottom:24px">Manage your preferences and account</div>
+
+  <!-- Plan -->
+  <div class="settings-section" style="border-color:var(--gold)">
+   <div style="display:flex;align-items:center;justify-content:space-between">
+    <div>
+     <div class="dash-stat-label" style="margin-bottom:4px">Your Plan</div>
+     <div style="font-size:18px;font-weight:800;color:var(--text)">Basic <span style="font-size:13px;color:var(--dim);font-weight:400">Free</span></div>
+     <div style="font-size:12px;color:var(--dim);margin-top:4px">Unlimited practice sessions · Full AI evaluation · All modes</div>
+    </div>
+    <button style="background:var(--gold);color:#000;padding:10px 20px;border-radius:8px;border:none;cursor:pointer;font-size:13px;font-weight:800">Upgrade to Premium ↗</button>
+   </div>
+  </div>
+
+  <!-- Profile -->
+  <div class="settings-section">
+   <h3>Profile</h3>
+   <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+    <div class="settings-field"><label>First Name</label><input type="text" id="settings-first" value="Mohammed" placeholder="First name"></div>
+    <div class="settings-field"><label>Last Name</label><input type="text" id="settings-last" value="Al Dwairy" placeholder="Last name"></div>
+   </div>
+   <div class="settings-field"><label>Email</label><input type="email" id="settings-email" value="mohammeddueri@gmail.com" placeholder="Email address"></div>
+  </div>
+
+  <!-- Language & Level -->
+  <div class="settings-section">
+   <h3>Language & Level</h3>
+   <div class="settings-field">
+    <label>Primary Language Pair</label>
+    <select id="settings-lang">
+     <option value="en-ar" selected>English → Arabic</option>
+     <option value="ar-en">Arabic → English</option>
+     <option value="en-es">English → Spanish</option>
+     <option value="en-fr">English → French</option>
+    </select>
+   </div>
+   <div class="settings-field">
+    <label>Current Level</label>
+    <div style="display:flex;gap:8px">
+     <button class="theme-btn" onclick="setSettingsLevel('beginner',this)">Beginner</button>
+     <button class="theme-btn active" onclick="setSettingsLevel('intermediate',this)">Intermediate</button>
+     <button class="theme-btn" onclick="setSettingsLevel('advanced',this)">Advanced</button>
+    </div>
+   </div>
+   <div class="settings-field">
+    <label>Goals <span style="font-weight:400;color:var(--dim)">(optional)</span></label>
+    <textarea id="settings-goals" rows="3" placeholder="e.g. medical interpreting, simultaneous conference, SBS contract..."></textarea>
+   </div>
+  </div>
+
+  <button onclick="saveSettings()" style="width:100%;padding:13px;background:var(--blue);color:#fff;border:none;border-radius:9px;font-size:14px;font-weight:800;cursor:pointer">Save Settings</button>
+ </div>
+</div>

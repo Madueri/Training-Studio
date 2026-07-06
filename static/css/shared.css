@@ -299,8 +299,8 @@ body[data-theme="light"] .diff-expert{background:#ede9fe;color:#5b21b6;border-co
 
 /* Duration slider */
 .duration-slider-wrap{display:flex;flex-direction:column;gap:4px}
-.duration-slider-wrap input[type=range]{-webkit-appearance:none;width:100%;height:5px;background:var(--border);border-radius:3px;outline:none}
-.duration-slider-wrap input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:16px;height:16px;background:var(--gold);border-radius:50%;cursor:pointer}
+.duration-slider-wrap input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:5px;background:var(--border);border-radius:3px;outline:none}
+.duration-slider-wrap input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:16px;height:16px;background:var(--gold);border-radius:50%;cursor:pointer}
 .duration-val{font-size:13px;font-weight:700;color:var(--gold);text-align:center}
 
 /* Workflow steps */
@@ -716,7 +716,7 @@ body[data-theme="light"] .diff-expert{background:#ede9fe;color:#5b21b6;border-co
 .learn-sidebar-phase.active-phase .lsp-num,.learn-sidebar-phase.active-phase .lsp-label{color:var(--text)}
 .lsp-bar{width:36px;height:3px;background:var(--bg3);border-radius:2px;overflow:hidden;margin-top:4px;flex-shrink:0}
 .lsp-bar-fill{height:100%;border-radius:2px;transition:width .4s}
-.learn-main-col{}
+.learn-main-col{flex:1;min-width:0}
 .learn-phase-section{margin-bottom:32px}
 .learn-phase-hdr{display:flex;align-items:center;gap:12px;padding-bottom:14px;border-bottom:1px solid var(--border);margin-bottom:16px;cursor:pointer;user-select:none}
 .learn-phase-hdr-num{font-size:11px;font-weight:800;font-family:monospace;width:24px;height:24px;border-radius:6px;display:flex;align-items:center;justify-content:center;background:var(--bg3);border:1px solid var(--border);color:var(--dim);flex-shrink:0}

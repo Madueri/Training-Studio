@@ -97,7 +97,9 @@ function opiTgtLangChanged(lang) {
 }
 
 // ── Entry / Exit ────────────────────────────────────────────────
-function launchOPISimulation() {
+async function launchOPISimulation() {
+  const ready = await _loadOverlay('opi-sim-overlay', 'overlay-opi.html');
+  if (!ready) return;
   opiInitOverlay();
   opiEnded = false;
   opiTranscriptLines = [];

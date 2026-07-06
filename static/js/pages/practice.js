@@ -31,20 +31,31 @@ function selectMode(mode, el) {
  * @returns {Promise<void>}
  */
 async function enterPractice(mode) {
- // Store the chosen mode in the global currentMode variable.
- currentMode = mode;
- // Look up metadata (name, subtitle, instructions) for the selected mode.
- const meta = MODE_META[mode];
- // Hide the home/mode-selection container.
- document.getElementById('interp-home').style.display = 'none';
- // Show the parameter-setup container.
- document.getElementById('interp-params').style.display = 'block';
- // Ensure the active session container remains hidden until a session is started.
- document.getElementById('interp-session').style.display = 'none';
- // Populate the practice-mode name header with the localized mode name.
- document.getElementById('practice-mode-name').textContent = meta.name;
- // Populate the practice-mode subtitle with the localized subtitle text.
- document.getElementById('practice-mode-sub').textContent = meta.sub;
+  // Guard: unknown mode — abort before touching the DOM
+  const meta = MODE_META[mode];
+  if (!meta) {
+    console.error(`[enterPractice] Unknown mode: "${mode}" — no entry in MODE_META`);
+    return;
+  }
+
+  // Store the chosen mode in the global currentMode variable.
+  currentMode = mode;
+
+  try {
+    // Hide the home/mode-selection container.
+    document.getElementById('interp-home').style.display = 'none';
+    // Show the parameter-setup container.
+    document.getElementById('interp-params').style.display = 'block';
+    // Ensure the active session container remains hidden until a session is started.
+    document.getElementById('interp-session').style.display = 'none';
+    // Populate the practice-mode name header with the localized mode name.
+    document.getElementById('practice-mode-name').textContent = meta.name;
+    // Populate the practice-mode subtitle with the localized subtitle text.
+    document.getElementById('practice-mode-sub').textContent = meta.sub;
+  } catch (e) {
+    console.error('[enterPractice] Failed to transition UI:', e);
+    return; // Don't proceed if basic UI transition fails
+  }
 
  // Show/hide simulation cards based on mode
  // Retrieve the OPI (Over-the-Phone Interpreting) AI launch card element.
@@ -156,10 +167,10 @@ async function enterPractice(mode) {
  * @returns {void}
  */
 function initSkillTree() {
-  // Guard clause: abort if the SkillTreeRenderer class is not loaded.
+  // Guard clause: if SkillTreeRenderer hasn't loaded yet, retry shortly.
   if (typeof SkillTreeRenderer === 'undefined') {
-    // Log a warning so developers know the dependency is missing.
-    console.warn('[SkillTree] SkillTreeRenderer not loaded');
+    console.warn('[SkillTree] SkillTreeRenderer not loaded yet, retrying in 100ms...');
+    setTimeout(initSkillTree, 100);
     return;
   }
   // Locate the DOM container where the skill tree will be rendered.
@@ -209,6 +220,8 @@ function initSkillTree() {
   });
   // Render the skill tree into the DOM container.
   window._skillTree.render();
+  // Sync grid card lock states with the tree's computed unlock states.
+  if (typeof syncGridLocks === 'function') syncGridLocks();
 }
 
 /**
@@ -233,6 +246,49 @@ function toggleModeView() {
   grid.style.display = showingTree ? 'block' : 'none';
   // Update the button label so the user knows which view will appear next.
   if (btn) btn.textContent = showingTree ? 'View as Tree' : 'View as Grid';
+ localStorage.setItem('mad-practice-view', showingTree ? 'grid' : 'tree');
+}
+
+
+/**
+ * @description Synchronizes the lock state of grid cards with the skill tree's
+ * computed state. Unlocked tree nodes enable their corresponding grid cards;
+ * locked tree nodes disable their grid cards (grayscale, no pointer events, no click).
+ * Called automatically after the skill tree renders.
+ * @returns {void}
+ */
+function syncGridLocks() {
+  // Map tree node IDs to grid card CSS class names.
+  const modeMap = {
+    shadowing: 'shadowing',
+    consecutive: 'consecutive',
+    liaison: 'escort',
+    sight: 'sight',
+    chuchotage: 'chuchotage',
+    simultaneous: 'simultaneous',
+    'vri-opi': 'opi',
+    relay: 'relay',
+  };
+  for (const [nodeId, cardClass] of Object.entries(modeMap)) {
+    const card = document.querySelector('.mode-card-v2.' + cardClass);
+    if (!card) continue;
+    if (window._skillTree && window._skillTree._computed) {
+      const state = window._skillTree._computed[nodeId];
+      if (state && state.locked) {
+        card.classList.add('locked');
+        card.style.opacity = '0.4';
+        card.style.filter = 'grayscale(100%)';
+        card.style.pointerEvents = 'none';
+        card.style.cursor = 'default';
+      } else {
+        card.classList.remove('locked');
+        card.style.opacity = '';
+        card.style.filter = '';
+        card.style.pointerEvents = '';
+        card.style.cursor = 'pointer';
+      }
+    }
+  }
 }
 
 // Auto-init when DOM ready
@@ -300,8 +356,35 @@ function backToModeSelect() {
  document.getElementById('interp-params').style.display = 'none';
  // Hide the active session container.
  document.getElementById('interp-session').style.display = 'none';
- // Reset interpretation state (player, recording, timers, etc.).
- clearInterp();
+ // Reset interpretation state (player, recording, timers, etc.) if available.
+ if (typeof clearInterp === 'function') clearInterp();
+}
+
+
+/**
+ * @description Resets the Practice page to its initial state (mode-selection home).
+ * Called automatically by goPage() whenever the user navigates to Practice.
+ * Restores the Tree/Grid view preference from localStorage.
+ * @returns {void}
+ */
+function loadPracticePage() {
+  // Ensure the mode-selection home is visible, not params or session.
+  backToModeSelect();
+  // Restore the user's preferred view (tree vs grid) from localStorage.
+  const savedView = localStorage.getItem('mad-practice-view');
+  const tree = document.getElementById('skill-tree-container');
+  const grid = document.getElementById('mode-cards-grid');
+  const btn = document.getElementById('mode-view-toggle');
+  if (!tree || !grid) return;
+  if (savedView === 'grid') {
+    tree.style.display = 'none';
+    grid.style.display = 'block';
+    if (btn) btn.textContent = 'View as Tree';
+  } else {
+    tree.style.display = 'block';
+    grid.style.display = 'none';
+    if (btn) btn.textContent = 'View as Grid';
+  }
 }
 
 

@@ -70,58 +70,135 @@ const SEGMENT_SECS = { beginner: 20, moderate: 30, advanced: 45, expert: 60 };
 window.onYouTubeIframeAPIReady = function() {};
 
 // ═══════════════════════════════════════════════════════════════════════════════
+//  PARTIAL LOADER (lazy page injection)
+// ═══════════════════════════════════════════════════════════════════════════════
+
+/** Cache of already-fetched partial HTML strings. */
+const _PARTIAL_CACHE = {};
+/** In-flight fetch promises so concurrent navigations don't duplicate requests. */
+const _PARTIAL_INFLIGHT = {};
+/** Maps page identifiers to their corresponding partial file names. */
+const _PARTIAL_MAP = {
+  dashboard: 'page-dashboard.html',
+  practice:  'page-practice.html',
+  progress:  'page-progress.html',
+  learn:     'page-learn.html',
+  community: 'page-community.html',
+  settings:  'page-settings.html',
+};
+
+/**
+ * Fetches an HTML partial from the server, caches it, and injects it into
+ * the target DOM container.  If the container already has children, this
+ * is a no-op (the partial was loaded on a previous visit).
+ */
+async function _loadPartial(page) {
+  const container = document.getElementById('page-' + page);
+  if (!container) return;
+  if (container.children.length > 0) return;
+
+  const filename = _PARTIAL_MAP[page];
+  if (!filename) return;
+
+  if (_PARTIAL_CACHE[page]) {
+    container.innerHTML = _PARTIAL_CACHE[page];
+    return;
+  }
+
+  if (_PARTIAL_INFLIGHT[page]) {
+    const html = await _PARTIAL_INFLIGHT[page];
+    container.innerHTML = html;
+    return;
+  }
+
+  const promise = fetch('/static/html/partials/' + filename)
+    .then(r => {
+      if (!r.ok) throw new Error(`Partial ${filename} returned ${r.status}`);
+      return r.text();
+    });
+
+  _PARTIAL_INFLIGHT[page] = promise;
+
+  try {
+    const html = await promise;
+    _PARTIAL_CACHE[page] = html;
+    container.innerHTML = html;
+  } catch (err) {
+    console.error('[PartialLoader] Failed to load', filename, err);
+    container.innerHTML = `<div style="padding:40px;text-align:center;color:var(--red)">
+      <div style="font-size:18px;font-weight:700;margin-bottom:8px">Failed to load page</div>
+      <div style="font-size:13px;color:var(--dim)">${err.message}</div>
+    </div>`;
+  } finally {
+    delete _PARTIAL_INFLIGHT[page];
+  }
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
+//  OVERLAY PARTIAL LOADER
+// ═══════════════════════════════════════════════════════════════════════════════
+
+/**
+ * Lazy-loads simulation overlay HTML into its container the first time
+ * the overlay is shown.
+ */
+async function _loadOverlay(overlayId, filename) {
+  const container = document.getElementById(overlayId);
+  if (!container) return false;
+  if (container.children.length > 0) return true;
+
+  if (!_PARTIAL_CACHE[overlayId]) {
+    try {
+      const r = await fetch('/static/html/partials/' + filename);
+      if (!r.ok) throw new Error(`${filename} → ${r.status}`);
+      _PARTIAL_CACHE[overlayId] = await r.text();
+    } catch (err) {
+      console.error('[OverlayLoader]', err);
+      return false;
+    }
+  }
+  container.innerHTML = _PARTIAL_CACHE[overlayId];
+  return true;
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
 //  PAGE ROUTING
 // ═══════════════════════════════════════════════════════════════════════════════
 
 /**
  * Switches the visible "page" within the single-page application (SPA).
- * Hides all `.studio-page` elements, shows the requested one, updates
- * sidebar navigation highlighting, and triggers page-specific loaders.
- *
- * @param {string} page - The target page identifier (e.g. 'dashboard', 'practice', 'progress', 'learn', 'community', 'settings').
- * @returns {void}
+ * If the target page container is empty, the corresponding HTML partial is
+ * fetched from /static/html/partials/ and injected before the page is shown.
  */
-function goPage(page) {
-  // Update the global current-page tracker.
+async function goPage(page) {
   currentPage = page;
 
-  // Hide every studio page and remove the 'active' CSS class.
-  document.querySelectorAll('.studio-page').forEach(p => {
-    p.classList.remove('active');   // Remove visual active state.
-    p.style.display = 'none';       // Ensure element is hidden.
-  });
-
-  // Locate the DOM element that corresponds to the requested page.
-  const el = document.getElementById('page-' + page);
-
-  // If the page element exists, mark it active and make it visible.
-  if (el) {
-    el.classList.add('active');     // Add visual active state.
-    el.style.display = '';          // Remove inline display override (reverts to CSS default).
+  // Lazy-load partial on first visit
+  if (_PARTIAL_MAP[page]) {
+    await _loadPartial(page);
   }
 
-  // Remove the active highlight from all sidebar navigation links.
+  document.querySelectorAll('.studio-page').forEach(p => {
+    p.classList.remove('active');
+    p.style.display = 'none';
+  });
+
+  const el = document.getElementById('page-' + page);
+  if (el) {
+    el.classList.add('active');
+    el.style.display = '';
+  }
+
   document.querySelectorAll('.snl').forEach(a => a.classList.remove('active'));
-
-  // Find the sidebar button that matches the requested page.
   const activeBtn = document.getElementById('snl-' + page);
-
-  // Highlight the matching sidebar button, if found.
   if (activeBtn) activeBtn.classList.add('active');
 
-  // --- Page-specific initialisation hooks ---
-
-  // If navigating to Dashboard, refresh dashboard data.
   if (page === 'dashboard') loadDashboard();
-
-  // If navigating to Progress, refresh progress charts / stats.
   if (page === 'progress')  loadProgress();
-
-  // If navigating to Learn, refresh the learn-page content.
   if (page === 'learn')     loadLearnPage();
-
-  // Scroll the viewport back to the top for a clean page transition.
-  window.scrollTo(0, 0);
+  if (page === 'practice') {
+    if (typeof loadPracticePage === 'function') loadPracticePage();
+  }
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════

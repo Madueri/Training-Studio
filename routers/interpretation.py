@@ -1343,7 +1343,17 @@ Return ONLY a JSON array:
         final = (curated + deduped_results)[:8]
         return JSONResponse(final)
     except Exception as e:
-        return JSONResponse({'error': str(e)}, status_code=500)
+        # Provide a user-friendly error message that the frontend can display
+        err_msg = str(e)
+        if "yt_dlp" in err_msg or "No module named" in err_msg:
+            err_msg = "Video search is temporarily unavailable. Please try loading a custom YouTube URL instead."
+        elif "Claude" in err_msg or "anthropic" in err_msg:
+            err_msg = "AI search is temporarily unavailable. Please try loading a custom YouTube URL instead."
+        return JSONResponse({
+            "error": err_msg,
+            "user_message": "We couldn't search for videos right now. Try pasting a YouTube URL directly above.",
+            "suggestion": "custom_url"
+        }, status_code=500)
 
 
 @router.post("/api/analyze-video-terms")

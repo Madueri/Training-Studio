@@ -46,11 +46,15 @@ async def get_sessions():
     try:
         sessions = []
         for f in sorted(SESSIONS_PATH.glob("*.json"), reverse=True)[:30]:
-            d = json.loads(f.read_text())
-            score = d.get("scores", d.get("feedback", {})).get("overall_score",
-                    d.get("feedback", {}).get("overall_band", 0))
-            sessions.append({"file": f.name, "timestamp": d.get("timestamp", f.stem[-15:]),
-                             "type": f.name.split("_")[0], "score": score})
+            try:
+                d = json.loads(f.read_text())
+                score = d.get("scores", d.get("feedback", {})).get("overall_score",
+                        d.get("feedback", {}).get("overall_band", 0))
+                sessions.append({"file": f.name, "timestamp": d.get("timestamp", f.stem[-15:] if len(f.stem) >= 15 else f.stem),
+                                 "type": f.name.split("_")[0] if "_" in f.name else "unknown", "score": score})
+            except Exception:
+                # Skip malformed session files instead of crashing the whole endpoint
+                continue
         return JSONResponse(sessions)
     except Exception:
         return JSONResponse([])

@@ -267,6 +267,13 @@
   transition: opacity 300ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 
+/* Unlocked nodes: lock overlay is decorative only — do NOT block clicks */
+.skill-node.unlocked .skill-node-lock,
+.skill-node.active .skill-node-lock,
+.skill-node.completed .skill-node-lock {
+  pointer-events: none;
+}
+
 .skill-node.locked .skill-node-lock {
   opacity: 1;
 }

@@ -1,0 +1,453 @@
+<!-- ═══════════════════════════════════════════════════════════════
+     OPI CALL SIMULATION — Full-screen overlay
+     Simplified: circle button + content area only. No nav/tabs.
+════════════════════════════════════════════════════════════════ -->
+
+<!-- ══════════════════════════════════════════════════════════════════════════════
+     CI SIMULATION — Full-screen overlay (matches OPI architecture)
+     Same pattern: position:fixed; inset:0; z-index:1000
+     Flow: settings bar (always visible) → pre-view → brief → session → eval
+════════════════════════════════════════════════════════════════════════════════ -->
+<div id="ci-sim-overlay" style="display:none;position:fixed;inset:0;background:var(--bg0);z-index:1000;flex-direction:column">
+
+<div class="ci-ov-wrap">
+
+  <!-- ── Header ────────────────────────────────────────────────────── -->
+  <div class="ci-ov-hdr">
+    <div style="display:flex;align-items:center;gap:10px">
+      <button onclick="exitCISim()" style="background:var(--bg2);border:1px solid var(--border);color:var(--dim);padding:4px 11px;border-radius:6px;cursor:pointer;font-size:12px;font-weight:600;transition:all .15s" onmouseover="this.style.borderColor='var(--text)';this.style.color='var(--text)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--dim)'">← Back</button>
+      <span style="font-size:13px;font-weight:800;color:var(--text)">CI Simulation</span>
+      <span id="ci-mode-badge" style="font-size:10px;background:rgba(72,120,240,.08);border:1px solid rgba(72,120,240,.2);color:var(--blue);padding:2px 8px;border-radius:20px;font-weight:600">CONSECUTIVE</span>
+    </div>
+    <span class="ci-status-badge" id="ci-status-badge">Setup</span>
+    <span id="ci-session-elapsed" style="display:none;font-size:15px;font-weight:800;font-family:monospace;color:var(--gold)">00:00</span>
+  </div>
+
+  <!-- ── Settings bar (always visible) ──────────────────────────── -->
+  <div class="ci-ov-params">
+    <!-- Row 1: dropdowns -->
+    <div class="ci-ov-params-r1">
+      <div>
+        <span class="ci-ov-plbl">Field</span>
+        <select id="ci-field-sel" class="ci-ov-sel" onchange="ciFieldChanged(this.value)" style="margin-bottom:4px">
+          <!-- populated by ciInitCIOverlay() -->
+        </select>
+        <select id="ci-field-type" class="ci-ov-sel" style="font-size:10px;color:var(--dim)" onchange="ciTypeChanged(this.value)">
+          <!-- populated by ciFieldChanged() -->
+        </select>
+      </div>
+      <div>
+        <span class="ci-ov-plbl">Source Language</span>
+        <select id="ci-src-lang" class="ci-ov-sel" onchange="ciSrcLangChanged(this.value)" style="margin-bottom:4px">
+          <!-- populated by ciInitCIOverlay() -->
+        </select>
+        <span class="ci-ov-plbl">Source Dialect</span>
+        <select id="ci-src-dialect" class="ci-ov-sel"></select>
+      </div>
+      <!-- Direction glyphs -->
+      <div style="display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:2px;padding-bottom:6px">
+        <span id="ci-dir-fwd" style="font-size:11px;font-weight:800;color:var(--blue);line-height:1;transition:opacity .25s">→</span>
+        <span id="ci-dir-bwd" style="font-size:11px;font-weight:800;color:var(--dim);line-height:1;transition:opacity .25s">←</span>
+      </div>
+      <div>
+        <span class="ci-ov-plbl">Target Language</span>
+        <select id="ci-tgt-lang" class="ci-ov-sel" onchange="ciTgtLangChanged(this.value)" style="margin-bottom:4px">
+          <!-- populated by ciInitCIOverlay() -->
+        </select>
+        <span class="ci-ov-plbl">Target Dialect</span>
+        <select id="ci-tgt-dialect" class="ci-ov-sel"></select>
+      </div>
+      <div>
+        <span class="ci-ov-plbl">Difficulty</span>
+        <select id="ci-diff-sel" class="ci-ov-sel" onchange="ciDifficulty=this.value">
+          <option value="foundation">Foundation — clear accent, plain register, no interruptions</option>
+          <option value="intermediate" selected>Intermediate — moderate jargon, mild accent, some overlap</option>
+          <option value="advanced">Advanced — heavy terminology, strong accent, frequent interruptions</option>
+          <option value="expert">Expert — max pressure, overlapping speakers, dense register</option>
+        </select>
+      </div>
+      <div>
+        <span class="ci-ov-plbl">Duration</span>
+        <select id="ci-duration-sel" class="ci-ov-sel">
+          <option value="5">5 min</option>
+          <option value="10" selected>10 min</option>
+          <option value="15">15 min</option>
+          <option value="20">20 min</option>
+          <option value="25">25 min</option>
+          <option value="30">30 min</option>
+          <option value="35">35 min</option>
+          <option value="40">40 min</option>
+          <option value="45">45 min</option>
+          <option value="50">50 min</option>
+          <option value="55">55 min</option>
+          <option value="60">60 min</option>
+          <option value="65">65 min</option>
+          <option value="70">70 min</option>
+          <option value="75">75 min</option>
+          <option value="80">80 min</option>
+          <option value="85">85 min</option>
+          <option value="90">90 min</option>
+          <option value="95">95 min</option>
+          <option value="100">100 min</option>
+          <option value="105">105 min</option>
+          <option value="110">110 min</option>
+          <option value="115">115 min</option>
+          <option value="120">120 min</option>
+        </select>
+      </div>
+      <div id="ci-atmosphere-wrap" style="display:none">
+        <span class="ci-ov-plbl">RSI Atmosphere</span>
+        <select id="ci-atmosphere-sel" class="ci-ov-sel" onchange="ciAtmosphereChanged(this.value)">
+          <option value="booth" selected>Booth (in-person)</option>
+          <option value="remote-stable">Remote — stable connection</option>
+          <option value="remote-intermittent">Remote — intermittent connection</option>
+          <option value="remote-poor">Remote — poor connection</option>
+        </select>
+      </div>
+      <div id="ci-noise-wrap" style="display:none">
+        <span class="ci-ov-plbl">Ambient Noise</span>
+        <select id="ci-noise-sel" class="ci-ov-sel" onchange="ciNoiseLevel=this.value">
+          <option value="quiet" selected>Quiet room</option>
+          <option value="moderate">Moderate noise</option>
+          <option value="noisy">Noisy environment</option>
+        </select>
+      </div>
+      <div id="ci-noise-wrap2" style="display:none">
+        <span class="ci-ov-plbl">Listeners</span>
+        <select id="ci-listener-sel" class="ci-ov-sel" onchange="ciListenerCount=parseInt(this.value)">
+          <option value="1" selected>1 listener</option>
+          <option value="2">2 listeners</option>
+        </select>
+      </div>
+      <div id="ci-scenario-wrap" style="display:none">
+        <span class="ci-ov-plbl">Scenario</span>
+        <select id="ci-scenario-sel" class="ci-ov-sel" onchange="ciScenarioType=this.value">
+          <option value="business" selected>Business meeting</option>
+          <option value="social">Informal/social</option>
+          <option value="administrative">Administrative/appointment</option>
+        </select>
+      </div>
+      <div id="ci-doctype-wrap" style="display:none">
+        <span class="ci-ov-plbl">Document Type</span>
+        <select id="ci-doctype-sel" class="ci-ov-sel" onchange="ciDocumentType=this.value">
+          <option value="letter" selected>Letter</option>
+          <option value="form">Intake/consent form</option>
+          <option value="contract-excerpt">Contract excerpt</option>
+          <option value="news">News clipping</option>
+        </select>
+      </div>
+    </div>
+    <!-- Row 2: pace + one-way toggle + participants -->
+    <div class="ci-ov-params-r2">
+      <span class="ci-ov-plbl" style="margin-bottom:0">Pace</span>
+      <span style="font-size:9px;color:var(--dim)">Slow</span>
+      <input type="range" id="ci-pace-slider" min="1" max="4" step="1" value="2" oninput="ciUpdatePace(+this.value)" style="width:130px;accent-color:var(--blue);cursor:pointer">
+      <span style="font-size:9px;color:var(--dim)">Rapid</span>
+      <span id="ci-pace-display" style="font-size:10px;font-weight:700;font-family:monospace;color:var(--text);min-width:135px">Moderate — ~110 WPM</span>
+      <div style="width:1px;height:18px;background:var(--border);margin:0 2px"></div>
+      <label class="ci-toggle-wrap" style="margin:0">
+        <input type="checkbox" class="ci-toggle-input" id="ci-oneway" onchange="ciToggleOneWay(this.checked)">
+        <div class="ci-toggle-track"><div class="ci-toggle-thumb"></div></div>
+      </label>
+      <span style="font-size:11px;color:var(--dim)">One-way</span>
+      <div style="width:1px;height:18px;background:var(--border);margin:0 2px"></div>
+      <div id="ci-verbatim-wrap" style="display:none;align-items:center;gap:8px">
+        <label class="ci-toggle-wrap" style="margin:0">
+          <input type="checkbox" class="ci-toggle-input" id="ci-verbatim" onchange="ciVerbatim=this.checked">
+          <div class="ci-toggle-track"><div class="ci-toggle-thumb"></div></div>
+        </label>
+        <div style="display:flex;flex-direction:column">
+          <span style="font-size:11px;color:var(--dim)">Legal Verbatim Mode</span>
+          <span style="font-size:9px;color:var(--dim);opacity:.7">Exact word-for-word reproduction</span>
+        </div>
+      </div>
+      <div id="ci-verbatim-divider" style="display:none;width:1px;height:18px;background:var(--border);margin:0 2px"></div>
+      <div id="ci-part-section" style="display:flex;align-items:center;gap:6px;transition:opacity .2s">
+        <span class="ci-ov-plbl" style="margin-bottom:0">Add. Participants</span>
+        <button class="ci-part-btn" id="ci-part-minus" onclick="ciAdjustPart(-1)" disabled>−</button>
+        <span class="ci-part-num" id="ci-part-num" style="font-size:16px;font-weight:800;min-width:18px;text-align:center">0</span>
+        <button class="ci-part-btn" id="ci-part-plus" onclick="ciAdjustPart(1)">+</button>
+        <span id="ci-part-fixed-note" style="font-size:10px;color:var(--dim);font-style:italic;display:none"></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Body: view switcher ────────────────────────────────────── -->
+  <div class="ci-ov-body">
+
+    <!-- View: Pre-session (default) -->
+    <div id="ci-pre-view" class="ci-ov-view">
+      <div class="ci-pre-left">
+        <div style="background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:14px 16px">
+          <div style="font-size:9px;font-weight:800;color:var(--dim);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px" id="ci-pre-field-title">Medical — Clinical Setting</div>
+          <div id="ci-field-hint" style="font-size:12px;color:var(--dim);line-height:1.65;margin-bottom:10px"></div>
+          <div id="ci-field-tip-pre" style="font-size:11px;color:var(--gold);line-height:1.6;padding-top:10px;border-top:1px solid var(--border)"></div>
+        </div>
+      </div>
+      <div class="ci-pre-right">
+        <div style="font-size:9px;font-weight:800;color:var(--dim);text-transform:uppercase;letter-spacing:.06em">Ready to Start</div>
+        <div id="ci-pre-part-note" style="font-size:11px;color:var(--dim);line-height:1.55">No additional participants in this environment</div>
+        <div id="ci-preview" style="font-size:11px;color:var(--dim);line-height:1.6;margin-top:10px;padding:10px 12px;background:var(--bg2);border:1px solid var(--border);border-radius:8px"></div>
+        <div style="flex:1"></div>
+        <button class="ci-ov-start-btn" onclick="ciConfirmAndStart()" style="font-size:14px;padding:14px 0;letter-spacing:.02em">Start Session</button>
+        <button class="ci-ov-ghost-btn" onclick="ciShowBrief()" style="margin-top:8px;font-size:11px;padding:8px 0;opacity:.7">Review Brief First</button>
+      </div>
+    </div>
+
+    <!-- View: Assignment Brief -->
+    <div id="ci-brief-view" class="ci-ov-view" style="display:none">
+      <div class="ci-brief-scroll">
+        <div id="ci-brief-content"></div>
+        <div style="display:flex;gap:10px;margin-top:14px">
+          <button class="ci-ov-ghost-btn" style="flex:1" onclick="ciSwitchView('ci-pre-view')">← Back</button>
+          <button class="ci-ov-start-btn" style="flex:2" onclick="ciConfirmAndStart()">Start Session</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- View: Loading / Evaluating -->
+    <div id="ci-loading-view" class="ci-ov-view" style="display:none;align-items:center;justify-content:center;flex-direction:column;gap:14px">
+      <div style="font-size:13px;color:var(--dim)" id="ci-eval-msg">Generating session...</div>
+    </div>
+
+    <!-- View: Preparation Room — brief + camera test + Begin CTA -->
+    <div id="ci-prep-view" class="ci-ov-view" style="display:none">
+
+      <!-- Left: Assignment brief -->
+      <div class="ci-sess-left" style="padding:20px 22px;overflow-y:auto">
+        <div style="font-size:9px;font-weight:800;color:var(--dim);text-transform:uppercase;letter-spacing:.06em;margin-bottom:14px">Assignment Brief</div>
+        <div id="ci-prep-brief" style="font-size:12px;color:var(--dim);line-height:1.65"></div>
+        <!-- Segment pips preview -->
+        <div style="margin-top:18px;padding-top:14px;border-top:1px solid var(--border)">
+          <div style="font-size:9px;font-weight:700;color:var(--dim);text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px">Session — <span id="ci-prep-seg-count"></span></div>
+          <div class="ci-seg-progress" id="ci-prep-seg-pips" style="display:flex;align-items:center;gap:6px;flex-wrap:wrap"></div>
+        </div>
+      </div>
+
+      <!-- Right: Camera + Begin -->
+      <div class="ci-sess-right" style="display:flex;flex-direction:column;gap:14px">
+
+        <!-- Status strip -->
+        <div style="background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:12px 14px">
+          <div style="font-size:9px;font-weight:800;color:var(--dim);text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px">Pre-Session Checklist</div>
+          <div style="display:flex;flex-direction:column;gap:6px">
+            <div style="display:flex;align-items:center;gap:8px;font-size:11px;color:var(--dim)">
+              <span id="ci-check-brief" style="width:14px;height:14px;border-radius:50%;background:rgba(38,184,130,.25);border:1.5px solid #26b882;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:9px;color:#26b882;font-weight:800">✓</span>
+              Brief reviewed
+            </div>
+            <div style="display:flex;align-items:center;gap:8px;font-size:11px;color:var(--dim)" id="ci-check-cam-row">
+              <span id="ci-check-cam" style="width:14px;height:14px;border-radius:50%;background:rgba(110,110,110,.15);border:1.5px solid var(--border);display:inline-block;flex-shrink:0"></span>
+              Camera tested <span style="color:var(--dim);font-style:italic">(optional)</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:8px;font-size:11px;color:var(--dim)" id="ci-check-rec-row">
+              <span id="ci-check-rec" style="width:14px;height:14px;border-radius:50%;background:rgba(110,110,110,.15);border:1.5px solid var(--border);display:inline-block;flex-shrink:0"></span>
+              Recording started <span style="color:var(--dim);font-style:italic">(optional)</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Camera panel -->
+        <div class="ci-camera-panel" style="flex:1">
+          <div class="ci-camera-head">
+            <span class="ci-camera-label">Camera</span>
+            <button class="ci-camera-btn" id="ci-prep-cam-btn" onclick="ciPrepToggleCamera(this)">Enable</button>
+          </div>
+          <div id="ci-prep-camera-body">
+            <div class="ci-camera-off" id="ci-prep-camera-off">
+              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="var(--border)" stroke-width="1.5" stroke-linecap="round">
+                <path d="M15 10l4.55-2.28A1 1 0 0121 8.62v6.76a1 1 0 01-1.45.9L15 14"/>
+                <rect x="3" y="6" width="12" height="12" rx="2"/>
+                <line x1="1" y1="1" x2="23" y2="23"/>
+              </svg>
+              <span style="font-size:10px;color:var(--dim)">Enable to test framing before you begin</span>
+            </div>
+            <video id="ci-prep-camera-video" autoplay muted playsinline style="display:none;width:100%;background:#000;min-height:130px;object-fit:cover;border-radius:0 0 9px 9px"></video>
+          </div>
+        </div>
+
+        <!-- Sight Translation mode toggle -->
+        <div id="ci-sight-mode-toggle" style="display:none;background:var(--bg2);border:1px solid rgba(251,146,60,.25);border-radius:10px;padding:12px 14px">
+          <div style="font-size:9px;font-weight:800;color:var(--amber);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px">Sight Translation Mode</div>
+          <div style="display:flex;gap:8px">
+            <button id="ci-sight-mode-continuous" onclick="ciSetSightMode('continuous')"
+              style="flex:1;padding:10px 0;border-radius:7px;font-size:12px;font-weight:700;cursor:pointer;border:1px solid var(--amber);background:var(--amber);color:#fff;transition:all .2s">
+              Continuous
+              <div style="font-size:10px;font-weight:400;opacity:.85;margin-top:2px">Read ahead while speaking — SI-like</div>
+            </button>
+            <button id="ci-sight-mode-chunked" onclick="ciSetSightMode('chunked')"
+              style="flex:1;padding:10px 0;border-radius:7px;font-size:12px;font-weight:700;cursor:pointer;border:1px solid var(--border);background:transparent;color:var(--dim);transition:all .2s">
+              Chunked
+              <div style="font-size:10px;font-weight:400;opacity:.7;margin-top:2px">Read first, then render — CI-like</div>
+            </button>
+          </div>
+        </div>
+
+        <!-- Begin CTA -->
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <button id="ci-begin-btn" onclick="ciBeginInterpretation()"
+            style="width:100%;padding:15px 0;border-radius:9px;font-size:14px;font-weight:700;letter-spacing:.02em;cursor:pointer;border:none;background:var(--blue);color:#fff;transition:all .25s">
+            Begin without Camera
+          </button>
+          <button onclick="exitCISim()" style="width:100%;padding:9px 0;border-radius:8px;font-size:11px;font-weight:600;cursor:pointer;border:1px solid var(--border);background:transparent;color:var(--dim);transition:all .2s" onmouseover="this.style.borderColor='var(--red)';this.style.color='var(--red)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--dim)'">Cancel</button>
+        </div>
+
+      </div>
+    </div><!-- /ci-prep-view -->
+
+    <!-- View: Active Session -->
+    <div id="ci-session-view" class="ci-ov-view" style="display:none">
+
+      <!-- Left: canvas + interaction zones -->
+      <div class="ci-sess-left">
+        <div class="ci-room-wrap">
+          <div class="ci-room-top-bar">
+            <span class="ci-room-field-lbl" id="ci-room-field-label">Medical — Clinical Setting</span>
+            <div class="ci-seg-progress" id="ci-seg-progress" style="display:flex;align-items:center;gap:6px"></div>
+          </div>
+          <canvas class="ci-room-canvas" id="ci-room-canvas" width="560" height="280"></canvas>
+          <!-- Canvas legend — populated by ciUpdateLegend() at session start -->
+          <div id="ci-canvas-legend" style="display:flex;align-items:center;gap:14px;flex-wrap:wrap;padding:6px 14px;background:var(--bg2);border-top:1px solid var(--border);min-height:32px"></div>
+          <div class="ci-room-bottom-bar">
+            <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px">
+              <div id="ci-seg-status" style="font-size:11px;color:var(--dim)">Segment 1 of 4</div>
+              <span id="ci-decalage-indicator" style="display:none;font-size:11px;font-weight:700;color:var(--purple);background:rgba(167,139,250,.1);border:1px solid rgba(167,139,250,.3);border-radius:6px;padding:3px 10px">Décalage: 0.0s</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Listening zone -->
+        <div id="ci-listening-zone" class="ci-session-card" style="display:none">
+          <div class="ci-player-label" id="ci-player-label-text">Listen carefully — take notes during playback</div>
+          <div class="ci-player-zone" id="ci-player-zone">
+            <div id="ci-player-idle" style="color:var(--dim);font-size:13px">Preparing audio...</div>
+            <div id="ci-player-active" style="display:none">
+              <div class="ci-speaker-wave">
+                <div class="ci-wave-bar"></div><div class="ci-wave-bar"></div><div class="ci-wave-bar"></div>
+                <div class="ci-wave-bar"></div><div class="ci-wave-bar"></div><div class="ci-wave-bar"></div>
+                <div class="ci-wave-bar"></div>
+              </div>
+              <div id="ci-playing-label" style="font-size:12px;color:var(--blue);margin-top:6px">Speaker is talking...</div>
+            </div>
+          </div>
+          <!-- Sight Translation document zone — replaces the audio waveform UI; no audio source, document stays visible -->
+          <div id="ci-sight-doc-zone" style="display:none">
+            <div style="font-size:11px;color:var(--amber);font-weight:700;margin-bottom:6px;display:flex;align-items:center;justify-content:space-between">
+              <span>Written document — read ahead while speaking aloud</span>
+              <span id="ci-sight-doc-meta" style="color:var(--dim);font-weight:600"></span>
+            </div>
+            <div id="ci-sight-doc-text" style="background:var(--bg2);border:1px solid rgba(251,146,60,.25);border-radius:9px;padding:16px;font-size:14px;line-height:1.7;color:var(--text);max-height:260px;overflow-y:auto;white-space:pre-wrap"></div>
+            <!-- Chunked mode: Start Rendering button -->
+            <div id="ci-sight-chunked-start" style="display:none;margin-top:12px;text-align:center">
+              <button class="btn btn-amber" onclick="ciStartSightRendering()" style="padding:12px 28px;font-size:13px;font-weight:700">
+                Start Rendering
+              </button>
+              <div style="font-size:11px;color:var(--dim);margin-top:6px">Read the text first, then press Start Rendering when you're ready</div>
+            </div>
+          </div>
+          <div style="margin-top:13px">
+            <div class="ci-notepad-label">
+              <span>Notes</span>
+              <span class="ci-notepad-tip">Use abbreviations — speed matters</span>
+            </div>
+            <textarea class="ci-notepad" id="ci-notes" placeholder="Key terms, numbers, names, sequences..."></textarea>
+          </div>
+          <div id="ci-replay-zone" style="display:none;margin-top:10px">
+            <button class="btn btn-ghost" style="font-size:12px;margin-right:8px" onclick="ciReplaySegment()">Replay segment</button>
+            <span style="font-size:11px;color:var(--dim)">(use sparingly)</span>
+          </div>
+        </div>
+
+        <!-- Render zone -->
+        <div id="ci-render-zone" class="ci-session-card" style="display:none">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
+            <div style="font-size:13px;font-weight:600;color:var(--text)">Render your interpretation</div>
+            <div id="ci-render-timer" style="font-size:12px;color:var(--dim)"></div>
+          </div>
+          <div class="ci-render-label">Target language — complete meaning, first-person:</div>
+          <textarea class="ci-render-textarea" id="ci-rendition" placeholder="Enter your interpretation here..."></textarea>
+          <div class="ci-render-hint" id="ci-render-hint"></div>
+          <div style="display:flex;gap:10px;margin-top:13px">
+            <button class="btn btn-blue" style="flex:2;padding:12px" onclick="ciSubmitRendition()">Submit Rendition</button>
+            <button class="btn btn-ghost" style="flex:1;padding:12px;font-size:12px" onclick="ciEndSession()">End Session</button>
+          </div>
+        </div>
+
+        <!-- Between segments -->
+        <div id="ci-between-zone" class="ci-session-card" style="display:none;text-align:center">
+          <div style="font-size:14px;font-weight:600;color:var(--text);margin-bottom:6px" id="ci-between-msg">Segment submitted</div>
+          <div style="font-size:12px;color:var(--dim);margin-bottom:16px" id="ci-between-sub"></div>
+          <div style="display:flex;gap:10px;justify-content:center">
+            <button class="btn btn-blue" id="ci-next-btn" onclick="ciNextSegment()" style="padding:12px 28px">Next Segment</button>
+            <button class="btn btn-gold" id="ci-finish-btn" onclick="ciEndSession()" style="padding:12px 28px;display:none">Get Evaluation</button>
+          </div>
+        </div>
+      </div><!-- /ci-sess-left -->
+
+      <!-- Right: session info + camera -->
+      <div class="ci-sess-right">
+        <!-- End button + hdr info -->
+        <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px">
+          <div>
+            <div style="font-size:9px;font-weight:800;color:var(--dim);text-transform:uppercase;letter-spacing:.06em">Live Session</div>
+            <div style="font-size:10px;color:var(--dim);margin-top:2px" id="ci-hdr-info"></div>
+          </div>
+          <button onclick="ciEndSession()" style="background:rgba(244,63,94,.08);border:1px solid rgba(244,63,94,.25);color:var(--red);padding:4px 12px;border-radius:6px;cursor:pointer;font-size:11px;font-weight:700;transition:all .2s" onmouseover="this.style.background='rgba(244,63,94,.16)'" onmouseout="this.style.background='rgba(244,63,94,.08)'">End Session</button>
+        </div>
+
+        <!-- Session info card -->
+        <div class="ci-session-info-card">
+          <div class="ci-persona-row" style="border-bottom:1px solid var(--border);padding-bottom:12px;margin-bottom:12px">
+            <div class="ci-persona-avatar" id="ci-avatar">?</div>
+            <div style="min-width:0">
+              <div class="ci-persona-name" id="ci-persona-name">Loading...</div>
+              <div class="ci-persona-role" id="ci-persona-role"></div>
+              <div class="ci-topic-tag" id="ci-topic-tag" style="margin-top:4px"></div>
+            </div>
+          </div>
+          <div class="ci-stats-row">
+            <div class="ci-stat-box">
+              <div class="ci-stat-val" id="ci-stat-field">—</div>
+              <div class="ci-stat-lbl">Field</div>
+            </div>
+            <div class="ci-stat-box">
+              <div class="ci-stat-val" id="ci-stat-diff">—</div>
+              <div class="ci-stat-lbl">Level</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Camera panel -->
+        <div class="ci-camera-panel">
+          <div class="ci-camera-head">
+            <span class="ci-camera-label">Camera</span>
+            <button class="ci-camera-btn" id="ci-cam-btn" onclick="ciToggleCamera(this)">Enable</button>
+          </div>
+          <div id="ci-camera-body">
+            <div class="ci-camera-off" id="ci-camera-off">
+              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="var(--border)" stroke-width="1.5" stroke-linecap="round">
+                <path d="M15 10l4.55-2.28A1 1 0 0121 8.62v6.76a1 1 0 01-1.45.9L15 14"/>
+                <rect x="3" y="6" width="12" height="12" rx="2"/>
+                <line x1="1" y1="1" x2="23" y2="23"/>
+              </svg>
+              <span style="font-size:10px;color:var(--dim)">Camera off</span>
+            </div>
+            <video id="ci-camera-video" autoplay muted playsinline style="display:none;width:100%;background:#000;min-height:130px;object-fit:cover"></video>
+          </div>
+        </div>
+      </div><!-- /ci-sess-right -->
+    </div><!-- /ci-session-view -->
+
+    <!-- View: Evaluation results -->
+    <div id="ci-eval-view" class="ci-ov-view" style="display:none">
+      <div class="ci-eval-scroll">
+        <div class="ci-eval-card" id="ci-eval-card"></div>
+        <div style="display:flex;gap:10px;margin-top:14px">
+          <button class="ci-ov-ghost-btn" style="flex:1" onclick="ciReset()">New Session</button>
+          <button class="ci-ov-ghost-btn" style="flex:1" onclick="exitCISim()">Exit</button>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /ci-ov-body -->
+</div><!-- /ci-ov-wrap -->
+</div><!-- /ci-sim-overlay -->

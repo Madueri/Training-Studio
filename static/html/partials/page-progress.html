@@ -1,0 +1,80 @@
+<!-- ═══ PAGE: MY PROGRESS ════════════════════════════════════════ -->
+<div id="page-progress" class="studio-page">
+<!-- TAB 4 PROGRESS content lives here — rendered by loadProgress() -->
+<div id="tab-progress" class="panel active" style="display:block">
+<div id="dashboard-v2-container"></div>
+<!-- (TAB 4 — PROGRESS content is inside page-progress above) -->
+
+ <!-- Top Stat Cards -->
+ <div class="stat-cards" id="stat-cards">
+ <div class="stat-card xp">
+ <div class="stat-label">Experience Points</div>
+ <div class="level-badge" id="level-badge">Level 1</div>
+ <div class="stat-num" id="xp-display" style="color:var(--gold)">0</div>
+ <div class="stat-sub" id="xp-sub">XP — next level: 200</div>
+ <div class="xp-bar-outer"><div class="xp-bar-fill" id="xp-bar" style="width:0%"></div></div>
+ </div>
+ <div class="stat-card streak">
+ <div class="stat-label">Day Streak</div>
+ <div class="stat-num" id="streak-display" style="color:var(--amber)">0</div>
+ <div class="stat-sub" id="streak-sub">days • Best: <span id="best-streak">0</span></div>
+ <div style="font-size:28px;margin-top:4px" id="streak-emoji"></div>
+ </div>
+ <div class="stat-card hours">
+ <div class="stat-label">Total Practice</div>
+ <div class="stat-num" id="hours-display" style="color:var(--purple)">0</div>
+ <div class="stat-sub">sessions completed</div>
+ <div style="font-size:12px;color:var(--dim);margin-top:6px" id="total-time-display">~0 hours estimated</div>
+ </div>
+ </div>
+
+ <!-- Achievements -->
+ <div class="card" style="margin-bottom:18px">
+ <h3>Achievements</h3>
+ <div class="achievements-grid" id="achievements-grid">
+ <!-- rendered by JS -->
+ </div>
+ </div>
+
+ <!-- Goals + History -->
+ <div class="two-col">
+ <div>
+ <div class="card" style="margin-bottom:18px">
+ <h3>Weekly Goals</h3>
+ <div class="goals-list" id="goals-list"><!-- rendered by JS --></div>
+ </div>
+ <!-- Performance Chart -->
+ <div class="card">
+ <h3>Recent Scores <span style="font-size:11px;color:var(--dim);font-weight:400">last 10 sessions</span></h3>
+ <div class="perf-chart" id="perf-chart"><!-- rendered by JS --></div>
+ </div>
+ </div>
+
+ <div>
+ <div class="card">
+ <h3>Session History</h3>
+ <div id="progress-list" class="progress-list">
+ <div class="loading">Loading sessions...</div>
+ </div>
+ <div style="margin-top:12px;font-size:12px;color:var(--dim)" id="stats-display"></div>
+ </div>
+ <div class="card" style="margin-top:18px">
+ <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+  <h3 style="margin:0">Simulation History</h3>
+  <span style="font-size:11px;color:var(--blue);cursor:pointer" onclick="goPage('practice')">Practice ↗</span>
+ </div>
+ <div style="display:flex;gap:6px;margin-bottom:12px">
+  <button onclick="progSimTab('opi')" id="prog-sim-tab-opi" style="padding:5px 12px;font-size:11px;font-weight:700;border-radius:5px;border:1px solid var(--blue);background:var(--blue);color:#fff;cursor:pointer">OPI</button>
+  <button onclick="progSimTab('ci')"  id="prog-sim-tab-ci"  style="padding:5px 12px;font-size:11px;font-weight:700;border-radius:5px;border:1px solid var(--border);background:transparent;color:var(--dim);cursor:pointer">Consecutive</button>
+ </div>
+ <div id="prog-opi-history">
+  <div style="font-size:12px;color:var(--dim);text-align:center;padding:16px">No OPI sessions yet</div>
+ </div>
+ <div id="prog-ci-history" style="display:none">
+  <div style="font-size:12px;color:var(--dim);text-align:center;padding:16px">No CI sessions yet</div>
+ </div>
+ </div>
+ </div>
+ </div>
+</div><!-- end tab-progress -->
+</div><!-- end page-progress -->

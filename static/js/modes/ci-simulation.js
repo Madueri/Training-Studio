@@ -12,12 +12,14 @@
  * @param {string} modeKind - The interpretation mode kind. Supported: 'simultaneous', 'chuchotage', 'escort', 'sight'; defaults to 'consecutive'.
  * @returns {void}
  */
-function showCISim(modeKind) {
-  ciModeKind = ['simultaneous','chuchotage','escort','sight'].includes(modeKind) ? modeKind : 'consecutive'; // Check if value exists in array
-  ciRotationShown = false; // Assign value to 'ciRotationShown'
-  const ov = document.getElementById('ci-sim-overlay'); // Lookup DOM element 'ci-sim-overlay'
-  if (ov) ov.style.display = 'flex'; // Show the element with flex layout
-  ciInitCIOverlay(); // Invoke ciInitCIOverlay()
+async function showCISim(modeKind) {
+  const ready = await _loadOverlay('ci-sim-overlay', 'overlay-ci.html');
+  if (!ready) return;
+  ciModeKind = ['simultaneous','chuchotage','escort','sight'].includes(modeKind) ? modeKind : 'consecutive';
+  ciRotationShown = false;
+  const ov = document.getElementById('ci-sim-overlay');
+  if (ov) ov.style.display = 'flex';
+  ciInitCIOverlay();
 }
 
 
