@@ -101,13 +101,13 @@ async function _loadPartial(page) {
   if (!filename) return;
 
   if (_PARTIAL_CACHE[page]) {
-    container.innerHTML = _PARTIAL_CACHE[page];
+    container.innerHTML = _stripPartialWrapper(page, _PARTIAL_CACHE[page]);
     return;
   }
 
   if (_PARTIAL_INFLIGHT[page]) {
     const html = await _PARTIAL_INFLIGHT[page];
-    container.innerHTML = html;
+    container.innerHTML = _stripPartialWrapper(page, html);
     return;
   }
 
@@ -122,7 +122,7 @@ async function _loadPartial(page) {
   try {
     const html = await promise;
     _PARTIAL_CACHE[page] = html;
-    container.innerHTML = html;
+    container.innerHTML = _stripPartialWrapper(page, html);
   } catch (err) {
     console.error('[PartialLoader] Failed to load', filename, err);
     container.innerHTML = `<div style="padding:40px;text-align:center;color:var(--red)">
@@ -132,6 +132,20 @@ async function _loadPartial(page) {
   } finally {
     delete _PARTIAL_INFLIGHT[page];
   }
+}
+
+/**
+ * Strip the wrapper <div id="page-{page}" class="studio-page"> from partial HTML
+ * to prevent nested DOM elements that break goPage() visibility toggling.
+ */
+function _stripPartialWrapper(page, html) {
+  const temp = document.createElement('div');
+  temp.innerHTML = html.trim();
+  const firstChild = temp.firstElementChild;
+  if (firstChild && firstChild.id === 'page-' + page) {
+    return firstChild.innerHTML;
+  }
+  return html;
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════

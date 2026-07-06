@@ -273,5 +273,14 @@
 <script src="/static/js/dashboard.js"></script>
 <script src="/static/js/skill-tree.js"></script>
 
+<script>
+  // Initial page load: dashboard is the default page
+  document.addEventListener('DOMContentLoaded', function() {
+    if (typeof goPage === 'function') {
+      goPage('dashboard');
+    }
+  });
+</script>
+
 </body>
 </html>
