@@ -250,9 +250,9 @@
 ════════════════════════════════════════════════════════════════════════════════ -->
 <!-- Supabase Auth SDK -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="/static/js/shared/core.js"></script>
-<script src="/static/js/shared/auth.js?v=3"></script>
-<script src="/static/js/shared/errors.js"></script>
+<script src="/static/js/shared/core.js?v=2"></script>
+<script src="/static/js/shared/auth.js?v=4"></script>
+<script src="/static/js/shared/errors.js?v=2"></script>
 <script src="/static/js/shared/youtube-player.js"></script>
 <script src="/static/js/shared/recording.js"></script>
 <script src="/static/js/pages/onboarding.js"></script>
@@ -275,11 +275,13 @@
 
 <script>
   // Initial page load: dashboard is the default page
-  document.addEventListener('DOMContentLoaded', function() {
-    if (typeof goPage === 'function') {
-      goPage('dashboard');
-    }
-  });
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', function() {
+      if (typeof goPage === 'function') goPage('dashboard');
+    });
+  } else {
+    if (typeof goPage === 'function') goPage('dashboard');
+  }
 </script>
 
 </body>
