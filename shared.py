@@ -20,15 +20,20 @@ load_dotenv(Path(__file__).parent / ".env")
 ANTHROPIC_API_KEY   = os.getenv("ANTHROPIC_API_KEY", "")
 ELEVENLABS_API_KEY  = os.getenv("ELEVENLABS_API_KEY", "")
 ELEVENLABS_VOICE_ID = os.getenv("ELEVENLABS_VOICE_ID", "")
+SUPABASE_URL        = os.getenv("SUPABASE_URL", "")
+SUPABASE_ANON_KEY   = os.getenv("SUPABASE_ANON_KEY", "")
+SUPABASE_JWT_SECRET = os.getenv("SUPABASE_JWT_SECRET", "")
 
 # No fallback to external systems — this app is fully standalone. If any of
 # these are missing, fail loudly here instead of silently borrowing another app's
 # keys/voice at runtime.
-_missing = [name for name, val in (
+_required = [
     ("ANTHROPIC_API_KEY", ANTHROPIC_API_KEY),
     ("ELEVENLABS_API_KEY", ELEVENLABS_API_KEY),
     ("ELEVENLABS_VOICE_ID", ELEVENLABS_VOICE_ID),
-) if not val]
+]
+# Auth keys are optional during development (demo mode works without them)
+_missing = [name for name, val in _required if not val]
 if _missing:
     sys.exit(
         f"Missing required .env value(s): {', '.join(_missing)}. "

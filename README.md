@@ -1,5 +1,7 @@
 # MAD Training Studio (InterpLab)
 
+> 🏷️ Hub: [[CENTRAL-HUB-TRAINING-STUDIO]]
+
 FastAPI backend + frontend powering the interpreter training platform:
 - **Tab 1 — Interpretation**: Consecutive, Simultaneous, Shadowing, OPI
 - **Tab 2 — Voice-Over**: Teleprompter, LUFS analysis, Coaching curriculum

@@ -548,14 +548,32 @@ def _apply_category_c(progress: dict):
         }
 
 
+# ── Auth-aware user_id helper ───────────────────────────────────────────────────
+
+from fastapi import Request
+
+async def _resolve_user_id(request: Request, explicit_user_id: str | None = None) -> str:
+    """Try to get user_id from auth token, fall back to explicit parameter."""
+    try:
+        from auth import get_optional_user
+        user = await get_optional_user(request)
+        if user:
+            return user["id"]
+    except Exception:
+        pass
+    return explicit_user_id or "demo-user"
+
+
 # ── Endpoints ─────────────────────────────────────────────────────────────────
 
 
 @router.get("/{user_id}")
-async def get_progress(user_id: str):
-    """GET /api/progress/{user_id} — return full user progress state."""
+async def get_progress(user_id: str, request: Request):
+    """GET /api/progress/{user_id} — return full user progress state.
+    If Authorization header is present, overrides user_id with authenticated user."""
     try:
-        progress = load_progress(user_id)
+        resolved_user_id = await _resolve_user_id(request, user_id)
+        progress = load_progress(resolved_user_id)
         # Recompute derived fields before returning
         _update_mode_progress(progress)
         _update_field_unlocks(progress)
@@ -606,7 +624,7 @@ async def get_progress(user_id: str):
             except Exception:
                 pass
         leaderboard.sort(key=lambda x: (-x["total_xp"], -x["streak_days"]))
-        rank = next((i + 1 for i, e in enumerate(leaderboard) if e["user_id"] == user_id), None)
+        rank = next((i + 1 for i, e in enumerate(leaderboard) if e["user_id"] == resolved_user_id), None)
 
         response = {
             "progress": progress,
@@ -623,6 +641,7 @@ async def get_progress(user_id: str):
 
 @router.post("/onboarding")
 async def onboarding(
+    request: Request,
     user_id: str = Form(...),
     category: str = Form(...),              # "A", "B", or "C"
     practiced_modes: Optional[str] = Form(None),  # comma-separated for Category B
@@ -631,21 +650,17 @@ async def onboarding(
     """
     POST /api/progress/onboarding
     Complete onboarding and set user category (A/B/C).
-    Category A → routed to placement test.
-    Category B → skips Phase 1, starts at Phase 2/3 based on practiced modes.
-    Category C → sandbox, everything unlocked (requires calibration_passed=True).
     """
     try:
-        progress = load_progress(user_id)
+        resolved_user_id = await _resolve_user_id(request, user_id)
+        progress = load_progress(resolved_user_id)
         progress["onboarding_complete"] = True
 
         if category.upper() == "A":
             progress["category"] = "A"
             progress["current_phase"] = 1
             progress["current_module"] = "M001"
-            # Unlock first module only
             progress["module_status"]["M001"]["status"] = "unlocked"
-            # Mark shadowing practice unlocked immediately (Phase 1 entry perk)
             progress["mode_progress"]["shadowing"]["practice_unlocked"] = True
 
         elif category.upper() == "B":
@@ -674,14 +689,14 @@ async def onboarding(
         save_progress(progress)
 
         save_session("onboarding", {
-            "user_id": user_id,
+            "user_id": resolved_user_id,
             "category": category.upper(),
             "practiced_modes": practiced_modes,
         })
 
         return JSONResponse({
             "success": True,
-            "user_id": user_id,
+            "user_id": resolved_user_id,
             "category": progress["category"],
             "current_phase": progress["current_phase"],
             "current_module": progress["current_module"],
@@ -693,6 +708,7 @@ async def onboarding(
 
 @router.post("/placement-test")
 async def placement_test(
+    request: Request,
     user_id: str = Form(...),
     shadowing_score: float = Form(0.0),      # 0-100
     consecutive_score: float = Form(0.0),    # 0-100
@@ -705,7 +721,8 @@ async def placement_test(
     Composite score determines starting phase.
     """
     try:
-        progress = load_progress(user_id)
+        resolved_user_id = await _resolve_user_id(request, user_id)
+        progress = load_progress(resolved_user_id)
         if not progress.get("onboarding_complete"):
             return JSONResponse(
                 {"error": "Onboarding not complete. Call /api/progress/onboarding first."},
@@ -742,7 +759,7 @@ async def placement_test(
         save_progress(progress)
 
         save_session("placement_test", {
-            "user_id": user_id,
+            "user_id": resolved_user_id,
             "composite_score": composite,
             "starting_phase": progress["current_phase"],
         })
@@ -760,6 +777,7 @@ async def placement_test(
 
 @router.post("/session-complete")
 async def session_complete(
+    request: Request,
     user_id: str = Form(...),
     module_id: Optional[str] = Form(None),   # e.g., "M005"
     mode: Optional[str] = Form(None),        # e.g., "consecutive"
@@ -775,7 +793,7 @@ async def session_complete(
     module status, and check for new achievements/unlocks.
     """
     try:
-        progress = load_progress(user_id)
+        progress = load_progress(resolved_user_id)
         if not progress.get("onboarding_complete"):
             return JSONResponse(
                 {"error": "Onboarding not complete."},
@@ -864,7 +882,7 @@ async def session_complete(
         save_progress(progress)
 
         save_session("session", {
-            "user_id": user_id,
+            "user_id": resolved_user_id,
             "module_id": module_id,
             "mode": mode,
             "field": field,
@@ -934,13 +952,14 @@ def _get_next_unlock(progress: dict) -> Optional[dict]:
 
 
 @router.get("/check-unlock")
-async def check_unlock(user_id: str, mode: Optional[str] = None, field: Optional[str] = None):
+async def check_unlock(request: Request, user_id: str, mode: Optional[str] = None, field: Optional[str] = None):
     """
     GET /api/progress/check-unlock?user_id=...&mode=...&field=...
     Check if a specific mode or field is unlocked for a user.
     """
     try:
-        progress = load_progress(user_id)
+        resolved_user_id = await _resolve_user_id(request, user_id)
+        progress = load_progress(resolved_user_id)
         _update_mode_progress(progress)
         _update_field_unlocks(progress)
 
@@ -948,7 +967,7 @@ async def check_unlock(user_id: str, mode: Optional[str] = None, field: Optional
         if mode:
             mode = normalize_mode(mode)
 
-        result = {"user_id": user_id, "unlocked": False, "reason": None}
+        result = {"user_id": resolved_user_id, "unlocked": False, "reason": None}
 
         if mode:
             if mode not in MODES:
@@ -1036,10 +1055,11 @@ async def list_modules():
 
 
 @router.get("/achievements/{user_id}")
-async def get_achievements(user_id: str):
+async def get_achievements(request: Request, user_id: str):
     """GET /api/progress/achievements/{user_id} — return achievement status."""
     try:
-        progress = load_progress(user_id)
+        resolved_user_id = await _resolve_user_id(request, user_id)
+        progress = load_progress(resolved_user_id)
         unlocked = set(progress.get("achievements", []))
         all_achievements = []
         for aid, info in ACHIEVEMENTS.items():
@@ -1049,7 +1069,7 @@ async def get_achievements(user_id: str):
                 **info,
             })
         return JSONResponse({
-            "user_id": user_id,
+            "user_id": resolved_user_id,
             "achievements": all_achievements,
             "unlocked_count": len(unlocked),
             "total_count": len(ACHIEVEMENTS),

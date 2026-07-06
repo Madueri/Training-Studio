@@ -8,4 +8,7 @@ yt-dlp
 python-multipart
 librosa
 scipy
+supabase
+pyjwt
+
 
