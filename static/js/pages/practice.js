@@ -292,11 +292,13 @@ function syncGridLocks() {
 }
 
 // Auto-init when DOM ready
-// Wait for the DOM to be fully parsed before initializing the skill tree.
-document.addEventListener('DOMContentLoaded', () => {
-  // Initialize the skill tree visualization once the DOM is ready.
-  initSkillTree();
-});
+(function _autoInitSkillTree() {
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initSkillTree);
+  } else {
+    initSkillTree();
+  }
+})();
 
 // ── Practice Page Navigation ────────────────────────────────────
 
@@ -370,6 +372,8 @@ function backToModeSelect() {
 function loadPracticePage() {
   // Ensure the mode-selection home is visible, not params or session.
   backToModeSelect();
+  // Initialize skill tree if not already rendered (lazy-loaded partial may need this)
+  initSkillTree();
   // Restore the user's preferred view (tree vs grid) from localStorage.
   const savedView = localStorage.getItem('mad-practice-view');
   const tree = document.getElementById('skill-tree-container');
