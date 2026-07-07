@@ -18,7 +18,7 @@ from fastapi.responses import JSONResponse, StreamingResponse
 
 from shared import (
     ask_claude, extract_json, save_session, claude, whisper,
-    STUDIO_ROOT, ELEVENLABS_API_KEY, ELEVENLABS_VOICE_ID,
+    STUDIO_ROOT, ELEVENLABS_API_KEY, ELEVENLABS_VOICE_ID, ELEVENLABS_CONFIGURED,
 )
 
 import numpy as np
@@ -1840,6 +1840,13 @@ def _tts(text: str, voice_id: str, stability: float = 0.5) -> bytes:
     language-appropriate model — but with the bracket cues stripped out first, so
     a model that can't *act* on "[laughs]" doesn't *narrate* it instead.
     """
+    if not ELEVENLABS_CONFIGURED:
+        raise RuntimeError(
+            "ElevenLabs API is not configured. "
+            "Please set ELEVENLABS_API_KEY and ELEVENLABS_VOICE_ID in your .env file. "
+            "The AI Call Simulation feature requires a valid ElevenLabs API key."
+        )
+
     from elevenlabs import ElevenLabs
     from elevenlabs.types import VoiceSettings
     client = ElevenLabs(api_key=ELEVENLABS_API_KEY)
@@ -2395,7 +2402,12 @@ async def opi_next_turn(
     sess["turns"].append({"speaker": next_speaker, "text": next_text, "event": event_type})
     voice     = sess.get("provider_voice") if next_speaker == "provider" else sess.get("caller_voice")
     stability = 0.60 if next_speaker == "provider" else 0.35
-    audio_out = _tts(next_text, voice or ELEVENLABS_VOICE_ID, stability)
+    try:
+        audio_out = _tts(next_text, voice or ELEVENLABS_VOICE_ID, stability)
+    except RuntimeError as e:
+        return JSONResponse({"error": str(e), "session_id": session_id, "speaker": next_speaker, "text": next_text, "is_call_ended": False, "pairs_done": sess["pairs_done"], "target_pairs": sess["target_pairs"], "event": event_type})
+    except Exception as e:
+        return JSONResponse({"error": f"TTS generation failed: {e}", "session_id": session_id, "speaker": next_speaker, "text": next_text, "is_call_ended": False, "pairs_done": sess["pairs_done"], "target_pairs": sess["target_pairs"], "event": event_type})
 
     return JSONResponse({
         "session_id":             session_id,
@@ -2536,7 +2548,10 @@ async def opi_prefetch_next(session_id: str = Form(...)):
 
         voice     = sess.get("provider_voice") if next_speaker == "provider" else sess.get("caller_voice")
         stability = 0.60 if next_speaker == "provider" else 0.35
-        audio_out = _tts(next_text, voice or ELEVENLABS_VOICE_ID, stability)
+        try:
+            audio_out = _tts(next_text, voice or ELEVENLABS_VOICE_ID, stability)
+        except Exception as e:
+            return JSONResponse({"ok": False, "error": f"TTS generation failed: {e}"})
 
         sess["prefetch"] = {
             "speaker":   next_speaker,
