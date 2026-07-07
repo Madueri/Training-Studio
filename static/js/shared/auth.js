@@ -259,8 +259,9 @@ async function authFetch(url, options = {}) {
 function updateAuthUI() {
   const loginBtn = document.getElementById("auth-login-btn");
   const signupBtn = document.getElementById("auth-signup-btn");
-  const logoutBtn = document.getElementById("auth-logout-btn");
-  const userDisplay = document.getElementById("auth-user-display");
+  const profileWrap = document.getElementById("snav-profile-wrap");
+  const profileInitial = document.getElementById("profile-initial");
+  const profileEmail = document.getElementById("profile-dd-email");
   const authModal = document.getElementById("auth-modal");
 
   if (isAuthenticated()) {
@@ -269,24 +270,26 @@ function updateAuthUI() {
 
     if (loginBtn) loginBtn.style.display = "none";
     if (signupBtn) signupBtn.style.display = "none";
-    if (logoutBtn) logoutBtn.style.display = "inline-flex";
-    if (userDisplay) {
-      userDisplay.textContent = currentUser.email || "User";
-      userDisplay.style.display = "inline-block";
+    if (profileWrap) profileWrap.style.display = "block";
+    if (profileInitial) {
+      const name = currentUser?.email || "User";
+      profileInitial.textContent = name.charAt(0).toUpperCase();
+    }
+    if (profileEmail) {
+      profileEmail.textContent = currentUser?.email || "User";
     }
     // Force-hide modal via JS + CSS class + body attribute (triple safety)
     if (authModal) {
       authModal.style.display = "none";
       authModal.classList.add("auth-modal-hidden");
     }
-    console.log("[Auth] User authenticated — modal hidden, UI updated");
+    console.log("[Auth] User authenticated — profile shown, modal hidden");
   } else {
     document.body.removeAttribute("data-authenticated");
 
     if (loginBtn) loginBtn.style.display = "inline-block";
     if (signupBtn) signupBtn.style.display = "inline-block";
-    if (logoutBtn) logoutBtn.style.display = "none";
-    if (userDisplay) userDisplay.style.display = "none";
+    if (profileWrap) profileWrap.style.display = "none";
     if (authModal) authModal.classList.remove("auth-modal-hidden");
     console.log("[Auth] User not authenticated — login UI shown");
   }

@@ -487,6 +487,25 @@ function toggleThemeDD(e) {
 // ═══════════════════════════════════════════════════════════════════════════════
 
 /**
+ * Toggles the profile avatar dropdown open/closed.
+ * Also closes the theme and language dropdowns to prevent overlapping menus.
+ * @param {Event} e - The click event.
+ * @returns {void}
+ */
+function toggleProfileDD(e) {
+  e.stopPropagation();
+  const dd = document.getElementById('profile-dd');
+  if (!dd) return;
+  dd.classList.toggle('open');
+  const tdd = document.getElementById('theme-dd');
+  if (tdd) tdd.classList.remove('open');
+  const ldd = document.getElementById('lang-dd');
+  if (ldd) ldd.classList.remove('open');
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
+
+/**
  * Selects a specific theme from the dropdown and closes the menu.
  *
  * @param {string} t - The theme to activate ('dark' | 'light' | 'system').
@@ -673,15 +692,16 @@ function _initLangPicker() {
 document.addEventListener('click', () => {
   // Locate the theme dropdown.
   const tdd = document.getElementById('theme-dd');
-
   // Locate the language dropdown.
   const ldd = document.getElementById('lang-dd');
-
+  // Locate the profile dropdown.
+  const pdd = document.getElementById('profile-dd');
   // Collapse the theme dropdown if it exists.
   if (tdd) tdd.classList.remove('open');
-
   // Collapse the language dropdown if it exists.
   if (ldd) ldd.classList.remove('open');
+  // Collapse the profile dropdown if it exists.
+  if (pdd) pdd.classList.remove('open');
 });
 
 // ═══════════════════════════════════════════════════════════════════════════════

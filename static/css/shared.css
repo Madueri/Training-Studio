@@ -705,6 +705,19 @@ body[data-theme="light"] .diff-expert{background:#ede9fe;color:#5b21b6;border-co
 .snav-crown{display:flex;align-items:center;justify-content:center;color:var(--gold);opacity:.85}
 .snav-crown svg{width:13px;height:13px;fill:var(--gold);stroke:none}
 .snav-plan{font-size:9px;font-weight:800;letter-spacing:.8px;text-transform:uppercase;color:var(--dim);background:var(--bg3);border:1px solid var(--border);padding:2px 7px;border-radius:20px}
+/* ── Profile avatar & dropdown ─────────────── */
+.snav-profile-wrap{position:relative}
+.snav-profile-avatar{background:transparent;border:none;cursor:pointer;width:32px;height:32px;border-radius:50%;background:var(--bg3);border:1px solid var(--border);color:var(--text);font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;transition:all .15s}
+.snav-profile-avatar:hover{background:var(--bg2);border-color:var(--text)}
+.profile-dd{position:absolute;top:calc(100% + 8px);right:0;background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:4px;min-width:180px;z-index:9000;box-shadow:0 12px 32px rgba(0,0,0,.5);display:none}
+.profile-dd.open{display:block}
+.profile-dd-header{padding:8px 12px;font-size:11px;color:var(--dim);font-weight:600;border-bottom:1px solid var(--border);margin-bottom:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.profile-dd-divider{height:1px;background:var(--border);margin:4px 8px}
+.profile-dd-item{display:flex;align-items:center;gap:10px;padding:8px 12px;border-radius:7px;cursor:pointer;font-size:12px;font-weight:600;color:var(--dim);transition:all .12s}
+.profile-dd-item:hover{background:var(--bg3);color:var(--text)}
+.profile-dd-item svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0}
+.profile-dd-danger{color:var(--red)}
+.profile-dd-danger:hover{background:rgba(244,63,94,.1);color:var(--red)}
 /* ── Learn page — vertical list design ──── */
 .learn-layout{display:grid;grid-template-columns:200px 1fr;gap:28px;max-width:1080px;margin:0 auto;padding:32px 24px;align-items:start}
 .learn-sidebar{position:sticky;top:72px}
