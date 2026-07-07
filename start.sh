@@ -17,5 +17,5 @@ if [ ! -f .env ]; then
   exit 1
 fi
 
-echo "Starting MAD Training Studio at http://localhost:5555 ..."
+echo "Starting InterpLing at http://localhost:5555 ..."
 python app.py

@@ -1,5 +1,5 @@
 /**
- * MAD Training Studio — Authentication Module
+ * InterpLing — Authentication Module
  * Integrates Supabase Auth for user authentication.
  * Handles: signup, signin, signout, token refresh, auth state management.
  * All API requests automatically include the Authorization header when logged in.
@@ -383,6 +383,21 @@ async function handleSignIn(event) {
     // Force-hide modal again after a short delay (safety)
     setTimeout(() => hideAuthModal(), 100);
     setTimeout(() => hideAuthModal(), 500);
+
+    // If user hasn't completed onboarding, show it (e.g. after email confirmation)
+    if (!localStorage.getItem('il_onboarded')) {
+      obStep = 0;
+      setTimeout(() => {
+        const ov = document.getElementById('ob-overlay');
+        if (ov) {
+          ov.style.display = 'flex';
+          document.querySelectorAll('.ob-step').forEach((s, i) => s.classList.toggle('active', i === 0));
+          document.querySelectorAll('.ob-prog-dot').forEach((d, i) => d.classList.toggle('active', i <= 0));
+          console.log('[Onboarding] Wizard shown on sign-in (not yet onboarded)');
+        }
+      }, 50);
+    }
+
     // Don't reload — let the auth state change naturally
     // window.location.reload();
   }
@@ -411,6 +426,26 @@ async function handleSignUp(event) {
       // Force-hide modal again after short delays (safety)
       setTimeout(() => hideAuthModal(), 100);
       setTimeout(() => hideAuthModal(), 500);
+
+      // Trigger onboarding for new users — always show on signup, then mark as onboarded after completion
+      localStorage.removeItem('il_onboarded');
+      localStorage.removeItem('il_path');
+      localStorage.removeItem('il_ob_answers');
+      localStorage.removeItem('mad_onboarding_category');
+      obStep = 0;
+      // Defer to next tick so any async auth-state callbacks have settled
+      setTimeout(() => {
+        const ov = document.getElementById('ob-overlay');
+        if (ov) {
+          ov.style.display = 'flex';
+          document.querySelectorAll('.ob-step').forEach((s, i) => s.classList.toggle('active', i === 0));
+          document.querySelectorAll('.ob-prog-dot').forEach((d, i) => d.classList.toggle('active', i <= 0));
+          console.log('[Onboarding] Wizard shown for new signup');
+        } else {
+          console.warn('[Onboarding] ob-overlay element not found in DOM');
+        }
+      }, 50);
+
       // Don't reload — let the auth state change naturally
       // window.location.reload();
     }

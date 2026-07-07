@@ -1,5 +1,5 @@
 /**
- * MAD Training Studio — Dashboard Renderer v2.0
+ * InterpLing — Dashboard Renderer v2.0
  * FIFA-style visual stats, KPI cards, trend charts, radar charts
  * Integrates with ProgressClient data model
  */

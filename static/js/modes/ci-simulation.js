@@ -2,8 +2,8 @@
  * @module modes/ci-simulation.js
  * @description CI/SI Simulation Overlay — full simulation engine with canvas, timer, scoring
  *
- * MAD Training Studio — Interpretation Practice Platform
- * © 2025 InterpretLab. All rights reserved.
+ * InterpLing — Interpretation Practice Platform
+ * © 2025 InterpLing. All rights reserved.
  */
 
 /**
@@ -704,8 +704,6 @@ function ciSetupHTML() {
 
 // ── Session Start ───────────────────────────────────────────────────────────
 // Stored between loading and begin — first segment held until user clicks Begin
-let ciFirstSegAudio = null;
-let ciFirstSegText  = null;
 
 
 /**
@@ -1567,9 +1565,6 @@ function ciUpdatePreview() {
 }
 
 // ── Camera — three states: off → live ("Record") → recording ("Stop Recording") ─
-let ciCameraStream = null; // Initialize variable 'ciCameraStream'
-let ciMediaRecorder = null; // Initialize variable 'ciMediaRecorder'
-let ciRecordChunks  = []; // Initialize variable 'ciRecordChunks'
 
 
 /**
@@ -1966,7 +1961,6 @@ async function ciStartSession() {
 }
 
 // ── Begin Interpretation — user-triggered from Preparation Room ──────────────
-let ciPrepCameraReady = false;  // true once camera is recording in prep room
 
 
 /**

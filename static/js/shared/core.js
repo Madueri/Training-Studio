@@ -2,8 +2,8 @@
  * @module shared/core.js
  * @description Global state, navigation, page routing, theme/language switching, settings
  *
- * MAD Training Studio — Interpretation Practice Platform
- * © 2025 InterpretLab. All rights reserved.
+ * InterpLing — Interpretation Practice Platform
+ * © 2025 InterpLing. All rights reserved.
  */
 
 // ═══════════════════════════════════════════════════════════════════════════════
@@ -163,7 +163,7 @@ async function _loadOverlay(overlayId, filename) {
 
   if (!_PARTIAL_CACHE[overlayId]) {
     try {
-      const r = await fetch('/static/html/partials/' + filename);
+      const r = await fetch('/static/html/partials/' + filename + '?v=' + Date.now());
       if (!r.ok) throw new Error(`${filename} → ${r.status}`);
       _PARTIAL_CACHE[overlayId] = await r.text();
     } catch (err) {
@@ -715,7 +715,7 @@ function setUILang(lang) {
  */
 function logoutUser() {
   // Present a confirmation dialog to prevent accidental logout.
-  if (!confirm('Log out of MAD Training Studio?')) return;
+  if (!confirm('Log out of InterpLing?')) return;
 
   // Clear every key stored in localStorage (user data, settings, progress, etc.).
   localStorage.clear();

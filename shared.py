@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-MAD Training Studio — Shared module
+InterpLing — Shared module
 Config, clients, and small helper functions used by app.py and every router
 (routers/interpretation.py, routers/voiceover.py).
 

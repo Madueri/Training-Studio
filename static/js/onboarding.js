@@ -1,5 +1,5 @@
 /**
- * MAD Training Studio — Onboarding Wizard Controller
+ * InterpLing — Onboarding Wizard Controller
  * Manages the 4-step onboarding flow, category routing, placement test UI,
  * and calibration session. Integrates with the existing HTML overlay
  * (#ob-overlay) and calls `goPage('learn')` on completion.

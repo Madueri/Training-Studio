@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-MAD Training Studio — Voice-Over router
+InterpLing — Voice-Over router
 Routes: /api/analyze-voiceover
 """
 

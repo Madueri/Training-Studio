@@ -2,8 +2,8 @@
  * @module api/interpretation.js
  * @description Interpretation analysis API — Claude scoring, key terms, glossary, notes
  *
- * MAD Training Studio — Interpretation Practice Platform
- * © 2025 InterpretLab. All rights reserved.
+ * InterpLing — Interpretation Practice Platform
+ * © 2025 InterpLing. All rights reserved.
  */
 
 /**

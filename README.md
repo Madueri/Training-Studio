@@ -1,4 +1,4 @@
-# MAD Training Studio (InterpLab)
+# InterpLing — Interpretation Practice Platform
 
 > 🏷️ Hub: [[CENTRAL-HUB-TRAINING-STUDIO]]
 

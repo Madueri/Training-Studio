@@ -2,8 +2,8 @@
  * @module shared/errors.js
  * @description Error handling utilities
  *
- * MAD Training Studio — Interpretation Practice Platform
- * © 2025 InterpretLab. All rights reserved.
+ * InterpLing — Interpretation Practice Platform
+ * © 2025 InterpLing. All rights reserved.
  */
 
 /**
@@ -35,7 +35,7 @@ function showError(id, msg) {
 
 /**
  * @constant {Array<Object>} LESSONS
- * @description Structured coaching curriculum data for the MAD Training Studio.
+ * @description Structured coaching curriculum data for InterpLing.
  *              Each entry defines a lesson tier (Foundation → Professional),
  *              a display color, a human-readable title, and rich HTML content
  *              containing pedagogical guidance.

@@ -5,6 +5,8 @@
    index.html's 3rd and 4th original inline <style> blocks.
    ============================================================ */
 .ci-ov-wrap{display:flex;flex-direction:column;height:100vh}
+#ci-sim-overlay{position:fixed;inset:0;background:var(--bg0);z-index:1000;display:none;flex-direction:column}
+#opi-sim-overlay{position:fixed;inset:0;background:var(--bg0);z-index:1000;display:none;flex-direction:column}
 .ci-ov-hdr{display:flex;align-items:center;justify-content:space-between;padding:0 18px;height:48px;background:var(--bg1);border-bottom:1px solid var(--border);flex-shrink:0;gap:12px}
 .ci-ov-params{background:var(--bg1);border-bottom:1px solid var(--border);flex-shrink:0;padding:8px 18px 6px}
 .ci-ov-params-r1{display:grid;grid-template-columns:1.6fr 1.1fr 22px 1.1fr 1.2fr 1fr;gap:8px;align-items:end;margin-bottom:5px}

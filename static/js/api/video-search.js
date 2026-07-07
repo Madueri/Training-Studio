@@ -2,8 +2,8 @@
  * @module api/video-search.js
  * @description Video search API — YouTube search, result rendering, sorting, sidebar
  *
- * MAD Training Studio — Interpretation Practice Platform
- * © 2025 InterpretLab. All rights reserved.
+ * InterpLing — Interpretation Practice Platform
+ * © 2025 InterpLing. All rights reserved.
  */
 
 // ─────────────────────────────────────────────────────────────────────────────

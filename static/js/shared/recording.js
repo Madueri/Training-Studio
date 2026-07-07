@@ -2,8 +2,8 @@
  * @module shared/recording.js
  * @description Audio recording, waveform visualization, speech generation, interpretation analysis
  *
- * MAD Training Studio — Interpretation Practice Platform
- * © 2025 InterpretLab. All rights reserved.
+ * InterpLing — Interpretation Practice Platform
+ * © 2025 InterpLing. All rights reserved.
  */
 
 /**

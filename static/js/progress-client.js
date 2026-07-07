@@ -1,5 +1,5 @@
 /**
- * MAD Training Studio — Progress Client
+ * InterpLing — Progress Client
  * Manages user progress state: module completion, mode unlocks, field unlocks,
  * achievements, next-target recommendations, and statistics.
  *

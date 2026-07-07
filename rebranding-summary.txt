@@ -1,0 +1,153 @@
+============================================================
+REBRANDING SUMMARY: MAD Training Studio → InterpLing
+============================================================
+
+Total files modified: 30
+
+Files modified:
+  - docs/MAD-Training-Studio-OPI-Design.md
+  - docs/MAD-Training-Studio-Roadmap.md
+  - docs/Master-Simulation-Assessment.md
+  - docs/business/Studio-Business-Drafts/00-Cover-Index.md
+  - docs/business/Studio-Business-Drafts/01-Executive-Summary.md
+  - docs/business/Studio-Business-Drafts/02-Revenue-Model.md
+  - docs/business/Studio-Business-Drafts/03-Go-to-Market.md
+  - docs/business/Studio-Business-Drafts/04-Competitive-Analysis.md
+  - docs/business/Studio-Business-Drafts/05-IP-Legal-Checklist.md
+  - docs/business/Studio-Business-Drafts/06-Product-Roadmap.md
+  - docs/business/Studio-Business-Drafts/07-KPI-Framework.md
+  - docs/business/Studio-Business-Drafts/08-University-Pitch-Outline.md
+  - docs/business/Studio-Business-Drafts/09-Platform-Framework.md
+  - docs/business/Studio-Business-Drafts/10-Feasibility-Study.md
+  - docs/business/Studio-Business-Drafts/11-Marketing-Strategy-Local-and-International.md
+  - docs/business/Studio-Business-Drafts/12-Full-Documents-Checklist.md
+  - docs/business/Studio-Business-Drafts/13-Equity-Model-Recommendation.md
+  - docs/business/Studio-Business-Drafts/14-Legal-Documents-For-Equity-Process.md
+  - docs/business/Studio-Business-Drafts/15-Market-Comparison-Sweet-Spot.md
+  - docs/business/Studio-Business-Drafts/16-Master-Roadmap-Financial-Feasibility.md
+  - docs/business/Studio-Business-Drafts/17-Feature-Innovation-and-Competitive-Differentiation.md
+  - docs/business/Studio-Business-Drafts/18-2026-Roadmap-Update-Innovation-Legal-Phases.md
+  - docs/business/Studio-Business-Drafts/19-Partnership-Agreement-Draft-Remal-Pegasus.md
+  - docs/business/Studio-Business-Drafts/20-Real-World-Technical-Realism-and-Recording-Pipeline.md
+  - docs/business/Studio-Business-Drafts/21-AI-Tool-Stack-and-Sponsorship-Targets.md
+  - docs/business/Studio-Business-Drafts/22-Technical-Scale-Architecture-and-AI-Infrastructure.md
+  - docs/business/Studio-Business-Drafts/23-Simulation-Engine-Best-Ideas-and-Frontend-Backend-Build-Plan.md
+  - docs/business/Studio-Business-Drafts/24-Unbeatable-Simulation-Ideas-Full-List.md
+  - docs/business/Studio-Business-Drafts/25-AI-Voice-Stack-Fact-Check-and-Build-Roadmap.md
+  - docs/design-specification.md
+
+Detailed changes:
+
+docs/MAD-Training-Studio-Roadmap.md:
+  Line: '# MAD Training Studio — Updated Roadmap...' → '# InterpLing — Updated Roadmap...'
+
+docs/design-specification.md:
+  Line: '# MAD Training Studio — Master Design Specification...' → '# InterpLing — Master Design Specification...'
+  Line: '| Dimension | GoInterPrep | MAD Training Studio |...' → '| Dimension | GoInterPrep | InterpLing |...'
+  Line: 'Dark mode is the **default** for MAD Training Studio. It signals:...' → 'Dark mode is the **default** for InterpLing. It signals:...'
+
+docs/Master-Simulation-Assessment.md:
+  Line: '# MAD Training Studio — Master Simulation Assessment...' → '# InterpLing — Master Simulation Assessment...'
+  Line: 'The MAD Training Studio is the **most advanced AI-native interpreter training pl...' → 'The InterpLing is the **most advanced AI-native interpreter training platform** ...'
+  Line: 'The MAD Training Studio has the **best AI-native interpreter training foundation...' → 'The InterpLing has the **best AI-native interpreter training foundation** in the...'
+  Table header: 'MAD Status' → 'InterpLing Status'
+
+docs/MAD-Training-Studio-OPI-Design.md:
+  Line: '# MAD Training Studio — OPI Platform Design Blueprint...' → '# InterpLing — OPI Platform Design Blueprint...'
+  Line: '*Document prepared: June 2026 | MAD Training Studio*...' → '*Document prepared: June 2026 | InterpLing*...'
+
+docs/business/Studio-Business-Drafts/24-Unbeatable-Simulation-Ideas-Full-List.md:
+  Line: '# MAD Training Studio — Unbeatable Simulation Ideas: Full List...' → '# InterpLing — Unbeatable Simulation Ideas: Full List...'
+
+docs/business/Studio-Business-Drafts/19-Partnership-Agreement-Draft-Remal-Pegasus.md:
+  Line: '# MAD Training Studio — Draft Partnership Agreement Package with Remal & Pegasus...' → '# InterpLing — Draft Partnership Agreement Package with Remal & Pegasus...'
+  Line: '- **MAD** — [your full legal name], founder of MAD Training Studio, contributing...' → '- **MAD** — [your full legal name], founder of InterpLing, contributing the exis...'
+  Line: '- **Path B:** MAD Training Studio remains a project/department inside Remal. Equ...' → '- **Path B:** InterpLing remains a project/department inside Remal. Equity-equiv...'
+  Line: 'Pegasus (and/or Remal, for any non-Pegasus interpreted calls/events they record)...' → 'Pegasus (and/or Remal, for any non-Pegasus interpreted calls/events they record)...'
+  Line: '- A data-processing addendum (or standalone DPA, consistent with the existing `0...' → '- A data-processing addendum (or standalone DPA, consistent with the existing `0...'
+
+docs/business/Studio-Business-Drafts/02-Revenue-Model.md:
+  Line: '# MAD Training Studio — Revenue Model...' → '# InterpLing — Revenue Model...'
+
+docs/business/Studio-Business-Drafts/17-Feature-Innovation-and-Competitive-Differentiation.md:
+  Line: '# MAD Training Studio — Feature Innovation & Competitive Differentiation...' → '# InterpLing — Feature Innovation & Competitive Differentiation...'
+
+docs/business/Studio-Business-Drafts/25-AI-Voice-Stack-Fact-Check-and-Build-Roadmap.md:
+  Line: '# MAD Training Studio — AI Voice Stack Fact-Check & Build Roadmap...' → '# InterpLing — AI Voice Stack Fact-Check & Build Roadmap...'
+
+docs/business/Studio-Business-Drafts/14-Legal-Documents-For-Equity-Process.md:
+  Line: '# MAD Training Studio — Legal Documents Required to Secure Your Equity Share...' → '# InterpLing — Legal Documents Required to Secure Your Equity Share...'
+  Line: '- **If MAD Training Studio stays a project/department inside Remal**: no new ent...' → '- **If InterpLing stays a project/department inside Remal**: no new entity is fo...'
+
+docs/business/Studio-Business-Drafts/11-Marketing-Strategy-Local-and-International.md:
+  Line: '# MAD Training Studio — Marketing Strategy (Local + International, Parallel)...' → '# InterpLing — Marketing Strategy (Local + International, Parallel)...'
+
+docs/business/Studio-Business-Drafts/20-Real-World-Technical-Realism-and-Recording-Pipeline.md:
+  Line: '# MAD Training Studio — Real-World Technical Realism & the Recordings-to-Simulat...' → '# InterpLing — Real-World Technical Realism & the Recordings-to-Simulation Pipel...'
+
+docs/business/Studio-Business-Drafts/23-Simulation-Engine-Best-Ideas-and-Frontend-Backend-Build-Plan.md:
+  Line: '# MAD Training Studio — Simulation Engine: Best Ideas + Frontend/Backend Build P...' → '# InterpLing — Simulation Engine: Best Ideas + Frontend/Backend Build Plan...'
+
+docs/business/Studio-Business-Drafts/01-Executive-Summary.md:
+  Line: '# MAD Training Studio — Executive Summary...' → '# InterpLing — Executive Summary...'
+  Line: '**MAD Training Studio** is an AI-powered interpretation training platform with:...' → '**InterpLing** is an AI-powered interpretation training platform with:...'
+
+docs/business/Studio-Business-Drafts/13-Equity-Model-Recommendation.md:
+  Line: '# MAD Training Studio — Equity Model: Explained + Recommendation...' → '# InterpLing — Equity Model: Explained + Recommendation...'
+
+docs/business/Studio-Business-Drafts/07-KPI-Framework.md:
+  Line: '# MAD Training Studio — KPI Framework...' → '# InterpLing — KPI Framework...'
+
+docs/business/Studio-Business-Drafts/15-Market-Comparison-Sweet-Spot.md:
+  Line: '# MAD Training Studio — Market Comparison: US vs. Jordan/Levant/Gulf vs. Adjacen...' → '# InterpLing — Market Comparison: US vs. Jordan/Levant/Gulf vs. Adjacent AI-Trai...'
+
+docs/business/Studio-Business-Drafts/16-Master-Roadmap-Financial-Feasibility.md:
+  Line: '# MAD Training Studio — Master Roadmap: Website Build → Launch → Universities → ...' → '# InterpLing — Master Roadmap: Website Build → Launch → Universities → Accredita...'
+
+docs/business/Studio-Business-Drafts/06-Product-Roadmap.md:
+  Line: '# MAD Training Studio — Product Roadmap...' → '# InterpLing — Product Roadmap...'
+
+docs/business/Studio-Business-Drafts/00-Cover-Index.md:
+  Line: 'title: "MAD Training Studio"...' → 'title: "InterpLing"...'
+  Line: '# MAD Training Studio...' → '# InterpLing...'
+  Line: '**Project:** MAD Training Studio — AI-powered interpretation training platform...' → '**Project:** InterpLing — AI-powered interpretation training platform...'
+
+docs/business/Studio-Business-Drafts/22-Technical-Scale-Architecture-and-AI-Infrastructure.md:
+  Line: '# MAD Training Studio — Technical Architecture for Scale (Many Subscribers, Univ...' → '# InterpLing — Technical Architecture for Scale (Many Subscribers, University Ad...'
+
+docs/business/Studio-Business-Drafts/12-Full-Documents-Checklist.md:
+  Line: '# MAD Training Studio — Full Project Documents & Paperwork Checklist...' → '# InterpLing — Full Project Documents & Paperwork Checklist...'
+  Line: '| Trademark — "MAD Training Studio" | Planned (existing draft, USPTO) | Same jur...' → '| Trademark — "InterpLing" | Planned (existing draft, USPTO) | Same jurisdiction...'
+
+docs/business/Studio-Business-Drafts/03-Go-to-Market.md:
+  Line: '# MAD Training Studio — Go-to-Market Strategy...' → '# InterpLing — Go-to-Market Strategy...'
+  Line: '- [ ] Open LinkedIn company page for MAD Training Studio...' → '- [ ] Open LinkedIn company page for InterpLing...'
+
+docs/business/Studio-Business-Drafts/18-2026-Roadmap-Update-Innovation-Legal-Phases.md:
+  Line: '# MAD Training Studio — 2026 Roadmap Update: Innovation, Legal Agreements, Docum...' → '# InterpLing — 2026 Roadmap Update: Innovation, Legal Agreements, Documents, and...'
+  Line: '| Trademark — "MAD Training Studio" (USPTO) | Doc 05 | Class 41 + 42; ~$700 tota...' → '| Trademark — "InterpLing" (USPTO) | Doc 05 | Class 41 + 42; ~$700 total; file w...'
+  Domain: '| Domain + brand registration | Doc 05 | `madtrainingstudio.com` + defensive var...' → '| Domain + brand registration | Doc 05 | `interpling.com` + defensive variants |...'
+
+docs/business/Studio-Business-Drafts/08-University-Pitch-Outline.md:
+  Line: '# MAD Training Studio — University Pitch Outline...' → '# InterpLing — University Pitch Outline...'
+  Line: '> I'm reaching out because your [Arabic / Translation / Interpretation] program ...' → '> I'm reaching out because your [Arabic / Translation / Interpretation] program ...'
+  Line: '> Mohammed Al Dwairy | MAD Training Studio...' → '> Mohammed Al Dwairy | InterpLing...'
+  Domain: 'madtrainingstudio.com...' → 'interpling.com...'
+
+docs/business/Studio-Business-Drafts/04-Competitive-Analysis.md:
+  Line: '# MAD Training Studio — Competitive Analysis...' → '# InterpLing — Competitive Analysis...'
+  Line: '| Feature | MAD Training Studio | CCC (TRIO) | ALTA | MassBay | DIY GPT |...' → '| Feature | InterpLing | CCC (TRIO) | ALTA | MassBay | DIY GPT |...'
+
+docs/business/Studio-Business-Drafts/05-IP-Legal-Checklist.md:
+  Line: '# MAD Training Studio — IP & Legal Checklist...' → '# InterpLing — IP & Legal Checklist...'
+  Line: '- **Trademark:** "MAD Training Studio" — search USPTO database first (tess2.uspt...' → '- **Trademark:** "InterpLing" — search USPTO database first (tess2.uspto.gov), t...'
+  Domain: '- `madtrainingstudio.com` — check availability and register immediately (~$15/ye...' → '- `interpling.com` — check availability and register immediately (~$15/year)...'
+
+docs/business/Studio-Business-Drafts/21-AI-Tool-Stack-and-Sponsorship-Targets.md:
+  Line: '# MAD Training Studio — AI Tool Stack for Scale & Sponsorship/Grant Targets...' → '# InterpLing — AI Tool Stack for Scale & Sponsorship/Grant Targets...'
+
+docs/business/Studio-Business-Drafts/09-Platform-Framework.md:
+  Line: '# MAD Training Studio — Complete Platform Framework...' → '# InterpLing — Complete Platform Framework...'
+
+docs/business/Studio-Business-Drafts/10-Feasibility-Study.md:
+  Line: '# MAD Training Studio — Feasibility Study...' → '# InterpLing — Feasibility Study...'

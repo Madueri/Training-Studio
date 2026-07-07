@@ -36,6 +36,7 @@ function opiToggleVideoMode(checked) {
   }
 }
 let opiEnded          = false;
+let opiPanelMinimized = false;
 let opiCallLogs       = [];       // all completed calls this session
 let opiLastSourceText = '';       // track source text for turn log
 let opiLastSourceSpeaker = '';    // track source speaker — sent to backend so evaluation pairing never drifts

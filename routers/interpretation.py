@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-MAD Training Studio — Interpretation router
+InterpLing — Interpretation router
 Routes: transcribe, generate-speech, get-key-terms, analyze-interpretation,
         yt-test, search-videos, analyze-video-terms, curated-videos,
         analyze-video-structure, save-glossary,

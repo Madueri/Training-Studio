@@ -2,8 +2,8 @@
  * @module pages/onboarding.js
  * @description Onboarding flow — 5-step questionnaire, placement test, calibration session
  *
- * MAD Training Studio — Interpretation Practice Platform
- * © 2025 InterpretLab. All rights reserved.
+ * InterpLing — Interpretation Practice Platform
+ * © 2025 InterpLing. All rights reserved.
  */
 
 /**
@@ -530,7 +530,7 @@ function initUserPath() {
 
 // ── Learn page ────────────────────────────────────────────────────
 /**
- * Total number of modules in the MAD Training Studio curriculum.
+ * Total number of modules in the InterpLing curriculum.
  *
  * @constant {number}
  * @description Used as the upper bound for loops and pre-seeding operations

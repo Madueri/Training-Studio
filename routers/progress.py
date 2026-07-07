@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-MAD Training Studio — Progress & Gamification Router
+InterpLing — Progress & Gamification Router
 Routes: /api/progress/*
 Handles: user progress tracking, module unlocks, mode/field unlocking,
 XP/levels, streaks, achievements, onboarding, and placement test.

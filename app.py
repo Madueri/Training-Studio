@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-MAD Training Studio — Backend
+InterpLing — Backend
 FastAPI server powering the training platform:
   Tab 1: Interpretation (Consecutive, Simultaneous, Shadowing, OPI)
   Tab 2: Voice-Over (Teleprompter, LUFS analysis, Coaching curriculum)
@@ -24,7 +24,7 @@ from shared import SESSIONS_PATH
 from routers import interpretation, voiceover, progress, auth
 
 # ── App ───────────────────────────────────────────────────────────────────────
-app = FastAPI(title="MAD Training Studio")
+app = FastAPI(title="InterpLing")
 
 # CORS: allow localhost for dev, restrict in production
 _allowed_origins = [
@@ -113,5 +113,5 @@ async def health_check():
 
 if __name__ == "__main__":
     import uvicorn
-    print("🎙  MAD Training Studio starting on http://localhost:5555")
+    print("🎙  InterpLing starting on http://localhost:5555")
     uvicorn.run(app, host="0.0.0.0", port=5555, reload=False)

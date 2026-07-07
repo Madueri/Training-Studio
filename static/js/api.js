@@ -1,5 +1,5 @@
 /**
- * MAD Training Studio — API Client
+ * InterpLing — API Client
  * Centralized HTTP layer with error handling, file upload, auth helpers, and toast notifications.
  *
  * Imported first in the page so every module can call:

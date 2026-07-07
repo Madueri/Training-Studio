@@ -2,8 +2,8 @@
  * @module modes/shared-params.js
  * @description Shared parameter handling — language pairs, dialects, fields, difficulty, duration
  *
- * MAD Training Studio — Interpretation Practice Platform
- * © 2025 InterpretLab. All rights reserved.
+ * InterpLing — Interpretation Practice Platform
+ * © 2025 InterpLing. All rights reserved.
  */
 
 /**

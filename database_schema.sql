@@ -1,4 +1,4 @@
--- MAD Training Studio — Database Schema for Supabase PostgreSQL
+-- InterpLing — Database Schema for Supabase PostgreSQL
 -- Run this SQL in the Supabase SQL Editor to create all tables
 
 -- Enable UUID extension

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-MAD Training Studio — Authentication Dependency Module
+InterpLing — Authentication Dependency Module
 Handles JWT verification from Supabase Auth tokens.
 Used as a FastAPI dependency to protect API routes.
 """

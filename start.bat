@@ -16,5 +16,5 @@ if not exist .env (
     exit /b 1
 )
 
-echo Starting MAD Training Studio at http://localhost:5555 ...
+echo Starting InterpLing at http://localhost:5555 ...
 python app.py

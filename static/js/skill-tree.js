@@ -1,5 +1,5 @@
 /**
- * MAD Training Studio — Layered Skill Tree Renderer
+ * InterpLing — Layered Skill Tree Renderer
  * 4 horizontal layers (Beginner → Intermediate → Advanced → Expert)
  * New layout: Shadowing → CI/Liaison → Sight/Chuchotage/SI → VRI-OPI/Relay
  */

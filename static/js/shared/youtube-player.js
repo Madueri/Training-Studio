@@ -2,8 +2,8 @@
  * @module shared/youtube-player.js
  * @description YouTube IFrame API wrapper — player creation, playback controls, caption injection
  *
- * MAD Training Studio — Interpretation Practice Platform
- * © 2025 InterpretLab. All rights reserved.
+ * InterpLing — Interpretation Practice Platform
+ * © 2025 InterpLing. All rights reserved.
  */
 
 /**
@@ -512,6 +512,34 @@ function stopPracticeRecording() {
   if (vm) vm.innerHTML = '<span style="color:var(--amber)">Processing…</span>';
   // Stop the underlying media recorder for the 'interp' track
   stopRecording('interp');
+}
+
+/**
+ * @description Sets the YouTube player playback speed and updates the active button state.
+ *              Called from the practice page speed buttons.
+ * @param {number} rate — The playback rate (e.g. 0.75, 1, 1.25, 1.5).
+ * @param {HTMLButtonElement} btn — The button element that was clicked.
+ * @returns {void}
+ */
+function setSpeed(rate, btn) {
+  // Update the active button state
+  const container = btn.closest('.speed-btns');
+  if (container) {
+    container.querySelectorAll('.speed-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+  }
+  // Set the YouTube player playback rate if available
+  if (ytPlayer && ytPlayer.setPlaybackRate) {
+    try {
+      ytPlayer.setPlaybackRate(rate);
+    } catch (e) {
+      console.warn('[setSpeed] Failed to set playback rate:', e);
+    }
+  }
+  // Also update the HTML5 video element if used instead of YouTube
+  if (currentSessionVideo) {
+    currentSessionVideo.playbackRate = rate;
+  }
 }
 
 /**

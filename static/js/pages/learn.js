@@ -2,8 +2,8 @@
  * @module pages/learn.js
  * @description Learn page — module list, phase toggling, scroll navigation
  *
- * MAD Training Studio — Interpretation Practice Platform
- * © 2025 InterpretLab. All rights reserved.
+ * InterpLing — Interpretation Practice Platform
+ * © 2025 InterpLing. All rights reserved.
  */
 
 /**

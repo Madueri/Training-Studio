@@ -2,8 +2,8 @@
  * @module modes/consecutive.js
  * @description Consecutive Interpreting — auto/manual pause, silence gap detection, segment polling
  *
- * MAD Training Studio — Interpretation Practice Platform
- * © 2025 InterpretLab. All rights reserved.
+ * InterpLing — Interpretation Practice Platform
+ * © 2025 InterpLing. All rights reserved.
  */
 
 /**

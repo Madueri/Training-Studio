@@ -2,8 +2,8 @@
  * @module pages/practice.js
  * @description Practice page — mode selection, skill tree, grid toggle, parameter setup
  *
- * MAD Training Studio — Interpretation Practice Platform
- * © 2025 InterpretLab. All rights reserved.
+ * InterpLing — Interpretation Practice Platform
+ * © 2025 InterpLing. All rights reserved.
  */
 
 /**

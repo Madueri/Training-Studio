@@ -2,8 +2,8 @@
  * @module pages/dashboard-progress.js
  * @description Dashboard & Progress pages — stats, charts, achievements, streak tracking
  *
- * MAD Training Studio — Interpretation Practice Platform
- * © 2025 InterpretLab. All rights reserved.
+ * InterpLing — Interpretation Practice Platform
+ * © 2025 InterpLing. All rights reserved.
  */
 
 // ══════════════════════════════════════════════════════════════════════════════

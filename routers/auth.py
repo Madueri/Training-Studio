@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-MAD Training Studio — Auth Router
+InterpLing — Auth Router
 Routes: /api/auth/signup, /api/auth/signin, /api/auth/signout,
         /api/auth/refresh, /api/auth/me, /api/auth/reset-password
 Handles user authentication via Supabase Auth.

@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MAD Training Studio</title>
+<title>InterpLing</title>
 
 <!-- ═══════════════════════════════════════════════════════════════════════════════
      STYLESHEETS
@@ -38,7 +38,7 @@
   <!-- Step 1 -->
   <div class="ob-step active" id="ob-step-0">
    <div class="ob-eyebrow">Welcome — 5 quick questions</div>
-   <div class="ob-question">What brings you to InterpretLab?</div>
+   <div class="ob-question">What brings you to InterpLing?</div>
    <div class="ob-sub">This shapes your entire experience. You can change it later in Settings.</div>
    <div class="ob-opts" data-step="0">
     <div class="ob-opt" onclick="obSelect(0,'student')"><div><div class="ob-opt-text">I am studying interpreting</div><div class="ob-opt-sub">University student or enrolled in a program</div></div><div class="ob-opt-check"></div></div>
@@ -95,7 +95,7 @@
    <div class="ob-opts" data-step="4">
     <div class="ob-opt" onclick="obSelect(4,'learn')"><div><div class="ob-opt-text">Learn from scratch</div><div class="ob-opt-sub">Full structured course, all 20 modules</div></div><div class="ob-opt-check"></div></div>
     <div class="ob-opt" onclick="obSelect(4,'target')"><div><div class="ob-opt-text">Fix specific weaknesses</div><div class="ob-opt-sub">Target a skill gap, not the full course</div></div><div class="ob-opt-check"></div></div>
-    <div class="ob-opt" onclick="obSelect(4,'cert')"><div><div class="ob-opt-text">Get certified or credentialed</div><div class="ob-opt-sub">Work toward the InterpretLab certificate</div></div><div class="ob-opt-check"></div></div>
+    <div class="ob-opt" onclick="obSelect(4,'cert')"><div><div class="ob-opt-text">Get certified or credentialed</div><div class="ob-opt-sub">Work toward the InterpLing certificate</div></div><div class="ob-opt-check"></div></div>
     <div class="ob-opt" onclick="obSelect(4,'exam')"><div><div class="ob-opt-text">Pass a test or job interview</div><div class="ob-opt-sub">Exam preparation, timed assessments</div></div><div class="ob-opt-check"></div></div>
    </div>
    <div class="ob-actions"><button class="ob-btn-back" onclick="obBack()">Back</button><button class="ob-btn-next" onclick="obFinish()">See my path</button></div>
@@ -131,7 +131,7 @@
 ════════════════════════════════════════════════════════════════════════════════ -->
 <nav class="snav">
  <div class="snav-brand" onclick="goPage('dashboard')" style="cursor:pointer">
-  <div class="snav-logotype">Interpret<span>Lab</span></div>
+  <div class="snav-logotype">Interp<span>Ling</span></div>
  </div>
  <div class="snav-links">
   <button class="snl active" onclick="goPage('dashboard')" id="snl-dashboard">Dashboard</button>
@@ -253,7 +253,7 @@
 <script src="/static/js/shared/core.js?v=2"></script>
 <script src="/static/js/shared/auth.js?v=4"></script>
 <script src="/static/js/shared/errors.js?v=2"></script>
-<script src="/static/js/shared/youtube-player.js"></script>
+<script src="/static/js/shared/youtube-player.js?v=2"></script>
 <script src="/static/js/shared/recording.js"></script>
 <script src="/static/js/pages/onboarding.js"></script>
 <script src="/static/js/pages/learn.js"></script>
@@ -261,13 +261,13 @@
 <script src="/static/js/pages/dashboard-progress.js"></script>
 <script src="/static/js/modes/shared-params.js"></script>
 <script src="/static/js/modes/consecutive.js"></script>
-<script src="/static/js/modes/ci-simulation.js"></script>
+<script src="/static/js/modes/ci-simulation.js?v=2"></script>
 <script src="/static/js/api/video-search.js"></script>
 <script src="/static/js/api/interpretation.js"></script>
 <script src="/static/js/voiceover/prompter.js"></script>
 
 <!-- Simulation orchestrator + API clients -->
-<script src="/static/js/simulations.js"></script>
+<script src="/static/js/simulations.js?v=2"></script>
 <script src="/static/js/api.js"></script>
 <script src="/static/js/progress-client.js"></script>
 <script src="/static/js/dashboard.js"></script>
