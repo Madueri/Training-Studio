@@ -289,7 +289,6 @@ body[data-theme="light"] .diff-expert{background:#ede9fe;color:#5b21b6;border-co
 .mode-card-v2.opi::after{background:linear-gradient(90deg,var(--purple),var(--blue))}
 .mode-card-v2.chuchotage::after{background:linear-gradient(90deg,var(--teal),var(--blue))}
 .mode-card-v2.escort::after{background:linear-gradient(90deg,var(--gold),var(--gold2))}
-.mode-card-v2.legal::after{background:linear-gradient(90deg,var(--purple),var(--blue))}
 .mode-card-v2.sight::after{background:linear-gradient(90deg,var(--amber),var(--gold))}
 .mode-card-v2 .mc-icon{font-size:36px;margin-bottom:14px;min-height:0}
 .mode-card-v2 .mc-title{font-size:18px;font-weight:800;color:var(--text);margin-bottom:6px}

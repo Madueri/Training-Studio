@@ -88,6 +88,9 @@ function ciInitCIOverlay() {
   ciSegLength = 'short'; // Default segment length for consecutive
   ciRegister = 'informal'; // Default register for escort
   ciUrgency = 'routine'; // Default urgency for OPI/VRI
+  ciDocumentLength = 'short'; // Default document length for sight translation
+  ciRegister = 'informal'; // Default register for escort
+  ciUrgency = 'routine'; // Default urgency for OPI/VRI
   const vb = document.getElementById('ci-verbatim'); // Lookup DOM element 'ci-verbatim'
   if (vb) vb.checked = false; // Evaluate conditional branch
   ciSwitchView('ci-pre-view'); // Invoke ciSwitchView()
@@ -212,6 +215,8 @@ function ciApplyModeKindUI() {
   if (scenarioWrap) scenarioWrap.style.display = isEscort ? '' : 'none'; // Toggle element visibility
   const doctypeWrap = document.getElementById('ci-doctype-wrap'); // Lookup DOM element 'ci-doctype-wrap'
   if (doctypeWrap) doctypeWrap.style.display = isSight ? '' : 'none'; // Toggle element visibility
+  const doclenWrap = document.getElementById('ci-doclen-wrap'); // Lookup DOM element 'ci-doclen-wrap'
+  if (doclenWrap) doclenWrap.style.display = isSight ? '' : 'none'; // Toggle element visibility
   const seglenWrap = document.getElementById('ci-seglen-wrap'); // Lookup DOM element 'ci-seglen-wrap'
   if (seglenWrap) seglenWrap.style.display = ciModeKind === 'consecutive' ? '' : 'none'; // Toggle element visibility
   const registerWrap = document.getElementById('ci-register-wrap'); // Lookup DOM element 'ci-register-wrap'
@@ -241,6 +246,8 @@ function ciApplyModeKindUI() {
   // for longer is not realistic and causes vocal/physical fatigue for the interpreter
   const durSel = document.getElementById('ci-duration-sel'); // Lookup DOM element 'ci-duration-sel'
   if (durSel) { // Evaluate conditional branch
+    // Hide duration for sight translation (replaced by document length)
+    durSel.parentElement.style.display = isSight ? 'none' : '';
     Array.from(durSel.options).forEach(opt => { // Iterate over each element
       const restricted = isChuchotage && parseInt(opt.value) > 45; // Parse integer from string
       opt.disabled = restricted;
@@ -783,6 +790,58 @@ function ciUpdateBeginBtn() {
 
 
 /**
+ * @description Fetches AI-generated pre-session tips from the backend and populates
+ *              the prep-room tip card. Falls back to CI_FIELD_TIPS if AI is unavailable.
+ * @returns {Promise<void>}
+ */
+async function ciFetchPrepTips() {
+  const card = document.getElementById('ci-prep-tips-card');
+  const content = document.getElementById('ci-prep-tips-content');
+  const setup = document.getElementById('ci-prep-tips-setup');
+  if (!card || !content || !setup) return;
+
+  // Show loading state
+  content.innerHTML = '<span style="opacity:.6">Loading tips...</span>';
+  setup.style.display = 'none';
+
+  try {
+    const r = await fetch(`/api/ci/prep-tips?field=${encodeURIComponent(ciField)}&mode=${encodeURIComponent(ciModeKind)}&difficulty=${encodeURIComponent(ciDifficulty)}`);
+    const d = await r.json();
+
+    if (d.error) throw new Error(d.error);
+
+    // Render tips
+    if (d.tips && d.tips.length) {
+      content.innerHTML = d.tips.map(t => `• ${t}`).join('<br>');
+    } else {
+      content.innerHTML = '<span style="opacity:.6">No tips available for this configuration.</span>';
+    }
+
+    // Render setup guidance
+    if (d.setup_guidance) {
+      setup.innerHTML = `<strong style="color:var(--gold);font-size:9px;text-transform:uppercase;letter-spacing:.05em">Setup Guidance</strong><br>${d.setup_guidance}`;
+      setup.style.display = '';
+    } else {
+      setup.style.display = 'none';
+    }
+
+    // Visual indicator for AI vs fallback
+    if (d.source === 'ai') {
+      card.style.borderColor = 'rgba(232,151,30,.3)';
+    } else {
+      card.style.borderColor = 'var(--border)';
+    }
+  } catch (e) {
+    // Fallback to static tip
+    const staticTip = CI_FIELD_TIPS[ciField] || '';
+    content.innerHTML = staticTip ? `• ${staticTip}` : '<span style="opacity:.6">No tips available.</span>';
+    setup.style.display = 'none';
+    card.style.borderColor = 'var(--border)';
+  }
+}
+
+
+/**
  * @description Transitions from preparation room to active session.
  *              Moves camera stream, initializes canvas, starts timer, and plays the first segment.
  * @returns {void}
@@ -1078,6 +1137,7 @@ function ciRenderEval(d) {
     ['Terminology',      d.terminology,           '--purple'],
     ['Fluency',          d.fluency,               '--teal'],
     ['Protocol',         d.professional_protocol, '--amber'],
+    ...(d.protocol_compliance_score != null ? [['Protocol Compliance', d.protocol_compliance_score, '--red']] : []),
   ];
 
   const isSI = d.mode === 'simultaneous';
@@ -1149,9 +1209,12 @@ function ciRenderEval(d) {
 
     ${d.summary ? `<div style="margin:14px 0;padding:12px;background:var(--bg3);border-radius:9px;font-size:12px;color:var(--dim);line-height:1.6">${d.summary}</div>` : ''}
 
+    ${d.benchmark_comparison ? `<div style="margin:10px 0;padding:10px 12px;background:rgba(232,151,30,.06);border:1px solid rgba(232,151,30,.2);border-radius:8px;font-size:12px;color:var(--dim)"><strong style="color:var(--gold)">Benchmark:</strong> ${d.benchmark_comparison}</div>` : ''}
+
     ${d.strengths?.length ? `<div style="margin-bottom:8px"><div style="font-size:11px;color:var(--green);font-weight:700;margin-bottom:4px">Strength</div><div style="font-size:12px;color:var(--dim)">${d.strengths[0]}</div></div>` : ''}
     ${d.coaching_tips?.length ? `<div style="margin-bottom:8px"><div style="font-size:11px;color:var(--amber);font-weight:700;margin-bottom:4px">Coaching Tip</div><div style="font-size:12px;color:var(--dim)">${d.coaching_tips[0]}</div></div>` : ''}
-    ${d.next_drill ? `<div style="padding:10px 12px;background:rgba(72,120,240,.08);border:1px solid rgba(72,120,240,.2);border-radius:8px;font-size:12px;color:var(--blue);margin-top:10px"><strong>Next drill:</strong> ${d.next_drill}</div>` : ''}
+    ${d.weakness_trend?.length ? `<div style="margin-bottom:8px"><div style="font-size:11px;color:var(--red);font-weight:700;margin-bottom:4px">Weakness Trend</div><div style="font-size:12px;color:var(--dim)">${d.weakness_trend.map(w => `• ${w}`).join('<br>')}</div></div>` : ''}
+    ${d.next_drill ? `<div style="padding:10px 12px;background:rgba(72,120,240,.08);border:1px solid rgba(72,120,240,.2);border-radius:8px;font-size:12px;color:var(--blue);margin-top:10px"><strong>Next drill:</strong> ${d.next_drill}${d.next_drill_specific?.field ? ` <span style="opacity:.7">— ${d.next_drill_specific.field} · ${d.next_drill_specific.difficulty}</span>` : ''}</div>` : ''}
 
     ${segs ? `<div style="margin-top:16px"><div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--dim);margin-bottom:10px">Segment Breakdown</div>${segs}</div>` : ''}
   `;
@@ -1204,7 +1267,7 @@ function ciRenderPips() {
   if (prepPips) { // Evaluate conditional branch
     prepPips.innerHTML = Array.from({length:ciMaxSegs}, ()=>'<div class="ci-seg-pip"></div>').join(''); // Set HTML content
   }
-  if (prepCount) prepCount.textContent = `${ciMaxSegs} segments · ~${ciDuration} min`; // Set text content
+  if (prepCount) prepCount.textContent = ciModeKind === 'sight' ? `${ciMaxSegs} segments · ${ciDocumentLength.charAt(0).toUpperCase()+ciDocumentLength.slice(1)} document` : `${ciMaxSegs} segments · ~${ciDuration} min`; // Set text content
 }
 
 
@@ -1375,7 +1438,7 @@ function ciShowBrief() {
       </div>
       <div style="background:var(--bg2);border-radius:8px;padding:10px 12px">
         <div style="font-size:9px;color:var(--dim);font-weight:700;text-transform:uppercase;margin-bottom:4px">Session Parameters</div>
-        <div style="font-size:11px;color:var(--text)">${dur} min · ${diff.charAt(0).toUpperCase()+diff.slice(1)} · ${paceLabel}</div> // Extract substring or subarray
+        <div style="font-size:11px;color:var(--text)">${ciModeKind === 'sight' ? (ciDocumentLength.charAt(0).toUpperCase()+ciDocumentLength.slice(1)+' document') : dur+' min'} · ${diff.charAt(0).toUpperCase()+diff.slice(1)} · ${paceLabel}</div> // Extract substring or subarray
         <div style="font-size:10px;color:var(--dim);margin-top:2px">${diffNote}</div>
         <div style="font-size:10px;color:var(--dim);margin-top:1px">Protocol: ${fieldInfo.protocol||'—'}</div>
       </div>
@@ -1418,9 +1481,10 @@ function ciConfirmAndStart() {
   const pace     = parseInt(document.getElementById('ci-pace-slider')?.value || 2); // Lookup DOM element 'ci-pace-slider'
   const oneWay   = document.getElementById('ci-oneway')?.checked   || false; // Lookup DOM element 'ci-oneway'
   const verbatim = document.getElementById('ci-verbatim')?.checked || false; // Lookup DOM element 'ci-verbatim'
+  const docLen   = document.getElementById('ci-doclen-sel')?.value || 'short'; // Lookup DOM element 'ci-doclen-sel'
   ciActiveField = field; ciFieldType = fieldType; // Assign value to 'ciActiveField'
   ciSrcLang = srcLang;  ciTgtLang = tgtLang; // Assign value to 'ciSrcLang'
-  ciDifficulty = diff;  ciDuration = dur; ciPace = pace; ciOneWay = oneWay; ciVerbatim = verbatim; // Assign value to 'ciDifficulty'
+  ciDifficulty = diff;  ciDuration = dur; ciPace = pace; ciOneWay = oneWay; ciVerbatim = verbatim; ciDocumentLength = docLen; // Assign value to 'ciDifficulty'
   ciLang = srcLang + ' → ' + tgtLang; // Assign value to 'ciLang'
   ciMaxSegs = Math.max(2, Math.round(ciDuration / 2.5)); // Get maximum value
   ciStartSession(); // Invoke ciStartSession()
@@ -1916,6 +1980,7 @@ async function ciStartSession() {
   if (ciModeKind === 'sight') { // Evaluate conditional branch
     fd.append('document_type', ciDocumentType); // Append field to FormData
     fd.append('sight_mode', ciSightMode); // Append field to FormData
+    fd.append('document_length', ciDocumentLength); // Append field to FormData
   }
   if (ciModeKind === 'consecutive') { // Evaluate conditional branch
     fd.append('segment_length', ciSegLength); // Append field to FormData
@@ -1994,6 +2059,7 @@ async function ciStartSession() {
     ciSetSightMode(ciSightMode); // refresh button styles
 
     ciSwitchView('ci-prep-view'); // Invoke ciSwitchView()
+    ciFetchPrepTips(); // Load AI pre-session tips
 
   } catch(e) { // Handle exception
     console.error('CI session start failed:', e);
@@ -2136,6 +2202,10 @@ async function ciEndSession() {
         professional_protocol: d.professional_protocol || 0,
         memory_accuracy: d.memory_accuracy || 0,
         segment_handling: d.segment_handling || 0,
+        protocol_compliance_score: d.protocol_compliance_score || 0,
+        benchmark_comparison: d.benchmark_comparison || '',
+        next_drill_specific: d.next_drill_specific || null,
+        weakness_trend: d.weakness_trend || [],
         persona: ciPersona.name || '',
       });
       localStorage.setItem('ci-sessions', JSON.stringify(_cs.slice(0, 200))); // Extract substring or subarray

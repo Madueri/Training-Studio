@@ -20,7 +20,7 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.responses import HTMLResponse, JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
 
-from shared import SESSIONS_PATH
+from shared import SESSIONS_PATH, SUPABASE_URL, SUPABASE_ANON_KEY
 from routers import interpretation, voiceover, progress, auth
 
 # ── App ───────────────────────────────────────────────────────────────────────
@@ -60,6 +60,16 @@ app.include_router(auth.router)
 @app.get("/", response_class=HTMLResponse)
 async def root():
     return (STATIC_DIR / "index.html").read_text(encoding="utf-8")
+
+# ── Public Config (serves Supabase credentials so the frontend never hardcodes them)
+
+@app.get("/api/config")
+async def get_config():
+    """GET /api/config — return public Supabase config for frontend auth initialization."""
+    return JSONResponse({
+        "supabase_url": SUPABASE_URL,
+        "supabase_anon_key": SUPABASE_ANON_KEY,
+    })
 
 # ── Sessions (cross-tab, used by Progress page) ──────────────────────────────
 

@@ -19,6 +19,7 @@ from fastapi.responses import JSONResponse, StreamingResponse
 from shared import (
     ask_claude, extract_json, save_session, claude, whisper,
     STUDIO_ROOT, ELEVENLABS_API_KEY, ELEVENLABS_VOICE_ID, ELEVENLABS_CONFIGURED,
+    ANTHROPIC_CONFIGURED,
 )
 
 import numpy as np
@@ -683,6 +684,10 @@ async def analyze_interpretation(
                     "coaching_tips": coaching_tips,
                     "next_drill": "Shadow a 60-second news broadcast segment, focusing on matching the speaker's pause rhythm exactly.",
                     "summary": f"Acoustic shadowing analysis: overall {acoustic['overall_score']}/100. WPM match {acoustic['wpm_score']:.0f}, pause match {acoustic['pause_score']:.0f}, phonemic overlap {acoustic['phonemic_score']:.0f}, intonation similarity {acoustic['intonation_score']:.0f}.",
+                    "protocol_compliance_score": None,
+                    "benchmark_comparison": f"WPM match is {'above' if acoustic['wpm_score'] >= 80 else 'below'} the professional benchmark (80+). Pause fidelity is {'above' if acoustic['pause_score'] >= 80 else 'below'} benchmark (80+).",
+                    "next_drill_specific": {"field": "media", "difficulty": "intermediate"},
+                    "weakness_trend": [t for t in coaching_tips if t],
                     # New acoustic fields (for frontend v2)
                     "wpm_score": acoustic["wpm_score"],
                     "pause_score": acoustic["pause_score"],
@@ -733,6 +738,10 @@ Return JSON only:
   "strengths": ["specific delivery strength"],
   "coaching_tips": ["actionable technique to improve immediately"],
   "next_drill": "one concrete exercise for today",
+  "next_drill_specific": {{"field": "suggested field (e.g. media, legal, medical)", "difficulty": "suggested difficulty (foundation|intermediate|advanced|expert)"}},
+  "protocol_compliance_score": <0-100, N/A for shadowing — use null or 100>,
+  "benchmark_comparison": "one sentence comparing performance to known benchmarks (e.g. 'Your pacing is above the intermediate benchmark but below the expert threshold')",
+  "weakness_trend": ["recurring weakness area 1", "recurring weakness area 2"],
   "summary": "2-sentence assessment in voice of senior broadcast coach"
 }}"""
         else:
@@ -783,6 +792,10 @@ Assess professionally. Return JSON only:
   "strengths": ["specific strength"],
   "coaching_tips": ["actionable technique to improve immediately"],
   "next_drill": "one concrete exercise for today",
+  "next_drill_specific": {{"field": "suggested field (e.g. legal, medical, business)", "difficulty": "suggested difficulty (foundation|intermediate|advanced|expert)"}},
+  "protocol_compliance_score": <0-100, strict compliance with NAJIT legal interpreting standards — exact wording, impartiality, no editorializing>,
+  "benchmark_comparison": "one sentence comparing performance to known legal interpreting benchmarks (e.g. 'Your verbatim accuracy is above the intermediate benchmark but below the expert threshold')",
+  "weakness_trend": ["recurring weakness area 1", "recurring weakness area 2"],
   "summary": "2-sentence professional assessment in the voice of a senior trainer"
 }}"""
             else:
@@ -831,6 +844,10 @@ Assess professionally. Return JSON only:
   "strengths": ["specific strength"],
   "coaching_tips": ["actionable technique to improve immediately"],
   "next_drill": "one concrete exercise for today",
+  "next_drill_specific": {{"field": "suggested field (e.g. medical, legal, diplomatic, business)", "difficulty": "suggested difficulty (foundation|intermediate|advanced|expert)"}},
+  "protocol_compliance_score": <0-100, compliance with the relevant industry standard (NCIHC for medical/community, NAJIT for legal/security, AIIC for diplomatic/business/academic/media) — role boundaries, positioning, and ethical conduct>,
+  "benchmark_comparison": "one sentence comparing performance to known interpreting benchmarks (e.g. 'Your accuracy is above the intermediate benchmark but below the expert threshold')",
+  "weakness_trend": ["recurring weakness area 1", "recurring weakness area 2"],
   "summary": "2-sentence professional assessment in the voice of a senior trainer"
 }}"""
 
@@ -1920,7 +1937,7 @@ async def opi_start_call(
     field:        str = Form("medical"),
     language:     str = Form("English → Arabic"),
     difficulty:   str = Form("foundation"),
-    duration_min: str = Form("5"),
+    duration_min: str = Form("10"),
     video:        str = Form("false"),
     urgency:      str = Form("routine"),
 ):
@@ -1937,7 +1954,7 @@ async def opi_start_call(
     try:
         duration_min = int(float(duration_min))
     except (ValueError, TypeError):
-        duration_min = 5
+        duration_min = 10
 
     is_video = str(video).strip().lower() in ("true", "1", "yes", "on")
     print(f"[START-CALL] field={field} lang={language} diff={difficulty} dur={duration_min} video={is_video} urgency={urgency}")
@@ -2978,6 +2995,90 @@ CI_SETTINGS = {
     },
 }
 
+# ── CI Pre-Session AI Tips ───────────────────────────────────────────────────
+
+# Static fallback tips (mirrored from JS CI_FIELD_TIPS)
+_CI_FIELD_TIPS = {
+    "medical":     'Use first-person throughout ("I feel pain" — not "she feels pain"). Preserve all numbers, dosages, diagnoses, and timelines exactly. No omissions.',
+    "legal":       'Never editorialize or soften language. Reproduce exact legal terms. Interrupt formally if clarification is needed — never guess.',
+    "immigration": 'Emotional content must be preserved faithfully. Never soften expressions of fear, distress, or trauma. Accuracy of sequence matters.',
+    "diplomatic":  'Protocol is paramount. Preserve formal titles, diplomatic register, and indirect phrasing. Do not paraphrase formal statements.',
+    "business":    'Figures, percentages, and financial terms must be exact. Maintain neutral professional register throughout.',
+    "academic":    'Specialized vocabulary is the standard. Request spelling of unfamiliar proper nouns and technical terms.',
+    "community":   'Cultural sensitivity is expected. NCIHC permits limited cultural clarification when necessary — flag it explicitly.',
+    "security":    'Instructions and warnings must be rendered exactly. Do not interpret tone — stick to literal meaning only.',
+    "media":       'Broadcast-quality register is required. Pace will be fast. Proper names and titles must be preserved.',
+    "education":   'Balance professionalism with warmth. Use accessible register for families. Preserve educational terminology accurately. Cultural clarification is permitted and often necessary.',
+    "emergency":   'Speed and accuracy are paramount. Preserve exact numbers, symptoms, and instructions. Never guess. Use calm, clear delivery even when caller is distressed.',
+}
+
+_MODE_GUIDANCE = {
+    "consecutive":  "Listen fully, take notes, then render. Wait for a natural pause before beginning. Use first-person throughout.",
+    "simultaneous": "Start rendering after 1–2 seconds (EVS). Keep pace with the speaker. Anticipate but never guess. Monitor your own voice to avoid source interference.",
+    "chuchotage":   "Whisper at a controlled volume — audible to your listener, not to others. Position yourself beside the principal. Expect no equipment or audio isolation.",
+    "escort":       "Interpret bidirectionally and conversationally. Match the informal register of the setting. Be warm but maintain professional boundaries.",
+    "sight":        "Read ahead while speaking. Preserve all numbers, names, and document structure. Maintain the written register of the source document.",
+}
+
+_DIFF_GUIDANCE = {
+    "foundation":   "Clear segments, standard accent, generous recovery time. Focus on completeness and accuracy.",
+    "intermediate": "Moderate terminology density, occasional overlaps. Maintain note-taking discipline under pressure.",
+    "advanced":     "Heavy jargon, strong accents, frequent interruptions. Prioritize key information when condensing is unavoidable.",
+    "expert":       "Maximum cognitive pressure — overlapping speakers, maximum terminology density. Strategic condensing is acceptable; accuracy is non-negotiable.",
+}
+
+@router.get("/api/ci/prep-tips")
+async def ci_prep_tips(field: str, mode: str, difficulty: str):
+    """
+    Returns AI-generated protocol reminders and setup guidance for the CI prep room.
+    Falls back to CI_FIELD_TIPS static map if AI is unavailable.
+    """
+    fallback_tip = _CI_FIELD_TIPS.get(field, "")
+    fallback_setup = f"{_MODE_GUIDANCE.get(mode, '')} {_DIFF_GUIDANCE.get(difficulty, '')}".strip()
+
+    if not ANTHROPIC_CONFIGURED:
+        return JSONResponse({
+            "tips": [fallback_tip] if fallback_tip else [],
+            "setup_guidance": fallback_setup,
+            "source": "fallback"
+        })
+
+    try:
+        prompt = f"""You are a senior interpreter trainer preparing a student for a {mode} interpretation session in the {field} field at {difficulty} difficulty.
+
+Generate a concise, actionable pre-session briefing with:
+1. Three to five bullet-point protocol reminders specific to {field} {mode} interpreting.
+2. One short paragraph of setup guidance (what to focus on, what to watch out for).
+
+Return ONLY valid JSON in this exact format:
+{{
+  "tips": ["reminder 1", "reminder 2", ...],
+  "setup_guidance": "short paragraph"
+}}
+
+Do not include any markdown, explanations, or extra text outside the JSON."""
+
+        raw = ask_claude(prompt, 600)
+        parsed = extract_json(raw)
+        tips = parsed.get("tips", [])
+        guidance = parsed.get("setup_guidance", "")
+
+        if not tips or not isinstance(tips, list):
+            raise ValueError("AI returned invalid tips format")
+
+        return JSONResponse({
+            "tips": tips,
+            "setup_guidance": guidance,
+            "source": "ai"
+        })
+    except Exception:
+        return JSONResponse({
+            "tips": [fallback_tip] if fallback_tip else [],
+            "setup_guidance": fallback_setup,
+            "source": "fallback"
+        })
+
+
 @router.post("/api/ci/new-session")
 async def ci_new_session(
     field:        str = Form("medical"),
@@ -2997,6 +3098,7 @@ async def ci_new_session(
     document_type:  str = Form("letter"),      # Sight Translation only: "letter" | "form" | "contract-excerpt" | "news" | "legal-doc" | "medical-report" | "certificate" | "official-correspondence" | "academic-transcript"
     sight_mode:     str = Form("continuous"),   # Sight Translation only: "continuous" | "chunked"
     segment_length: str = Form("short"),        # Consecutive only: "short" | "medium" | "long"
+    document_length: str = Form("short"),       # Sight Translation only: "short" | "medium" | "long"
     register:       str = Form("informal"),      # Escort only: "formal" | "informal" | "casual"
     urgency:        str = Form("routine"),       # OPI/VRI only: "routine" | "urgent" | "emergency"
 ):
@@ -3067,10 +3169,10 @@ async def ci_new_session(
             # Escort/Liaison is short conversational exchange, not monologue.
             seg_words = max(15, int(seg_words * 0.45))
         elif is_sight:
-            # Sight Translation protocol caps documents at ~1-2 pages / non-complex —
-            # excerpts here are kept short regardless of difficulty (difficulty maps to
-            # document/register complexity, not length, per INTERPRETING_PROTOCOLS_AND_KPIS.md).
-            seg_words = max(70, min(180, int(seg_words * 0.5)))
+            # Sight Translation: document length replaces duration as the length control.
+            # Short = ~70-180 words, Medium = ~175-450 words, Long = ~350-900 words.
+            doc_len_mult = {"short": 1.0, "medium": 2.5, "long": 5.0}.get(document_length, 1.0)
+            seg_words = max(70, min(900, int(seg_words * 0.5 * doc_len_mult)))
 
         # EVS/décalage target (seconds) — scales inversely with pace, per
         # INTERPRETING_PROTOCOLS_AND_KPIS.md (slow → 3-4s, expert → 1.5-2s)
@@ -3313,6 +3415,7 @@ Rules:
             "scenario_type": scenario_type,
             "document_type": document_type,
             "sight_mode": sight_mode,
+            "document_length": document_length,
             "wpm_target": wpm_target,
             "pairs": [],          # {segment_text, interpreter_text, segment_num, decalage_sec}
             "segments_done": 0,
@@ -3340,6 +3443,7 @@ Rules:
             "scenario_type": scenario_type,
             "document_type": document_type,
             "sight_mode": sight_mode,
+            "document_length": document_length,
             "wpm_target": wpm_target,
             "seg_words": seg_words,
         })
@@ -3580,6 +3684,10 @@ async def ci_end_session(session_id: str = Form(...)):
             "turn_taking_latency_avg_sec": 0, "turn_taking_latency_score": 0,
             "grade": "Incomplete", "summary": "Session ended before any segments were submitted.",
             "strengths": [], "coaching_tips": [], "next_drill": "",
+            "next_drill_specific": {"field": "", "difficulty": ""},
+            "protocol_compliance_score": 0,
+            "benchmark_comparison": "No data available for benchmark comparison.",
+            "weakness_trend": [],
             "segment_evaluations": [],
         })
 
@@ -3593,6 +3701,10 @@ async def ci_end_session(session_id: str = Form(...)):
             "turn_taking_latency_avg_sec": 0, "turn_taking_latency_score": 0,
             "grade": "Incomplete", "summary": "No segments were submitted.",
             "strengths": [], "coaching_tips": [], "next_drill": "",
+            "next_drill_specific": {"field": "", "difficulty": ""},
+            "protocol_compliance_score": 0,
+            "benchmark_comparison": "No data available for benchmark comparison.",
+            "weakness_trend": [],
             "segment_evaluations": [],
         })
 
@@ -3717,6 +3829,10 @@ Return JSON ONLY:
   "strengths": ["one concrete observed SI strength"],
   "coaching_tips": ["one specific actionable SI improvement"],
   "next_drill": "One concrete SI exercise targeting the weakest area",
+  "next_drill_specific": {{"field": "suggested field (e.g. diplomatic, business, media)", "difficulty": "suggested difficulty (foundation|intermediate|advanced|expert)"}},
+  "protocol_compliance_score": <0-100, compliance with AIIC booth standards — tag-team rotation awareness, décalage discipline, equipment protocol, and professional conduct>,
+  "benchmark_comparison": "one sentence comparing performance to known SI benchmarks (e.g. 'Your décalage control is above the intermediate benchmark but below the expert threshold')",
+  "weakness_trend": ["recurring weakness area 1", "recurring weakness area 2"],
   "segment_evaluations": [
     {{
       "segment_num": 1,
@@ -3793,6 +3909,10 @@ Return JSON ONLY:
   "strengths": ["one concrete observed escort/liaison strength"],
   "coaching_tips": ["one specific actionable escort/liaison improvement"],
   "next_drill": "One concrete escort/liaison exercise targeting the weakest area",
+  "next_drill_specific": {{"field": "suggested field (e.g. community, business, immigration)", "difficulty": "suggested difficulty (foundation|intermediate|advanced|expert)"}},
+  "protocol_compliance_score": <0-100, compliance with NCIHC community interpreting standards — cultural mediation boundaries, role clarity, and advocacy limits>,
+  "benchmark_comparison": "one sentence comparing performance to known escort/liaison benchmarks (e.g. 'Your cultural mediation is above the intermediate benchmark but below the expert threshold')",
+  "weakness_trend": ["recurring weakness area 1", "recurring weakness area 2"],
   "segment_evaluations": [
     {{
       "segment_num": 1,
@@ -3888,6 +4008,10 @@ Return JSON ONLY:
   "strengths": ["one concrete observed sight translation strength"],
   "coaching_tips": ["one specific actionable sight translation improvement"],
   "next_drill": "One concrete sight translation exercise targeting the weakest area",
+  "next_drill_specific": {"field": "suggested field (e.g. legal, medical, business)", "difficulty": "suggested difficulty (foundation|intermediate|advanced|expert)"},
+  "protocol_compliance_score": <0-100, compliance with sight-translation standards — faithful oral rendering of written text, preserving document register and formatting conventions>,
+  "benchmark_comparison": "one sentence comparing performance to known sight-translation benchmarks (e.g. 'Your WPM throughput is above the intermediate benchmark but below the expert threshold')",
+  "weakness_trend": ["recurring weakness area 1", "recurring weakness area 2"],
   "segment_evaluations": [
     {{
       "segment_num": 1,
@@ -3956,6 +4080,10 @@ Return JSON ONLY:
   "strengths": ["one concrete observed legal verbatim strength"],
   "coaching_tips": ["one specific actionable legal verbatim improvement"],
   "next_drill": "One concrete legal verbatim exercise targeting the weakest area",
+  "next_drill_specific": {"field": "suggested field (e.g. legal, security, immigration)", "difficulty": "suggested difficulty (foundation|intermediate|advanced|expert)"},
+  "protocol_compliance_score": <0-100, strict compliance with NAJIT legal interpreting standards — exact wording, impartiality, no editorializing, no cultural mediation>,
+  "benchmark_comparison": "one sentence comparing performance to known legal verbatim benchmarks (e.g. 'Your verbatim accuracy is above the intermediate benchmark but below the expert threshold')",
+  "weakness_trend": ["recurring weakness area 1", "recurring weakness area 2"],
   "segment_evaluations": [
     {{
       "segment_num": 1,
@@ -4029,6 +4157,10 @@ Return JSON ONLY:
   "strengths": ["one concrete observed CI strength"],
   "coaching_tips": ["one specific actionable CI improvement"],
   "next_drill": "One concrete CI exercise targeting the weakest area",
+  "next_drill_specific": {"field": "suggested field (e.g. medical, legal, diplomatic, business)", "difficulty": "suggested difficulty (foundation|intermediate|advanced|expert)"},
+  "protocol_compliance_score": <0-100, compliance with the relevant industry standard (NCIHC for medical/community, NAJIT for legal/security, AIIC for diplomatic/business/academic) — role boundaries, positioning, note-taking discipline, and ethical conduct>,
+  "benchmark_comparison": "one sentence comparing performance to known CI benchmarks (e.g. 'Your memory accuracy is above the intermediate benchmark but below the expert threshold')",
+  "weakness_trend": ["recurring weakness area 1", "recurring weakness area 2"],
   "segment_evaluations": [
     {{
       "segment_num": 1,

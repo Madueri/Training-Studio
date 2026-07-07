@@ -83,6 +83,7 @@ const _PARTIAL_MAP = {
   practice:  'page-practice.html',
   progress:  'page-progress.html',
   learn:     'page-learn.html',
+    guidelines: 'page-guidelines.html',
   community: 'page-community.html',
   settings:  'page-settings.html',
 };
@@ -209,7 +210,8 @@ async function goPage(page) {
 
   if (page === 'dashboard') loadDashboard();
   if (page === 'progress')  loadProgress();
-  if (page === 'learn')     loadLearnPage();
+  if (page === 'learn')     loadLearnPage()
+  if (page === 'guidelines' && typeof loadGuidelinesPage === 'function') loadGuidelinesPage();;
   if (page === 'practice') {
     if (typeof loadPracticePage === 'function') loadPracticePage();
   }

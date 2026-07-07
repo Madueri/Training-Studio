@@ -56,7 +56,6 @@
   --mode-sight: #10B981;
   --mode-opi: #F43F5E;
   --mode-escort: #FB923C;
-  --mode-legal: #94A3B8;
   --mode-relay: #6366F1;
 
   /* Typography */
@@ -218,7 +217,6 @@
 .mode-sight { color: var(--mode-sight); }
 .mode-opi { color: var(--mode-opi); }
 .mode-escort { color: var(--mode-escort); }
-.mode-legal { color: var(--mode-legal); }
 .mode-relay { color: var(--mode-relay); }
 
 /* Reduced Motion */

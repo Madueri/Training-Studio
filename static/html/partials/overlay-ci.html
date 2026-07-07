@@ -159,6 +159,14 @@
           <option value="academic-transcript">Academic transcript</option>
         </select>
       </div>
+      <div id="ci-doclen-wrap" style="display:none">
+        <span class="ci-ov-plbl">Document Length</span>
+        <select id="ci-doclen-sel" class="ci-ov-sel" onchange="ciDocumentLength=this.value">
+          <option value="short" selected>Short — ~80-120 words</option>
+          <option value="medium">Medium — ~200-350 words</option>
+          <option value="long">Long — ~400-600 words</option>
+        </select>
+      </div>
     </div>
     <!-- Row 2: pace + one-way toggle + participants -->
     <div class="ci-ov-params-r2">
@@ -249,6 +257,13 @@
 
       <!-- Right: Camera + Begin -->
       <div class="ci-sess-right" style="display:flex;flex-direction:column;gap:14px">
+
+        <!-- AI Prep Tips -->
+        <div id="ci-prep-tips-card" style="background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:12px 14px">
+          <div style="font-size:9px;font-weight:800;color:var(--gold);text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px">AI Prep Tips</div>
+          <div id="ci-prep-tips-content" style="font-size:11px;color:var(--dim);line-height:1.6"></div>
+          <div id="ci-prep-tips-setup" style="font-size:11px;color:var(--dim);line-height:1.6;margin-top:8px;padding-top:8px;border-top:1px solid var(--border);display:none"></div>
+        </div>
 
         <!-- Status strip -->
         <div style="background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:12px 14px">

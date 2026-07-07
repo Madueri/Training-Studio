@@ -5,9 +5,21 @@
  * All API requests automatically include the Authorization header when logged in.
  */
 
-// ── Supabase Client Configuration ───────────────────────────────────────────────
-const SUPABASE_URL = "https://ubkgcnurzopqyvrryfzx.supabase.co";
-const SUPABASE_ANON_KEY = "sb_publishable_8Y-7N4D367nESxjyqNmZyQ_7e6YmRMZ";
+// ── Supabase Client Configuration (fetched from backend, never hardcoded) ───────
+let configCache = null;
+
+async function fetchConfig() {
+  if (configCache) return configCache;
+  try {
+    const res = await fetch("/api/config");
+    if (!res.ok) throw new Error("Config fetch failed: " + res.status);
+    configCache = await res.json();
+    return configCache;
+  } catch (e) {
+    console.error("[Auth] Failed to load config:", e);
+    return null;
+  }
+}
 
 // ── Auth State ────────────────────────────────────────────────────────────────
 let supabaseClient = null;
@@ -16,8 +28,15 @@ let accessToken = null;
 let refreshToken = null;
 
 // ── Initialize Supabase Client ─────────────────────────────────────────────────
-function initSupabase() {
+async function initSupabase() {
   if (supabaseClient) return supabaseClient;
+
+  // Load config from backend first
+  const config = await fetchConfig();
+  if (!config || !config.supabase_url || !config.supabase_anon_key) {
+    console.warn("[Auth] Supabase config not available. Auth features disabled.");
+    return null;
+  }
 
   // Load Supabase from CDN if not already loaded
   if (typeof supabase === "undefined") {
@@ -25,7 +44,7 @@ function initSupabase() {
     return null;
   }
 
-  supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
+  supabaseClient = supabase.createClient(config.supabase_url, config.supabase_anon_key, {
     auth: {
       autoRefreshToken: true,
       persistSession: true,
@@ -53,7 +72,7 @@ function initSupabase() {
   });
 
   // Try to restore session from localStorage on page load
-  restoreSession();
+  await restoreSession();
 
   return supabaseClient;
 }
@@ -465,7 +484,7 @@ async function handleSignOut() {
 // ── Auto-Initialize ─────────────────────────────────────────────────────────────
 // Initialize when the script loads, but wait for DOM to be ready for UI
 if (document.readyState === "loading") {
-  document.addEventListener("DOMContentLoaded", initSupabase);
+  document.addEventListener("DOMContentLoaded", () => initSupabase());
 } else {
   initSupabase();
 }

@@ -15,8 +15,7 @@ class DashboardRenderer {
       chuchotage: '#F59E0B',
       sight_translation: '#10B981',
       opi: '#F43F5E',
-      escort: '#FB923C',
-      legal: '#A78BFA'
+      escort: '#FB923C'
     };
     this.modeLabels = {
       shadowing: 'Shadowing',
@@ -25,8 +24,7 @@ class DashboardRenderer {
       chuchotage: 'Chuchotage',
       sight_translation: 'Sight Translation',
       opi: 'OPI/VRI',
-      escort: 'Escort/Liaison',
-      legal: 'Legal Verbatim'
+      escort: 'Escort/Liaison'
     };
     // Skill attributes for radar charts (like FIFA player stats)
     this.skillAttributes = {
@@ -403,7 +401,7 @@ class DashboardRenderer {
   // ========== MODE CARDS ==========
   _renderModeCards(data) {
     const modeUnlocks = this.pc ? this.pc.getModeUnlocks() : {};
-    const modes = ['shadowing', 'consecutive', 'simultaneous', 'chuchotage', 'sight_translation', 'opi', 'escort', 'legal'];
+    const modes = ['shadowing', 'consecutive', 'simultaneous', 'chuchotage', 'sight_translation', 'opi', 'escort'];
     
     return `
       <div class="mode-cards-section">
@@ -611,7 +609,7 @@ class DashboardRenderer {
   _getModeIcon(mode) {
     const icons = {
       shadowing: '🔊', consecutive: '🎤', simultaneous: '🎧',
-      chuchotage: '🗣️', sight_translation: '👁️', opi: '📞', escort: '🚶', legal: '⚖️'
+      chuchotage: '🗣️', sight_translation: '👁️', opi: '📞', escort: '🚶'
     };
     return icons[mode] || '🎯';
   }
