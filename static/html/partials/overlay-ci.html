@@ -123,6 +123,26 @@
           <option value="business" selected>Business meeting</option>
           <option value="social">Informal/social</option>
           <option value="administrative">Administrative/appointment</option>
+          <option value="tourism">Tourism / Cultural tour</option>
+          <option value="trade-show">Trade show / Exhibition</option>
+          <option value="factory">Factory / Plant visit</option>
+          <option value="diplomatic-courtesy">Diplomatic courtesy</option>
+        </select>
+      </div>
+      <div id="ci-register-wrap" style="display:none">
+        <span class="ci-ov-plbl">Register</span>
+        <select id="ci-register-sel" class="ci-ov-sel" onchange="ciRegister=this.value">
+          <option value="informal" selected>Informal — conversational</option>
+          <option value="casual">Casual — friendly, colloquial</option>
+          <option value="formal">Formal — polite, structured</option>
+        </select>
+      </div>
+      <div id="ci-seglen-wrap" style="display:none">
+        <span class="ci-ov-plbl">Segment Length</span>
+        <select id="ci-seglen-sel" class="ci-ov-sel" onchange="ciSegLength=this.value">
+          <option value="short" selected>Short — 20-60 sec</option>
+          <option value="medium">Medium — 1.5-3 min</option>
+          <option value="long">Long — 4-8 min</option>
         </select>
       </div>
       <div id="ci-doctype-wrap" style="display:none">
@@ -132,6 +152,11 @@
           <option value="form">Intake/consent form</option>
           <option value="contract-excerpt">Contract excerpt</option>
           <option value="news">News clipping</option>
+          <option value="legal-doc">Legal document (court/pleading)</option>
+          <option value="medical-report">Medical report (discharge/lab)</option>
+          <option value="certificate">Certificate (birth/marriage/diploma)</option>
+          <option value="official-correspondence">Official correspondence</option>
+          <option value="academic-transcript">Academic transcript</option>
         </select>
       </div>
     </div>

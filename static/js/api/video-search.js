@@ -48,6 +48,8 @@ async function runVideoSearch() {
   fd.append('source_dialect', srcDialect);
   fd.append('target_dialect', tgtDialect);
   fd.append('num_speakers', interpSpeakers);
+  fd.append('segment_length', interpSegLength);
+  fd.append('urgency', interpUrgency);
 
   // ── Execute the POST request and handle response ──────────────────────────
   try {

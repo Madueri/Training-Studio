@@ -1922,6 +1922,7 @@ async def opi_start_call(
     difficulty:   str = Form("foundation"),
     duration_min: str = Form("5"),
     video:        str = Form("false"),
+    urgency:      str = Form("routine"),
 ):
     """
     Generate a new OPI/VRI call scenario. OPI and VRI are the same triadic
@@ -1939,11 +1940,11 @@ async def opi_start_call(
         duration_min = 5
 
     is_video = str(video).strip().lower() in ("true", "1", "yes", "on")
-    print(f"[START-CALL] field={field} lang={language} diff={difficulty} dur={duration_min} video={is_video}")
+    print(f"[START-CALL] field={field} lang={language} diff={difficulty} dur={duration_min} video={is_video} urgency={urgency}")
 
     sid = str(uuid.uuid4())[:8]
     try:
-        return await _opi_build_call(sid, field, src, tgt, language, difficulty, duration_min, is_video)
+        return await _opi_build_call(sid, field, src, tgt, language, difficulty, duration_min, is_video, urgency)
     except Exception as e:
         import traceback
         print(f"[START-CALL] FAILED — {type(e).__name__}: {e}")
@@ -1960,7 +1961,7 @@ async def opi_start_call(
         })
 
 
-async def _opi_build_call(sid, field, src, tgt, language, difficulty, duration_min, is_video=False):
+async def _opi_build_call(sid, field, src, tgt, language, difficulty, duration_min, is_video=False, urgency='routine'):
     # Real Arabic OPI calls: callers speak in their regional dialect (Levantine,
     # Egyptian, Iraqi, Gulf, Maghrebi, Sudanese...), while the professional
     # standard is for the interpreter to render into Modern Standard Arabic
@@ -2003,7 +2004,7 @@ async def _opi_build_call(sid, field, src, tgt, language, difficulty, duration_m
 
     scenario = extract_json(ask_claude(f"""Generate a realistic {'VRI (Video Remote Interpreting)' if is_video else 'OPI (Over-the-Phone Interpreting)'} call scenario.
 Field: {field} | Source language: {src} | Target language: {tgt}
-Difficulty: {difficulty} | Duration: ~{duration_min} min{dialect_instruction}{video_note}
+Difficulty: {difficulty} | Duration: ~{duration_min} min | Urgency: {urgency}{dialect_instruction}{video_note}
 
 CRITICAL RULES:
 1. provider_name must be SPECIFIC and VARIED — absolutely NOT "Sarah Mitchell", "John Smith", "Emily Carter", or other repeatedly-generated AI names. Use diverse, field-appropriate names (e.g. Dr. Karen Osei, Officer Marcus Webb, Nurse Priya Sharma, Ms. Luisa Fernandez, Mr. James Kowalski, Dr. Ahmed Khalil). Each call must use a DIFFERENT name.
@@ -2022,7 +2023,7 @@ Return JSON only:
   {dialect_note}"caller_situation": "why they are calling — 1 sentence",
   "chief_issue": "the specific question or problem to resolve",
   "setting": "specific location/context (e.g. Metro General ER, Valley Pharmacy, Housing Authority Office)",
-  "urgency": "routine|urgent|emergency",
+  "urgency": "{urgency}",
   "provider_opening": "Provider's natural opening line in {src}, 2-3 sentences"{visual_field_note}
 }}""", 650))
 
@@ -2947,6 +2948,34 @@ CI_SETTINGS = {
         "protocol": "AIIC",
         "stress": "real-time pressure, impromptu terminology, broadcast register",
     },
+    "education": {
+        "label": "Education — School & University",
+        "provider_roles": ["Teacher", "School Principal", "University Professor", "School Counselor", "Academic Advisor"],
+        "topics": [
+            "parent-teacher conference on student progress",
+            "IEP meeting and learning plan discussion",
+            "college admission interview",
+            "student counseling session",
+            "school administrative briefing",
+        ],
+        "segment_length_words": (50, 120),
+        "protocol": "NCIHC",
+        "stress": "accessible register for families, cultural mediation, educational terminology",
+    },
+    "emergency": {
+        "label": "Emergency — Crisis Response",
+        "provider_roles": ["911 Dispatcher", "Emergency Physician", "Crisis Counselor", "EMS Coordinator", "Poison Control Specialist"],
+        "topics": [
+            "911 emergency dispatch call",
+            "emergency room triage interview",
+            "crisis hotline intervention",
+            "poison control consultation",
+            "fire and EMS dispatch coordination",
+        ],
+        "segment_length_words": (40, 100),
+        "protocol": "NCIHC",
+        "stress": "rapid-fire delivery, life-critical information, absolute accuracy on symptoms and instructions",
+    },
 }
 
 @router.post("/api/ci/new-session")
@@ -2965,8 +2994,11 @@ async def ci_new_session(
     listener_count: int = Form(1),             # Chuchotage only: 1 | 2
     noise_level:    str = Form("quiet"),       # Chuchotage only: "quiet" | "moderate" | "noisy"
     scenario_type:  str = Form(""),            # Escort/Liaison only: "business" | "social" | "administrative"
-    document_type:  str = Form("letter"),      # Sight Translation only: "letter" | "form" | "contract-excerpt" | "news"
+    document_type:  str = Form("letter"),      # Sight Translation only: "letter" | "form" | "contract-excerpt" | "news" | "legal-doc" | "medical-report" | "certificate" | "official-correspondence" | "academic-transcript"
     sight_mode:     str = Form("continuous"),   # Sight Translation only: "continuous" | "chunked"
+    segment_length: str = Form("short"),        # Consecutive only: "short" | "medium" | "long"
+    register:       str = Form("informal"),      # Escort only: "formal" | "informal" | "casual"
+    urgency:        str = Form("routine"),       # OPI/VRI only: "routine" | "urgent" | "emergency"
 ):
     """
     Create a new CI/SI/Chuchotage/Escort/Sight-Translation session. Generates the scenario
@@ -3020,6 +3052,12 @@ async def ci_new_session(
         diff_mult = {"foundation": 0.55, "beginner": 0.6, "intermediate": 1.0, "advanced": 1.4, "expert": 1.8}.get(difficulty, 1.0)
         pace_mult = {1: 0.75, 2: 1.0, 3: 1.25, 4: 1.5}.get(pace, 1.0)
         seg_words = int(random.randint(min_w, max_w) * diff_mult * pace_mult)
+        
+        # Apply segment length tier for consecutive mode (short=current, medium=3x, long=10x)
+        if mode == "consecutive":
+            seg_len_mult = {"short": 1.0, "medium": 3.5, "long": 10.0}.get(segment_length, 1.0)
+            seg_words = int(seg_words * seg_len_mult)
+        
         if is_live_render:
             # SI/Chuchotage segments are much shorter — interpreter renders concurrently
             # rather than after a full recall-length segment (booth/whisper protocol, not
@@ -3087,10 +3125,23 @@ async def ci_new_session(
 
         escort_note = ""
         if is_escort:
+            # Register affects the tone and formality of the exchange
+            register_note = ""
+            if register == 'formal':
+                register_note = "Use formal address, structured language, and professional courtesy."
+            elif register == 'casual':
+                register_note = "Use friendly, colloquial language with contractions and informal expressions."
+            else:
+                register_note = "Use conversational but polite language — natural but not overly formal."
+            
             scenario_label = {
                 "business": "an informal business meeting (introductions, small talk, light negotiation)",
                 "social": "a casual social setting (personal conversation, community event, family context)",
                 "administrative": "a personal administrative errand (registering for a service, a routine appointment, paperwork)",
+                "tourism": "a tourism or cultural tour (museum visit, city sightseeing, heritage site)",
+                "trade-show": "a trade show or exhibition visit (product demos, booth introductions, networking)",
+                "factory": "a factory or plant visit (safety briefing, production walkthrough, technical discussion)",
+                "diplomatic-courtesy": "a diplomatic courtesy call (protocol greetings, gift exchange, short courtesy meeting)",
             }.get(scenario_type, "a casual two-way conversation")
             escort_note = f"\n- Setting: {scenario_label} — informal, low-stakes, conversational register; the interpreter may bridge a cultural reference but must not editorialize or advocate."
 
@@ -3099,6 +3150,11 @@ async def ci_new_session(
             "form": "an intake/consent form excerpt",
             "contract-excerpt": "a short contract or agreement excerpt (plain clauses, not dense legalese)",
             "news": "a short news clipping",
+            "legal-doc": "a legal document (court filing, pleading, or judgment)",
+            "medical-report": "a medical report (discharge summary, lab result, or clinical note)",
+            "certificate": "an official certificate (birth, marriage, diploma, or professional license)",
+            "official-correspondence": "an official correspondence (diplomatic note, government letter, or memorandum)",
+            "academic-transcript": "an academic transcript or educational record",
         }.get(document_type, "a personal or business letter")
         doc_complexity = {
             "foundation": "plain, everyday language, short sentences, no specialized terms",
@@ -3347,6 +3403,15 @@ async def ci_get_segment(session_id: str = Form(...)):
             atmosphere_note = f"\n- Delivered in person, whispered close-proximity, no booth/equipment, in {noise_label}, to {listener_count} listener(s)."
         escort_note = ""
         if is_escort:
+            # Register affects the tone and formality of the exchange
+            register_note = ""
+            if register == 'formal':
+                register_note = "Use formal address, structured language, and professional courtesy."
+            elif register == 'casual':
+                register_note = "Use friendly, colloquial language with contractions and informal expressions."
+            else:
+                register_note = "Use conversational but polite language — natural but not overly formal."
+            
             scenario_label = {
                 "business": "an informal business meeting",
                 "social": "a casual social setting",

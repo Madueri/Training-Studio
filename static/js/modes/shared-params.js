@@ -180,6 +180,10 @@ let interpFieldType = '';
 let interpSpeakers = 2;
 // Flag indicating whether one-way interpretation mode is active
 let interpOneWay = false;
+// Selected segment length tier for consecutive mode ('short' | 'medium' | 'long')
+let interpSegLength = 'short';
+// Selected urgency level for OPI/VRI mode ('routine' | 'urgent' | 'emergency')
+let interpUrgency = 'routine';
 
 
 /**
@@ -313,3 +317,24 @@ let interpBlob = null;
 
 // Tracks which page/screen is currently visible to the user
 let currentPage = 'dashboard';
+
+
+/**
+ * @description Updates the segment length tier when the user selects a consecutive
+ *   segment length option (short / medium / long).
+ * @param {string} val - The selected segment length value.
+ * @returns {void}
+ */
+function interpSegLengthChanged(val) {
+ interpSegLength = val || 'short';
+}
+
+/**
+ * @description Updates the urgency level when the user selects an OPI/VRI
+ *   urgency option (routine / urgent / emergency).
+ * @param {string} val - The selected urgency level value.
+ * @returns {void}
+ */
+function interpUrgencyChanged(val) {
+ interpUrgency = val || 'routine';
+}

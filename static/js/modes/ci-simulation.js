@@ -85,6 +85,9 @@ function ciInitCIOverlay() {
   ciApplyModeKindUI(); // Invoke ciApplyModeKindUI()
   // Reset Legal Verbatim toggle to off by default
   ciVerbatim = false; // Assign value to 'ciVerbatim'
+  ciSegLength = 'short'; // Default segment length for consecutive
+  ciRegister = 'informal'; // Default register for escort
+  ciUrgency = 'routine'; // Default urgency for OPI/VRI
   const vb = document.getElementById('ci-verbatim'); // Lookup DOM element 'ci-verbatim'
   if (vb) vb.checked = false; // Evaluate conditional branch
   ciSwitchView('ci-pre-view'); // Invoke ciSwitchView()
@@ -209,6 +212,10 @@ function ciApplyModeKindUI() {
   if (scenarioWrap) scenarioWrap.style.display = isEscort ? '' : 'none'; // Toggle element visibility
   const doctypeWrap = document.getElementById('ci-doctype-wrap'); // Lookup DOM element 'ci-doctype-wrap'
   if (doctypeWrap) doctypeWrap.style.display = isSight ? '' : 'none'; // Toggle element visibility
+  const seglenWrap = document.getElementById('ci-seglen-wrap'); // Lookup DOM element 'ci-seglen-wrap'
+  if (seglenWrap) seglenWrap.style.display = ciModeKind === 'consecutive' ? '' : 'none'; // Toggle element visibility
+  const registerWrap = document.getElementById('ci-register-wrap'); // Lookup DOM element 'ci-register-wrap'
+  if (registerWrap) registerWrap.style.display = isEscort ? '' : 'none'; // Toggle element visibility
   const verbatimWrap = document.getElementById('ci-verbatim-wrap'); // Lookup DOM element 'ci-verbatim-wrap'
   const verbatimDivider = document.getElementById('ci-verbatim-divider'); // Lookup DOM element 'ci-verbatim-divider'
   if (verbatimWrap) verbatimWrap.style.display = (isSI || ciModeKind === 'consecutive') ? 'flex' : 'none'; // Toggle element visibility
@@ -269,6 +276,8 @@ const CI_FIELDS = {
   community:   {desc:'Social services, outreach, school and housing meetings. NCIHC: beside service recipient. Register must be accessible to the client — avoid over-formalizing. Limited cultural clarification is permitted when necessary; flag it explicitly.', maxPart:6, protocol:'NCIHC', fixedNote:''},
   security:    {desc:'Law enforcement interviews, customs, emergency coordination. Verbatim is mandatory. Interpreter beside subject. Absolute neutrality — nothing added, softened, or omitted. Tone carries evidentiary weight.', maxPart:0, protocol:'NAJIT', fixedNote:'Fixed exchange (officer + subject) by law enforcement protocol'},
   media:       {desc:'Press conferences, live news, broadcast interpretation. Interpreter in booth or off-frame. Delivery is rapid and impromptu; proper names and titles are preserved exactly. Expect cross-talk and overlapping voices.', maxPart:6, protocol:'AIIC', fixedNote:''},
+  education:   {desc:'School meetings, university consultations, parent-teacher conferences, IEP meetings. Interpreter beside family or student. Register must be accessible; cultural clarification permitted. Balances professionalism with warmth.', maxPart:4, protocol:'NCIHC', fixedNote:''},
+  emergency:   {desc:'911 calls, crisis hotlines, emergency room triage, poison control. Rapid-fire, high-stakes, life-critical information. Absolute accuracy on numbers, symptoms, and instructions. No omissions tolerated.', maxPart:0, protocol:'NCIHC', fixedNote:'Fixed exchange (dispatcher + caller/patient) by emergency protocol'},
 };
 
 // Sub-types per field — refines the exact setting the AI generates
@@ -282,6 +291,8 @@ const CI_FIELD_TYPES = {
   community:   ['Social Services','Parent-School Meeting','Public Health Outreach','Housing Authority','Benefits Consultation'],
   security:    ['Police Interview','Customs & Border','Emergency Coordination','Military Liaison'],
   media:       ['Press Conference','Live Broadcast','Sports Interview','Award Ceremony','Documentary Interview'],
+  education:   ['Parent-Teacher Conference','IEP Meeting','School Registration','Student Counseling','Administrative Meeting','College Admission Interview'],
+  emergency:   ['Medical Emergency','Police Call','Fire/EMS Dispatch','Crisis Hotline','Poison Control','Emergency Room Triage'],
 };
 
 const CI_PACE_INFO = {1:'Deliberate — ~80 WPM', 2:'Moderate — ~110 WPM', 3:'Fast — ~140 WPM', 4:'Rapid — ~170 WPM'};
@@ -301,6 +312,8 @@ const CI_FIELD_FIGS = {
   community:   [{x:.36,y:.44,role:'Provider'},{x:.64,y:.44,role:'Client'}],
   security:    [{x:.37,y:.4,role:'Officer'},{x:.67,y:.47,role:'Subject'}],
   media:       [{x:.5,y:.3,role:'Spokesperson'},{x:.25,y:.58,role:'Press'},{x:.75,y:.58,role:'Press'}],
+  education:   [{x:.36,y:.44,role:'Educator'},{x:.64,y:.44,role:'Family/Student'}],
+  emergency:   [{x:.37,y:.4,role:'Dispatcher'},{x:.67,y:.47,role:'Caller/Patient'}],
 };
 const CI_FIELD_NAMES = {
   medical:'Medical — Clinical Setting', legal:'Legal — Court Proceeding',
@@ -308,6 +321,8 @@ const CI_FIELD_NAMES = {
   business:'Business — Board Meeting', academic:'Academic — Conference Hall',
   community:'Community — Social Services', security:'Security — Interview Room',
   media:'Media — Press Briefing',
+  education:'Education — School/University',
+  emergency:'Emergency — Crisis Response',
 };
 
 const CI_DIALECTS = {
@@ -333,6 +348,8 @@ const CI_FIELD_TIPS = {
   community:   'Cultural sensitivity is expected. NCIHC permits limited cultural clarification when necessary — flag it explicitly.',
   security:    'Instructions and warnings must be rendered exactly. Do not interpret tone — stick to literal meaning only.',
   media:       'Broadcast-quality register is required. Pace will be fast. Proper names and titles must be preserved.',
+  education:   'Balance professionalism with warmth. Use accessible register for families. Preserve educational terminology accurately. Cultural clarification is permitted and often necessary.',
+  emergency:   'Speed and accuracy are paramount. Preserve exact numbers, symptoms, and instructions. Never guess. Use calm, clear delivery even when caller is distressed.',
 };
 
 // ── Role colors for canvas figures (index = position in CI_FIELD_FIGS[field]) ──
@@ -413,6 +430,22 @@ const CI_TYPE_DURATIONS = {
     'Sports Interview':        [{v:5,l:'5 min — Post-match'},{v:10,l:'10 min — Standard'},{v:15,l:'15 min — Feature interview'}],
     'Award Ceremony':          [{v:10,l:'10 min — Acceptance & remarks'},{v:15,l:'15 min — Standard'},{v:20,l:'20 min — Extended'},{v:30,l:'30 min — Full ceremony segment'}],
     'Documentary Interview':   [{v:15,l:'15 min — Short interview'},{v:30,l:'30 min — Standard'},{v:45,l:'45 min — In-depth'},{v:60,l:'60 min — Full sit-down'}],
+  },
+  education: {
+    'Parent-Teacher Conference': [{v:10,l:'10 min — Quick update'},{v:20,l:'20 min — Standard'},{v:30,l:'30 min — Extended conference'}],
+    'IEP Meeting':             [{v:20,l:'20 min — Brief review'},{v:45,l:'45 min — Standard'},{v:60,l:'60 min — Full planning'}],
+    'School Registration':     [{v:10,l:'10 min — Quick registration'},{v:20,l:'20 min — Standard'},{v:30,l:'30 min — Complex case'}],
+    'Student Counseling':      [{v:15,l:'15 min — Check-in'},{v:30,l:'30 min — Standard session'},{v:45,l:'45 min — Extended'}],
+    'Administrative Meeting':  [{v:15,l:'15 min — Brief meeting'},{v:30,l:'30 min — Standard'},{v:45,l:'45 min — Extended'}],
+    'College Admission Interview': [{v:20,l:'20 min — Brief'},{v:30,l:'30 min — Standard'},{v:45,l:'45 min — Extended'}],
+  },
+  emergency: {
+    'Medical Emergency':       [{v:5,l:'5 min — Triage'},{v:10,l:'10 min — Assessment'},{v:15,l:'15 min — Treatment'}],
+    'Police Call':             [{v:5,l:'5 min — Quick report'},{v:10,l:'10 min — Standard'},{v:15,l:'15 min — Detailed'}],
+    'Fire/EMS Dispatch':       [{v:5,l:'5 min — Rapid dispatch'},{v:10,l:'10 min — Standard'},{v:15,l:'15 min — Extended'}],
+    'Crisis Hotline':          [{v:10,l:'10 min — Brief support'},{v:20,l:'20 min — Standard'},{v:30,l:'30 min — Extended'}],
+    'Poison Control':          [{v:5,l:'5 min — Quick assessment'},{v:10,l:'10 min — Standard'},{v:15,l:'15 min — Complex'}],
+    'Emergency Room Triage':   [{v:5,l:'5 min — Triage'},{v:10,l:'10 min — Assessment'},{v:15,l:'15 min — Treatment'}],
   },
 };
 
@@ -1883,6 +1916,15 @@ async function ciStartSession() {
   if (ciModeKind === 'sight') { // Evaluate conditional branch
     fd.append('document_type', ciDocumentType); // Append field to FormData
     fd.append('sight_mode', ciSightMode); // Append field to FormData
+  }
+  if (ciModeKind === 'consecutive') { // Evaluate conditional branch
+    fd.append('segment_length', ciSegLength); // Append field to FormData
+  }
+  if (ciModeKind === 'escort') { // Evaluate conditional branch
+    fd.append('register', ciRegister); // Append field to FormData
+  }
+  if (ciModeKind === 'opi') { // Evaluate conditional branch
+    fd.append('urgency', ciUrgency); // Append field to FormData
   }
 
   try { // Begin try block

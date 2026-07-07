@@ -154,6 +154,8 @@
     <option value="community">Community</option>
     <option value="security">Security</option>
     <option value="media">Media</option>
+    <option value="education">Education</option>
+    <option value="emergency">Emergency</option>
    </select>
    <select id="interp-spec-type" class="ci-ov-sel" style="font-size:10px;color:var(--dim)" onchange="interpTypeChanged(this.value)">
     <!-- populated by interpFieldChanged() -->
@@ -235,8 +237,8 @@
   <div style="grid-column:6">
    <span class="ci-ov-plbl">Duration</span>
    <select id="interp-dur" class="ci-ov-sel" onchange="updateDurLabel(this.value)">
-    <option value="5" selected>5 min</option>
-    <option value="10">10 min</option>
+    <option value="5">5 min</option>
+    <option value="10" selected>10 min</option>
     <option value="15">15 min</option>
     <option value="20">20 min</option>
     <option value="25">25 min</option>
@@ -260,6 +262,47 @@
     <option value="115">115 min</option>
     <option value="120">120 min</option>
    </select>
+  </div>
+ </div>
+
+ <!-- Row 1.5: Segment Length — only visible for Consecutive mode -->
+ <div id="segment-length-row" style="display:none;margin-bottom:10px">
+  <span class="ci-ov-plbl" style="margin-bottom:4px">Segment Length</span>
+  <div style="display:flex;gap:8px;flex-wrap:wrap">
+   <label style="display:flex;align-items:center;gap:6px;background:var(--bg3);border:1px solid var(--border);padding:6px 12px;border-radius:8px;cursor:pointer;font-size:12px">
+    <input type="radio" name="seg-length" value="short" checked onchange="interpSegLengthChanged(this.value)">
+    <span><strong>Short</strong> — 20–60 sec</span>
+    <span style="font-size:10px;color:var(--dim)">Dialogue, community, court</span>
+   </label>
+   <label style="display:flex;align-items:center;gap:6px;background:var(--bg3);border:1px solid var(--border);padding:6px 12px;border-radius:8px;cursor:pointer;font-size:12px">
+    <input type="radio" name="seg-length" value="medium" onchange="interpSegLengthChanged(this.value)">
+    <span><strong>Medium</strong> — 1.5–3 min</span>
+    <span style="font-size:10px;color:var(--dim)">Note-taking training</span>
+   </label>
+   <label style="display:flex;align-items:center;gap:6px;background:var(--bg3);border:1px solid var(--border);padding:6px 12px;border-radius:8px;cursor:pointer;font-size:12px">
+    <input type="radio" name="seg-length" value="long" onchange="interpSegLengthChanged(this.value)">
+    <span><strong>Long</strong> — 4–8 min</span>
+    <span style="font-size:10px;color:var(--dim)">Conference, EMCI exam prep</span>
+   </label>
+  </div>
+ </div>
+
+ <!-- Row 1.5b: Urgency Level — only visible for OPI/VRI mode -->
+ <div id="urgency-level-row" style="display:none;margin-bottom:10px">
+  <span class="ci-ov-plbl" style="margin-bottom:4px">Urgency Level</span>
+  <div style="display:flex;gap:8px;flex-wrap:wrap">
+   <label style="display:flex;align-items:center;gap:6px;background:var(--bg3);border:1px solid var(--border);padding:6px 12px;border-radius:8px;cursor:pointer;font-size:12px">
+    <input type="radio" name="urgency" value="routine" checked onchange="interpUrgencyChanged(this.value)">
+    <span>Routine</span>
+   </label>
+   <label style="display:flex;align-items:center;gap:6px;background:var(--bg3);border:1px solid var(--border);padding:6px 12px;border-radius:8px;cursor:pointer;font-size:12px">
+    <input type="radio" name="urgency" value="urgent" onchange="interpUrgencyChanged(this.value)">
+    <span>Urgent</span>
+   </label>
+   <label style="display:flex;align-items:center;gap:6px;background:var(--bg3);border:1px solid var(--border);padding:6px 12px;border-radius:8px;cursor:pointer;font-size:12px">
+    <input type="radio" name="urgency" value="emergency" onchange="interpUrgencyChanged(this.value)">
+    <span>Emergency</span>
+   </label>
   </div>
  </div>
 

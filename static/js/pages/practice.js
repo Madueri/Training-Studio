@@ -58,6 +58,11 @@ async function enterPractice(mode) {
   }
 
  // Show/hide simulation cards based on mode
+ // Show/hide mode-specific parameter rows
+ const segLenRow = document.getElementById('segment-length-row');
+ const urgencyRow = document.getElementById('urgency-level-row');
+ if (segLenRow) segLenRow.style.display = mode === 'consecutive' ? 'block' : 'none';
+ if (urgencyRow) urgencyRow.style.display = mode === 'opi' ? 'block' : 'none';
  // Retrieve the OPI (Over-the-Phone Interpreting) AI launch card element.
  const opiCard  = document.getElementById('opi-ai-launch-card');
  // Retrieve the Consecutive Interpreting AI launch card element.

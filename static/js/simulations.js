@@ -425,6 +425,8 @@ async function opiTriggerIncoming(field, lang, dur, diff) {
   // Read live from the checkbox rather than threading a param through every
   // call site, since the toggle can change between consecutive calls.
   fd.append('video', opiIsVideoMode() ? 'true' : 'false');
+  // Urgency level from practice parameters (routine/urgent/emergency)
+  fd.append('urgency', (typeof interpUrgency !== 'undefined' ? interpUrgency : 'routine'));
 
   // AbortController: cancel if generation takes more than 60 s
   const ctrl = new AbortController();
