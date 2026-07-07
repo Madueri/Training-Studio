@@ -132,7 +132,7 @@
 /* ── Offset Nodes ─────────────────────────────────────────── */
 .skill-node.offset-node {
   transform: translateY(40px) scale(0.95);
-  border: 2px dashed rgba(255, 255, 255, 0.3);
+  border: 2px dashed var(--border);
 }
 
 .skill-node.offset-node.is-visible {
@@ -360,7 +360,7 @@
   letter-spacing: 0.5px;
   padding: 2px 8px;
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.08);
+  background: var(--bg3);
   color: var(--text-muted);
   border: 1px solid var(--border);
   white-space: nowrap;

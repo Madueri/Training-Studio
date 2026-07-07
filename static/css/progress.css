@@ -63,9 +63,9 @@
 /* ===== Dashboard Container ===== */
 .progress-dashboard {
   min-height: 100vh;
-  background: #121212;
+  background: var(--bg0);
   font-family: Inter, sans-serif;
-  color: #E0E0E0;
+  color: var(--text);
   padding: 2rem;
   max-width: 1200px;
   margin: 0 auto;
@@ -80,8 +80,8 @@
 }
 
 .stat-card {
-  background: #1a1a2e;
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: var(--bg2);
+  border: 1px solid var(--border);
   border-radius: 12px;
   padding: 1.25rem;
   display: flex;
@@ -92,7 +92,7 @@
 }
 
 .stat-card:hover {
-  border-color: rgba(255, 255, 255, 0.12);
+  border-color: var(--border);
   transform: translateY(-2px);
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
 }
@@ -106,7 +106,7 @@
   justify-content: center;
   font-size: 1.25rem;
   flex-shrink: 0;
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  border: 1px solid var(--border);
 }
 
 .stat-card:nth-child(1) .stat-card__icon {
@@ -136,13 +136,13 @@
 .stat-card__value {
   font-size: 1.5rem;
   font-weight: 700;
-  color: #E0E0E0;
+  color: var(--text);
   line-height: 1.2;
 }
 
 .stat-card__label {
   font-size: 0.75rem;
-  color: rgba(255, 255, 255, 0.7);
+  color: var(--dim);
   text-transform: uppercase;
   letter-spacing: 0.5px;
 }
@@ -173,8 +173,8 @@
   display: flex;
   align-items: center;
   gap: 1rem;
-  background: #1a1a2e;
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: var(--bg2);
+  border: 1px solid var(--border);
   border-radius: 12px;
   padding: 1rem 1.25rem;
   margin-bottom: 2rem;
@@ -188,7 +188,7 @@
 .xp-bar__track {
   flex: 1;
   height: 10px;
-  background: rgba(255, 255, 255, 0.06);
+  background: var(--bg3);
   border-radius: 999px;
   overflow: hidden;
   position: relative;
@@ -217,7 +217,7 @@
 
 .xp-bar__text {
   font-size: 0.875rem;
-  color: rgba(255, 255, 255, 0.7);
+  color: var(--dim);
   font-weight: 500;
   flex-shrink: 0;
   white-space: nowrap;
@@ -230,14 +230,14 @@
   justify-content: space-between;
   padding: 1rem 0;
   margin-bottom: 1rem;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  border-bottom: 1px solid var(--border);
   animation: fadeInUp 0.5s ease-out both;
 }
 
 .phase-header__title {
   font-size: 1.25rem;
   font-weight: 700;
-  color: #E0E0E0;
+  color: var(--text);
   display: flex;
   align-items: center;
   gap: 0.75rem;
@@ -259,21 +259,21 @@
 }
 
 .phase-header__badge.locked {
-  background: rgba(255, 255, 255, 0.04);
-  color: rgba(255, 255, 255, 0.5);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: var(--bg4);
+  color: var(--dim);
+  border: 1px solid var(--border);
 }
 
 .phase-header__progress {
   font-size: 0.875rem;
-  color: rgba(255, 255, 255, 0.7);
+  color: var(--dim);
   font-weight: 500;
 }
 
 /* ===== Module Card ===== */
 .module-card {
-  background: #1a1a2e;
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: var(--bg2);
+  border: 1px solid var(--border);
   border-radius: 16px;
   padding: 1.5rem;
   display: flex;
@@ -286,7 +286,7 @@
 }
 
 .module-card:hover {
-  border-color: rgba(255, 255, 255, 0.12);
+  border-color: var(--border);
   transform: translateY(-2px);
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
 }
@@ -301,7 +301,7 @@
 .module-card__title {
   font-size: 1rem;
   font-weight: 600;
-  color: #E0E0E0;
+  color: var(--text);
   line-height: 1.3;
 }
 
@@ -316,8 +316,8 @@
   font-weight: 500;
   padding: 0.25rem 0.625rem;
   border-radius: 6px;
-  background: rgba(255, 255, 255, 0.06);
-  color: rgba(255, 255, 255, 0.7);
+  background: var(--bg3);
+  color: var(--dim);
 }
 
 .module-card__progress {
@@ -328,7 +328,7 @@
 
 .module-card__progress-bar {
   height: 6px;
-  background: rgba(255, 255, 255, 0.06);
+  background: var(--bg3);
   border-radius: 999px;
   overflow: hidden;
 }
@@ -342,7 +342,7 @@
 
 .module-card__progress-text {
   font-size: 0.75rem;
-  color: rgba(255, 255, 255, 0.7);
+  color: var(--dim);
   font-weight: 500;
 }
 
@@ -362,7 +362,7 @@
 }
 
 .module-card.locked .module-card__progress-fill {
-  background: rgba(255, 255, 255, 0.15);
+  background: var(--border);
 }
 
 .module-card.unlocked {
@@ -435,9 +435,9 @@
 }
 
 .skill-node.locked {
-  background: rgba(255, 255, 255, 0.04);
-  border: 2px solid rgba(255, 255, 255, 0.08);
-  color: rgba(255, 255, 255, 0.3);
+  background: var(--bg4);
+  border: 2px solid var(--border);
+  color: var(--dim);
   cursor: not-allowed;
 }
 
@@ -474,7 +474,7 @@
   background-size: 12px;
   background-repeat: no-repeat;
   background-position: center;
-  border: 2px solid #121212;
+  border: 2px solid var(--bg0);
 }
 
 .skill-node__label {
@@ -484,7 +484,7 @@
   transform: translateX(-50%);
   font-size: 0.75rem;
   font-weight: 600;
-  color: rgba(255, 255, 255, 0.7);
+  color: var(--dim);
   white-space: nowrap;
   text-align: center;
 }
@@ -492,7 +492,7 @@
 /* ===== Skill Connection ===== */
 .skill-connection {
   position: absolute;
-  background: rgba(255, 255, 255, 0.08);
+  background: var(--border);
   z-index: 1;
   transition: all 0.6s ease;
 }
@@ -515,8 +515,8 @@
 
 /* ===== Streak Calendar ===== */
 .streak-calendar {
-  background: #1a1a2e;
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: var(--bg2);
+  border: 1px solid var(--border);
   border-radius: 16px;
   padding: 1.5rem;
   animation: fadeInUp 0.5s ease-out both;
@@ -532,7 +532,7 @@
 .streak-calendar__title {
   font-size: 1rem;
   font-weight: 600;
-  color: #E0E0E0;
+  color: var(--text);
 }
 
 .streak-calendar__count {
@@ -553,7 +553,7 @@
 .streak-day {
   aspect-ratio: 1;
   border-radius: 6px;
-  background: rgba(255, 255, 255, 0.04);
+  background: var(--bg4);
   transition: all 0.2s ease;
   cursor: pointer;
   position: relative;
@@ -561,7 +561,7 @@
 
 .streak-day:hover {
   transform: scale(1.15);
-  box-shadow: 0 0 8px rgba(255, 255, 255, 0.1);
+  box-shadow: 0 0 8px var(--border);
   z-index: 2;
 }
 
@@ -587,12 +587,12 @@
   bottom: calc(100% + 8px);
   left: 50%;
   transform: translateX(-50%);
-  background: #1a1a2e;
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: var(--bg2);
+  border: 1px solid var(--border);
   border-radius: 8px;
   padding: 0.5rem 0.75rem;
   font-size: 0.75rem;
-  color: #E0E0E0;
+  color: var(--text);
   white-space: nowrap;
   opacity: 0;
   pointer-events: none;
@@ -618,8 +618,8 @@
   align-items: center;
   gap: 0.5rem;
   padding: 1.25rem 0.75rem;
-  background: #1a1a2e;
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: var(--bg2);
+  border: 1px solid var(--border);
   border-radius: 16px;
   text-align: center;
   transition: all 0.3s ease;
@@ -627,7 +627,7 @@
 }
 
 .achievement-badge:hover {
-  border-color: rgba(255, 255, 255, 0.12);
+  border-color: var(--border);
   transform: translateY(-2px);
 }
 
@@ -641,7 +641,7 @@
   font-size: 1.75rem;
   margin-bottom: 0.25rem;
   transition: all 0.3s ease;
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  border: 1px solid var(--border);
 }
 
 .achievement-badge.unlocked .achievement-badge__icon {
@@ -653,21 +653,21 @@
 }
 
 .achievement-badge.locked .achievement-badge__icon {
-  background: rgba(255, 255, 255, 0.04);
-  color: rgba(255, 255, 255, 0.3);
+  background: var(--bg4);
+  color: var(--dim);
   filter: grayscale(1);
 }
 
 .achievement-badge__name {
   font-size: 0.8125rem;
   font-weight: 600;
-  color: #E0E0E0;
+  color: var(--text);
   line-height: 1.3;
 }
 
 .achievement-badge__description {
   font-size: 0.6875rem;
-  color: rgba(255, 255, 255, 0.5);
+  color: var(--dim);
   line-height: 1.3;
 }
 
@@ -680,8 +680,8 @@
 
 /* ===== Leaderboard ===== */
 .leaderboard {
-  background: #1a1a2e;
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: var(--bg2);
+  border: 1px solid var(--border);
   border-radius: 16px;
   padding: 1.5rem;
   animation: fadeInUp 0.5s ease-out both;
@@ -691,7 +691,7 @@
 .leaderboard__title {
   font-size: 1.125rem;
   font-weight: 700;
-  color: #E0E0E0;
+  color: var(--text);
   margin-bottom: 1rem;
   display: flex;
   align-items: center;
@@ -707,13 +707,13 @@
   display: flex;
   align-items: center;
   padding: 0.75rem 0;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+  border-bottom: 1px solid var(--border);
   transition: all 0.2s ease;
   animation: floatIn 0.4s ease-out both;
 }
 
 .leaderboard__row:hover {
-  background: rgba(255, 255, 255, 0.02);
+  background: var(--bg3);
   border-radius: 8px;
   padding-left: 0.5rem;
   padding-right: 0.5rem;
@@ -728,7 +728,7 @@
   width: 32px;
   font-size: 0.875rem;
   font-weight: 700;
-  color: rgba(255, 255, 255, 0.5);
+  color: var(--dim);
   text-align: center;
   flex-shrink: 0;
 }
@@ -738,7 +738,7 @@
 }
 
 .leaderboard__row:nth-child(2) .leaderboard__rank {
-  color: rgba(255, 255, 255, 0.7);
+  color: var(--dim);
 }
 
 .leaderboard__row:nth-child(3) .leaderboard__rank {
@@ -765,7 +765,7 @@
   flex: 1;
   font-size: 0.9375rem;
   font-weight: 500;
-  color: #E0E0E0;
+  color: var(--text);
 }
 
 .leaderboard__xp {
@@ -777,8 +777,8 @@
 
 /* ===== Competency Heatmap ===== */
 .competency-heatmap {
-  background: #1a1a2e;
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: var(--bg2);
+  border: 1px solid var(--border);
   border-radius: 16px;
   padding: 1.5rem;
   animation: fadeInUp 0.5s ease-out both;
@@ -787,7 +787,7 @@
 .competency-heatmap__title {
   font-size: 1.125rem;
   font-weight: 700;
-  color: #E0E0E0;
+  color: var(--text);
   margin-bottom: 1.25rem;
 }
 
@@ -811,7 +811,7 @@
 
 .competency-heatmap__cell:hover {
   transform: translateY(-2px);
-  border-color: rgba(255, 255, 255, 0.08);
+  border-color: var(--border);
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
 }
 
@@ -822,7 +822,7 @@
 
 .competency-heatmap__label {
   font-size: 0.75rem;
-  color: rgba(255, 255, 255, 0.7);
+  color: var(--dim);
   text-align: center;
   font-weight: 500;
 }
@@ -853,7 +853,7 @@
 
 /* ===== Next Unlock ===== */
 .next-unlock {
-  background: #1a1a2e;
+  background: var(--bg2);
   border: 1px solid rgba(167, 139, 250, 0.2);
   border-radius: 16px;
   padding: 1.5rem;
@@ -898,13 +898,13 @@
 .next-unlock__title {
   font-size: 1rem;
   font-weight: 600;
-  color: #E0E0E0;
+  color: var(--text);
   margin-bottom: 0.25rem;
 }
 
 .next-unlock__description {
   font-size: 0.875rem;
-  color: rgba(255, 255, 255, 0.7);
+  color: var(--dim);
   margin-bottom: 0.75rem;
 }
 
@@ -917,7 +917,7 @@
 .next-unlock__bar {
   flex: 1;
   height: 6px;
-  background: rgba(255, 255, 255, 0.06);
+  background: var(--bg3);
   border-radius: 999px;
   overflow: hidden;
 }
@@ -932,7 +932,7 @@
 
 .next-unlock__text {
   font-size: 0.75rem;
-  color: rgba(255, 255, 255, 0.7);
+  color: var(--dim);
   font-weight: 500;
   white-space: nowrap;
 }
@@ -941,9 +941,9 @@
 .skeleton {
   background: linear-gradient(
     90deg,
-    rgba(255, 255, 255, 0.03) 25%,
-    rgba(255, 255, 255, 0.06) 50%,
-    rgba(255, 255, 255, 0.03) 75%
+    var(--bg3) 25%,
+    var(--bg4) 50%,
+    var(--bg3) 75%
   );
   background-size: 200% 100%;
   animation: shimmer 1.5s infinite;
